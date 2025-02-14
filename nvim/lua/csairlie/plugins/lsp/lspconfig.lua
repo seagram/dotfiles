@@ -3,6 +3,7 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
+		"saghen/blink.cmp",
 	},
 	config = function()
 		-- import lspconfig plugin
@@ -12,7 +13,8 @@ return {
 		local mason_lspconfig = require("mason-lspconfig")
 
 		-- import cmp-nvim-lsp plugin
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		-- local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local blink = require("blink.cmp")
 
 		local keymap = vim.keymap -- for conciseness
 
@@ -35,7 +37,8 @@ return {
 		})
 
 		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+		-- local capabilities = cmp_nvim_lsp.default_capabilities()
+		local capabilities = blink.get_lsp_capabilities()
 
 		-- Enable folding for ufo.nvim
 		capabilities.textDocument.foldingRange = {
