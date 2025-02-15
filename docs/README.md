@@ -9,8 +9,8 @@
 - [AppCleaner](https://freemacsoft.net/appcleaner/)
 - [Monitor Control](https://github.com/MonitorControl/MonitorControl) (Control brightness of external monitors)
 - [Numi](https://numi.app/) (Calculator with natural language support)
-- [SelfControl](https://selfcontrolapp.com/) (Nuclear content blocker)
-- [Raycast](https://www.raycast.com) (Window Manager)
+- [Rectangle](https://rectangleapp.com) (Window Manager)
+- [HiddenBar](https://github.com/dwarvesf/hidden) (Menu Bar Manager)
 
 ### Formulae Installed with Homebrew
 
@@ -21,6 +21,7 @@
 - [zsh-syntax-highlighting](https://formulae.brew.sh/formula/zsh-syntax-highlighting)
 - [zsh-autosuggestions](https://formulae.brew.sh/formula/zsh-autosuggestions)
 - [zoxide](https://github.com/ajeetdsouza/zoxide)
+- [termscp](https://github.com/veeso/termscp)
 
 ### neovim
 
