@@ -1,8 +1,8 @@
 # dotfiles
 
-![Example Config](example.png)
+![Code Example](example.png)
 
-![Example Config 2](example2.png)
+![Writing Example](writing.png)
 
 ### casks
 
