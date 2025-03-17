@@ -2,6 +2,8 @@
 
 ![Example Config](example.png)
 
+![Example Config 2](example2.png)
+
 ### casks
 
 [wezterm](https://github.com/wez/wezterm) - rust-based terminal emulator w/ mulitplexing & lua config
