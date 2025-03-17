@@ -1,0 +1,79 @@
+#browser:not(.tabs-top) #header {
+  min-height: 0px !important;
+}
+
+#browser.mac .window-buttongroup.on-mainbar {
+  display: none;
+}
+
+#browser.mac #header {
+  display: none;
+}
+
+#browser.mac .mainbar {
+  margin-top: -2px;
+  padding-left: 62px;
+}
+
+#browser.mac.address-bottom #main > .mainbar {
+  order: 0;
+}
+
+#browser.mac.address-bottom #main .above .OmniDropdown {
+  top: inherit;
+  bottom: unset;
+}
+
+.extension-popup.bottom {
+  bottom: unset;
+  top: 40px !important;
+}
+
+.extension-popup.bottom:before {
+  top: -13px;
+  bottom: unset;
+  left: var(--anchorPosition);
+  border-bottom-color: var(--colorBorder);
+  border-top-color: unset;
+}
+
+.extension-popup.bottom:after {
+  top: -12px;
+  bottom: unset;
+  left: var(--anchorPosition);
+  border-bottom-color: var(--colorBgLight);
+}
+
+.newtab,
+.button-toolbar.toggle-trash {
+  display: none;
+}
+
+#tabs-tabbar-container {
+  height: 28px !important;
+}
+
+#tabs-tabbar-container.bottom {
+  border: 0;
+  padding: 0;
+}
+
+.button-toolbar.workspace-popup.tabbar-workspace-button button {
+  height: 28px;
+}
+
+.tab-position .tab .tab-header {
+  padding-top: 8px;
+}
+
+/* remove traffic lights on tab bar */
+
+.mac #tabs-container:not(.none).top {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.tabs-top#browser.mac .window-buttongroup {
+  display: none;
+  visibility: hidden;
+}

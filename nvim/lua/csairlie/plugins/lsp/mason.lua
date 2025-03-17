@@ -37,6 +37,7 @@ return {
 				"gopls", -- go lsp
 				"intelephense", -- php lsp
 				"terraformls",
+				"sqls",
 			},
 		})
 
@@ -48,6 +49,7 @@ return {
 				"pylint", -- python linter
 				"eslint_d", -- js diagnostics
 				"stylua", -- lua formatter
+				"sqlfluff",
 			},
 		})
 	end,

@@ -96,6 +96,17 @@ return {
 					},
 				})
 			end,
+
+			["sqls"] = function()
+				lspconfig["sqls"].setup({
+					capabilities = capabilities,
+					settings = {
+						init_options = {
+							provideFormatter = false,
+						},
+					},
+				})
+			end,
 		})
 	end,
 }

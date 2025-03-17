@@ -1,21 +1,3 @@
-local minimal = {
-	"Yazeed1s/minimal.nvim",
-	priority = 1000,
-	config = function()
-		vim.cmd([[colorscheme minimal]])
-	end,
-}
-
-local nightowl = {
-	"oxfist/night-owl.nvim",
-	lazy = false,
-	priority = 1000,
-	config = function()
-		require("night-owl").setup()
-		vim.cmd.colorscheme("night-owl")
-	end,
-}
-
 local tokyonight = {
 	"folke/tokyonight.nvim",
 	priority = 1000,
