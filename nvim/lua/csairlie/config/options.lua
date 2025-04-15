@@ -1,24 +1,26 @@
 -- disable netrw (use nvim-tree instead) --
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+local set = vim.g
+
+set.loaded_netrw = 1
+set.loaded_netrwPlugin = 1
 
 -- disable language provider support (lua and vimscript plugins only)
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
-vim.g.loaded_node_provider = 0
-vim.g.loaded_python_provider = 0
-vim.g.loaded_python3_provider = 0
-
--- folding
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldcolumn = "0"
-vim.opt.foldtext = ""
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
-vim.opt.foldnestmax = 99
+set.loaded_perl_provider = 0
+set.loaded_ruby_provider = 0
+set.loaded_node_provider = 0
+set.loaded_python_provider = 0
+set.loaded_python3_provider = 0
 
 local set = vim.opt
+
+-- folding
+set.foldmethod = "expr"
+set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+set.foldcolumn = "0"
+set.foldtext = ""
+set.foldlevel = 99
+set.foldlevelstart = 99
+set.foldnestmax = 99
 
 -- general
 set.number = true -- show hybrid line numbers

@@ -27,23 +27,23 @@ return {
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
 			ensure_installed = {
-				"ts_ls", -- javascript lsp
+				"ts_ls", -- typescript lsp
 				"html", -- html lsp
 				"cssls", -- css lsp
+				"tailwindcss", -- tailwind
 				"pyright", -- python lsp
 				"clangd", -- c/cpp lsp
 				"lua_ls", -- lua lsp
 				"marksman", -- markdown lsp
 				"gopls", -- go lsp
-				"intelephense", -- php lsp
-				"terraformls",
-				"sqls",
+				"terraformls", -- terraform lsp
+				"sqls", -- sql lsp
 			},
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
-				"prettier", -- javascript formatter
+				"prettier", -- prettier formatter
 				"isort", -- python formatter
 				"black", -- python formatter
 				"pylint", -- python linter

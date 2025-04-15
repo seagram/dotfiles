@@ -3,6 +3,7 @@ return {
 		"folke/zen-mode.nvim",
 		config = function()
 			local default_colorscheme = vim.g.colors_name or "default"
+			local default_guicursor = vim.o.guicursor -- Store default guicursor
 
 			require("zen-mode").setup({
 				window = {
@@ -13,11 +14,28 @@ return {
 						relativenumber = false,
 					},
 				},
+				plugins = {
+					twilight = { enabled = true },
+					wezterm = {
+						enable = true,
+						font = "+4",
+					},
+				},
 				on_open = function()
-					vim.cmd("colorscheme paper") -- Switch to "paper" when ZenMode is enabled
+					vim.cmd("color paper") -- Switch to "paper" when ZenMode is enabled
+					vim.cmd([[
+                    set termguicolors
+                    highlight Cursor guibg=#A9A9A9 cterm=reverse
+                    set guicursor=n-v-c-o:block-Cursor/lCursor,i:ver25-Cursor
+                    ]])
 				end,
 				on_close = function()
-					vim.cmd("colorscheme " .. default_colorscheme) -- Restore the previous colorscheme
+					vim.cmd("color tokyonight") -- Restore the previous colorscheme
+					vim.cmd([[
+                    set termguicolors
+                    highlight Cursor guibg=#47FF9C cterm=reverse
+                    set guicursor=n-v-c-o:block-Cursor/lCursor,i:ver25-Cursor
+                    ]])
 				end,
 			})
 
@@ -26,5 +44,17 @@ return {
 	},
 	{
 		"yorickpeterse/vim-paper",
+	},
+	{
+		"folke/twilight.nvim",
+		opts = {
+			dimming = {
+				alpha = 0.25, -- amount of dimming
+			},
+			context = 10, -- amount of lines
+		},
+	},
+	{
+		"kblin/vim-fountain",
 	},
 }
