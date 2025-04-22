@@ -12,7 +12,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
-	{ import = "csairlie.plugins.ui" },
-	{ import = "csairlie.plugins.lsp" },
-	{ import = "csairlie.plugins.utils" },
+	{ import = "plugins.ui" },
+	{ import = "plugins.lsp" },
+	{ import = "plugins.utils" },
 })

@@ -10,7 +10,7 @@
 
 [zen](https://zen-browser.app) - web browser
 
-[alfred](https://www.alfredapp.com/) - spotlight replacement
+[raycast](https://www.raycast.com) - spotlight replacement
 
 [appcleaner](https://freemacsoft.net/appcleaner/) - smarter app manager
 
@@ -18,11 +18,7 @@
 
 [numi](https://numi.app/) - natural language calculator
 
-[rectangle](https://rectangleapp.com) - window manager
-
 [hiddenbar](https://github.com/dwarvesf/hidden) - menu bar manager
-
-[maccy](https://maccy.app) - clipboard manager
 
 ### homebrew formulae
 

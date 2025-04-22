@@ -16,23 +16,22 @@ return {
 			indent = { enable = true },
 			-- ensure these language parsers are installed
 			ensure_installed = {
-				-- web dev
+				-- general
+				"python",
+				"go",
 				"javascript",
+				"lua",
+				"bash",
+				-- other
+				"json",
 				"html",
 				"css",
-				"php",
-				-- general
-				"c",
-				"cpp",
-				"python",
-				-- notes
 				"markdown",
 				"markdown_inline",
-				-- scripting
-				"bash",
-				"lua",
-				"go",
-				"terraform",
+				"dockerfile",
+				"gitignore",
+				"c",
+				"java",
 			},
 		})
 	end,
