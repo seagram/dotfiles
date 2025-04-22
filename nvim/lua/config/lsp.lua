@@ -4,7 +4,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP actions",
 	callback = function(event)
 		local opts = { buffer = event.buf }
-
 		vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
 		vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
 		vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
@@ -26,6 +25,10 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.HINT] = "󰠠 ",
 			[vim.diagnostic.severity.INFO] = " ",
 		},
+	},
+
+	virtual_lines = {
+		current_line = true,
 	},
 })
 
