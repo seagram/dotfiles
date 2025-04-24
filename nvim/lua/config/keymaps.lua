@@ -3,23 +3,18 @@ vim.g.maplocalleader = " "
 
 local key = vim.keymap
 
--- Remap half page navigation to include screen centering
-key.set("n", "<C-d>", "<C-d>zz")
-key.set("n", "<C-u>", "<C-u>zz")
+key.set("n", "<C-d>", "<C-d>zz") -- move half page down with screen centering
+key.set("n", "<C-u>", "<C-u>zz") -- move half page up with screen centering
 
 key.set("n", "<C-k>", ":m .-2<CR>==") -- move line up
 key.set("n", "<C-j>", ":m .+1<CR>==") -- move line down
 
--- Copy entire buffer
-key.set("n", "<leader>cc", "ggVGy", { desc = "Yank entire buffer" })
+key.set("n", "<leader>yb", "ggVGy", { desc = "Yank entire buffer" }) -- yank buffer
 
--- Clear search highlights with <Esc>
-key.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+key.set("n", "<Esc>", "<cmd>nohlsearch<CR>") -- clear seach highlights
 
--- Open Quickfix Diagnostic Panel
-key.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+key.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostic Quickfixes" })
 
--- Exit Terminal Mode
 key.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- Disable arrow keys in normal mode

@@ -27,6 +27,7 @@ return {
 				"basedpyright", -- python lsp
 				"lua_ls", -- lua lsp
 				"gopls", -- go lsp
+				"bashls", -- bash lsp
 			},
 		})
 

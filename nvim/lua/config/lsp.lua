@@ -1,19 +1,52 @@
--- This is where you enable features that only work
--- if there is a language server active in the file
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP actions",
 	callback = function(event)
 		local opts = { buffer = event.buf }
-		vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
-		vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
-		vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
-		vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
-		vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
-		vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
-		vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
-		vim.keymap.set("n", "gc", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-		vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
-		vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+		local map = vim.keymap.set
+		map("n", "<leader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>", {
+			desc = "Hover Documentation",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>lH", "<cmd>:checkhealth lsp<cr>", {
+			desc = "Check LSP health",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>", {
+			desc = "Goto Definition",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<cr>", {
+			desc = "Goto Declaration",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", {
+			desc = "Goto Implementation",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", {
+			desc = "Goto Type Definition",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>lR", "<cmd>lua vim.lsp.buf.references()<cr>", {
+			desc = "References",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>", {
+			desc = "Rename",
+			buffer = opts.buffer,
+		})
+		map("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<cr>", {
+			desc = "Signature Help",
+			buffer = opts.buffer,
+		})
+		map({ "n" }, "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", {
+			desc = "Code Action",
+			buffer = opts.buffer,
+		})
+		map({ "n" }, "<leader>lx", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", {
+			desc = "LSP Format",
+			buffer = opts.buffer,
+		})
 	end,
 })
 
@@ -48,4 +81,4 @@ vim.lsp.config("*", {
 	root_markers = { ".git" },
 })
 
-vim.lsp.enable({ "gopls", "luals", "basedpyright", "ts_ls" })
+vim.lsp.enable({ "gopls", "luals", "basedpyright", "tsls", "bashls" })
