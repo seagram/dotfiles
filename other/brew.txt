@@ -1,0 +1,30 @@
+# formulae
+aichat
+fnm
+gh
+go
+jesseduffield/lazygit/lazygit
+lsd
+lua
+neovim
+tree
+uv
+veeso/termscp/termscp
+yazi
+zoxide
+zsh-autosuggestions
+zsh-syntax-highlighting
+
+# casks
+cyberduck
+font-sf-mono-nerd-font
+handbrake
+hiddenbar
+legcord
+orbstack
+raycast
+visual-studio-code
+vivaldi
+wezterm
+yaak
+zen-browser

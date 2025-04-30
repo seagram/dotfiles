@@ -1,0 +1,15 @@
+# --- llm ---
+model: gemini:gemini-2.0-flash
+clients:
+- type: gemini
+  api_key: AIzaSyBJDn9CndnQ2OGl01-zm2fVwfbG0nUKBA0
+# --- behaviour ---
+stream: true
+save: false
+save_session: null
+keybindings: vi
+editor: nvim
+wrap: auto
+# --- role ---
+cmd_prelude: "role:%code%"
+repl_prelude: "role:%code%"

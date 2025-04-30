@@ -20,6 +20,7 @@ return {
 					"Music/*",
 					"Pictures/*",
 					"Public/*",
+					"go/*",
 				},
 			},
 		})
