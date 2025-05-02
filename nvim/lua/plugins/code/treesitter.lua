@@ -2,36 +2,25 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
-	dependencies = {},
+	dependencies = { "OXY2DEV/markview.nvim" },
 	config = function()
-		-- import nvim-treesitter plugin
 		local treesitter = require("nvim-treesitter.configs")
 
-		-- configure treesitter
-		treesitter.setup({ -- enable syntax highlighting
+		treesitter.setup({
 			highlight = {
 				enable = true,
 			},
-			-- enable indentation
+
 			indent = { enable = true },
-			-- ensure these language parsers are installed
+
 			ensure_installed = {
-				-- general
-				"python",
-				"go",
-				"javascript",
-				"lua",
 				"bash",
-				-- other
-				"json",
-				"html",
-				"css",
+				"lua",
+				"python",
+				"javascript",
+				"go",
 				"markdown",
 				"markdown_inline",
-				"dockerfile",
-				"gitignore",
-				"c",
-				"java",
 			},
 		})
 	end,

@@ -1,6 +1,12 @@
 return {
 	{
 		"folke/zen-mode.nvim",
+		event = { "BufReadPre *.md", "BufReadPre *.txt", "BufReadPre *.fountain" },
+		dependencies = {
+			"yorickpeterse/vim-paper",
+			"kblin/vim-fountain",
+			"folke/twilight.nvim",
+		},
 		config = function()
 			local default_colorscheme = vim.g.colors_name or "default"
 			local default_guicursor = vim.o.guicursor -- Store default guicursor
@@ -40,21 +46,13 @@ return {
 			})
 
 			vim.keymap.set({ "n", "v" }, "<leader>z", "<cmd>ZenMode<CR>")
+
+			require("twilight").setup({
+				dimming = {
+					alpha = 0.25, -- amount of dimming
+				},
+				context = 10, -- amount of lines
+			})
 		end,
-	},
-	{
-		"yorickpeterse/vim-paper",
-	},
-	{
-		"folke/twilight.nvim",
-		opts = {
-			dimming = {
-				alpha = 0.25, -- amount of dimming
-			},
-			context = 10, -- amount of lines
-		},
-	},
-	{
-		"kblin/vim-fountain",
 	},
 }

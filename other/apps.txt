@@ -1,0 +1,3 @@
+# applications not installed with homebrew
+MonitorControl
+Numi
