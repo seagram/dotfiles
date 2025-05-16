@@ -13,7 +13,9 @@ return {
 	},
 	settings = {
 		basedpyright = {
+			disableOrganizeImports = true,
 			analysis = {
+				ignore = { "*" },
 				autoSearchPaths = true,
 				diagnosticMode = "openFilesOnly",
 				useLibraryCodeForTypes = true,

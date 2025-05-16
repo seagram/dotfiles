@@ -1,30 +1,24 @@
 return {
 	"OXY2DEV/markview.nvim",
 	lazy = false,
-	dependencies = {
-		"nvim-tree/nvim-web-devicons",
-	},
+	dependencies = { "saghen/blink.cmp" },
 	config = function()
+		local presets = require("markview.presets")
+		local headings = presets.headings.marker
+		headings.heading_1.sign = ""
+		headings.heading_2.sign = ""
+		headings.heading_3.sign = ""
+		headings.heading_4.sign = ""
+		headings.heading_5.sign = ""
+		headings.heading_6.sign = ""
 		require("markview").setup({
 			preview = {
-				filetypes = { "md" },
 				ignore_buftypes = { "nofile" },
+				icon_provider = "mini",
 			},
 			markdown = {
-				headings = {
-					heading_1 = {
-						style = "simple",
-					},
-					heading_2 = {
-						style = "simple",
-					},
-					heading_3 = {
-						style = "simple",
-					},
-					heading_4 = {
-						style = "simple",
-					},
-				},
+				headings = headings,
+				horizontal_rules = presets.dashed,
 			},
 		})
 	end,

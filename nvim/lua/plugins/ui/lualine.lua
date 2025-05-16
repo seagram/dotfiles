@@ -1,6 +1,5 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
 		local lualine = require("lualine")
 		local lazy_status = require("lazy.status")
@@ -12,7 +11,8 @@ return {
 			yellow = "#FFDA7B",
 			red = "#FF4A4A",
 			fg = "#c3ccdc",
-			bg = "#112638",
+			-- bg = "#112638",
+			bg = "#011628",
 			inactive_bg = "#2c3043",
 		}
 
@@ -64,7 +64,7 @@ return {
 						cond = require("noice").api.statusline.mode.has,
 						color = { fg = "#ff9e64" },
 					},
-				}, -- filetype
+				},
 				lualine_y = {},
 				lualine_z = {}, -- "os.date('%I:%M%p')"
 			},

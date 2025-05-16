@@ -9,12 +9,18 @@ return {
 	require("noice").setup({
 		routes = {
 			{
-				view = "notify",
 				filter = {
 					event = "msg_show",
 					kind = "",
 				},
+				view = "mini",
 				opts = { skip = true },
+			},
+			{
+				view = "mini",
+				filter = {
+					event = "notify",
+				},
 			},
 		},
 		views = {
@@ -35,8 +41,33 @@ return {
 				},
 			},
 		},
-		vim.keymap.set("n", "<leader>n", function()
+		messages = {
+			enabled = true,
+			view = "mini",
+			view_error = "mini",
+			view_warn = "mini",
+			view_history = "mini",
+			view_search = "mini",
+		},
+		lsp = {
+			message = {
+				enabled = true,
+				view = "mini",
+			},
+		},
+		commands = {
+			all = {
+				view = "mini",
+			},
+		},
+		notify = {
+			view = "notify",
+		},
+		vim.keymap.set("n", "<leader>nd", function()
 			require("noice").cmd("dismiss")
 		end, { desc = "Dismiss Notifications" }),
+		vim.keymap.set("n", "<leader>nh", function()
+			require("noice").cmd("history")
+		end, { desc = "Notification History" }),
 	}),
 }

@@ -19,6 +19,7 @@ return {
 				"python",
 				"javascript",
 				"go",
+				"sql",
 				"markdown",
 				"markdown_inline",
 			},

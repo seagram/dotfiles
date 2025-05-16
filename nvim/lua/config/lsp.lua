@@ -60,7 +60,11 @@ vim.diagnostic.config({
 		},
 	},
 
-	virtual_lines = {
+	-- virtual_lines = {
+	-- 	current_line = true,
+	-- },
+	--
+	virtual_text = {
 		current_line = true,
 	},
 })
@@ -81,4 +85,4 @@ vim.lsp.config("*", {
 	root_markers = { ".git" },
 })
 
-vim.lsp.enable({ "gopls", "luals", "basedpyright", "tsls", "bashls" })
+vim.lsp.enable({ "gopls", "luals", "basedpyright", "tsls", "bashls", "postgrestools", "ruff" })

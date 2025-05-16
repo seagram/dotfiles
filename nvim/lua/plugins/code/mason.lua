@@ -34,11 +34,10 @@ return {
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"prettier", -- prettier formatter
-				"isort", -- python import sorter
-				"black", -- python formatter
-				"pylint", -- python linter
 				"eslint_d", -- js diagnostics
 				"stylua", -- lua formatter
+				"postgrestools", -- postgres lsp
+				"ruff", -- python linter + formatter
 			},
 		})
 	end,
