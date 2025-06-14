@@ -33,7 +33,8 @@ bindkey '^L' autosuggest-execute
 
 # lsd
 export CLICOLOR=YES
-export LS_COLORS=di=36:ln=37:so=37:pi=37:ex=32:bd=37:cd=37:su=37:sg=37:tw=37:ow=37
+# match ls_color number to corresponding palette number in ghostty config
+export LS_COLORS='di=96:ln=37:so=37:pi=37:ex=92:bd=37:cd=37:su=37:sg=37:tw=37:ow=37'
 
 # commands
 alias ls="lsd"
@@ -50,6 +51,7 @@ alias bd="brew deps --tree --installed --formula"
 alias bu="brew upgrade"
 alias bc="brew list --casks"
 alias bl="brew leaves"
+alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
 
 # neovim
 alias vim="nvim"
@@ -93,5 +95,25 @@ function y() {
 # fnm
 eval "$(fnm env --use-on-cd --shell zsh)"
 
-# aichat
-alias ai='aichat'
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "/Users/callumairlie/.bun/_bun" ] && source "/Users/callumairlie/.bun/_bun"
+
+# pnpm
+export PNPM_HOME="/Users/callumairlie/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+alias yt-dlp="/Users/callumairlie/.yt-dlp"
+alias yt-audio='yt-dlp -f ba -x --audio-format aac'
+alias yt-video="yt-dlp \"\$@\" -f 'bv*[height=1080]+ba'"
+
+# uv
+export PATH="~/.local/bin:$PATH"
+
+# lazysql
+alias lsql="lazysql"

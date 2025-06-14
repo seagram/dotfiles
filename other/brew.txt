@@ -16,17 +16,17 @@ zsh-autosuggestions
 zsh-syntax-highlighting
 fd
 ripgrep
+tokei
+colima
+docker
 
 # casks
 cyberduck
-font-sf-mono-nerd-font
+font-sf-mono-nerd-font-ligaturized
 handbrake
 hiddenbar
 legcord
-orbstack
 raycast
-visual-studio-code
-vivaldi
-wezterm
 yaak
-zen-browser
+zen
+swift-shift

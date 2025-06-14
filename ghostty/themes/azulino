@@ -1,0 +1,7 @@
+palette = 14=#00ffff
+palette = 10=#00ff00
+background = "#000f1b"
+foreground = "#CBE0F0"
+cursor-color = "#47FF9C"
+selection-background = "#033259"
+selection-foreground=  "#CBE0F0"

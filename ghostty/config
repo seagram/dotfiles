@@ -1,0 +1,54 @@
+# Font
+font-family = Liga SFMono Nerd Font
+font-style = Medium
+font-style-bold = Bold
+font-style-italic = Medium Italic
+font-style-bold-italic = Bold Italic
+font-size = 18
+adjust-cell-width = "-5%"
+
+# Theme and Colors
+window-colorspace = display-p3
+bold-is-bright = true
+theme = azulino
+background-opacity = 0.9
+background-blur = true
+background-blur-radius = 10
+unfocused-split-opacity = 0.15
+split-divider-color = "#011423"
+minimum-contrast = 3
+
+# Cursor
+shell-integration-features = no-cursor
+cursor-style = underline
+cursor-style-blink = false
+adjust-underline-thickness = 50%
+adjust-cursor-thickness = 200%
+
+# Mouse
+mouse-hide-while-typing = true 
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+window-decoration = none
+window-height = 27
+window-width = 70
+window-save-state = never
+resize-overlay = never
+macos-window-shadow = false
+macos-titlebar-style = hidden
+quit-after-last-window-closed = true
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+copy-on-select = clipboard
+
+# Notifications
+app-notifications = false
+desktop-notifications = false
+
+# Performance
+#alpha-blending = native
