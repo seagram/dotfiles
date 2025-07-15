@@ -30,17 +30,23 @@ set.wrap = false -- disable text wrapping
 set.termguicolors = true
 set.background = "dark" -- use dark mode for colorschemes
 set.showmode = false -- already in status line
+set.fillchars = { eob = " " } -- hide tildas at EOF
+set.termguicolors = true
+set.matchtime = 2 -- how long to show matching brackets
 
 -- tabs & indentation
 set.tabstop = 4 -- tab char looks like 4 spaces
 set.shiftwidth = 4 -- num of spaces when indenting
 set.expandtab = true -- pressing tab insert spaces instead of a tab char
 set.autoindent = true -- copy indent from curr line when starting new one
+set.smartindent = true
 set.breakindent = true
 
 -- search settings
 set.ignorecase = true
 set.smartcase = true -- if you include mixed case in search, assumes you want case-sensitive
+set.hlsearch = false -- disable search result highlighting
+set.incsearch = true -- show search matches as you type
 
 -- backspace
 set.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
@@ -64,10 +70,13 @@ set.splitright = true -- split vertical window to the right
 set.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
+set.backup = false
+set.writebackup = false
 set.swapfile = false
+set.undofile = true
+set.undodir = vim.fn.expand("~/.vim/undodir")
 
 -- save undo history
-set.undofile = true
 
 -- confirm before exit
 set.confirm = true

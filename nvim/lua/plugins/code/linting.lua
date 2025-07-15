@@ -43,11 +43,11 @@ return {
 			end,
 		})
 
-		vim.keymap.set("n", "<leader>tt", function()
-			lint.try_lint()
-		end, { desc = "Trigger linting" })
-
-		vim.keymap.set("n", "<leader>tl", toggle_linting, { desc = "Toggle linting" })
+		-- vim.keymap.set("n", "<leader>tt", function()
+		-- 	lint.try_lint()
+		-- end, { desc = "Trigger linting" })
+		--
+		-- vim.keymap.set("n", "<leader>tl", toggle_linting, { desc = "Toggle linting" })
 
 		-- Ignore "No EsLint config found" error
 		lint.linters.eslint_d = require("lint.util").wrap(lint.linters.eslint_d, function(diagnostic)

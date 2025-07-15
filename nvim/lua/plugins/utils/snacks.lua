@@ -3,94 +3,93 @@ return {
 	priority = 1000,
 	lazy = false,
 	---@type snacks.Config
-	opts = {
-		-- file picker
-		picker = {
-			layout = {
-				preset = "select",
-				preview = false,
-			},
-			layouts = {
-				select = {
-					layout = {
-						title = "",
+	opts = function()
+		local version = vim.version()
+		local version_string = string.format("nvim v%d.%d.%d", version.major, version.minor, version.patch)
+
+		return {
+			-- file picker
+			picker = {
+				layout = {
+					preset = "select",
+					preview = false,
+				},
+				layouts = {
+					select = {
+						layout = {
+							title = "",
+						},
+					},
+				},
+				sources = {
+					files = {
+						cmd = "fd",
+						hidden = false,
+						ignored = false,
+						exclude = {
+							-- filetypes
+							"**/.DS_Store",
+							"**/*.pdf",
+							"**/*.png",
+							"**/*.jpeg",
+							"**/*.jpg",
+							-- directories
+							"**/Library/*",
+							"**/Applications/*",
+							"**/Documents/*",
+							"**/Movies/*",
+							"**/Music/*",
+							"**/Pictures/*",
+							"**/Public/*",
+							"**/.go/*",
+							"**/node_modules/*",
+							"**/.git/*",
+						},
 					},
 				},
 			},
-			sources = {
-				files = {
-					cmd = "fd",
-					hidden = false,
-					ignored = false,
-					exclude = {
-						-- filetypes
-						"**/.DS_Store",
-						"**/*.pdf",
-						"**/*.png",
-						"**/*.jpeg",
-						"**/*.jpg",
-						-- directories
-						"**/Library/*",
-						"**/Applications/*",
-						"**/Documents/*",
-						"**/Movies/*",
-						"**/Music/*",
-						"**/Pictures/*",
-						"**/Public/*",
-						"**/.go/*",
-						"**/node_modules/*",
-						"**/.git/*",
-					},
-				},
-			},
-		},
-		-- indent lines
-		indent = {
+			-- indent lines
 			indent = {
-				char = "┊",
-			},
-			animate = {
-				enabled = false,
-			},
-			scope = {
-				enabled = false,
-			},
-		},
-		-- dashboard
-		dashboard = {
-			preset = {
-				pick = nil,
-				---@type snacks.dashboard.Item[]
-				keys = {
-					{ key = "n", desc = "new", action = ":ene" },
-					{ icons = "", key = "ff", desc = "find", action = "lua Snacks.dashboard.pick('files')" },
-					{ icons = "", key = "fr", desc = "recent", action = "lua Snacks.dashboard.pick('recent')" },
-					{ icons = "", key = "q", desc = "quit", action = ":qa" },
+				indent = {
+					char = "┊",
 				},
-				header = [[nvim v0.11.1]],
-			},
-			sections = {
-				{ section = "header" },
-				{
-					section = "keys",
-					padding = 1,
-					gap = 1,
+				animate = {
+					enabled = false,
+				},
+				scope = {
+					enabled = false,
 				},
 			},
-		},
-	},
+			-- dashboard
+			dashboard = {
+				preset = {
+					pick = nil,
+					---@type snacks.dashboard.Item[]
+					keys = {
+						{ key = "n", desc = "new", action = ":ene" },
+						{ icons = "", key = "ff", desc = "find", action = "lua Snacks.dashboard.pick('files')" },
+						{ icons = "", key = "fr", desc = "recent", action = "lua Snacks.dashboard.pick('recent')" },
+						{ icons = "", key = "q", desc = "quit", action = ":qa" },
+					},
+					header = version_string,
+				},
+				sections = {
+					{ section = "header" },
+					{
+						section = "keys",
+						padding = 1,
+						gap = 1,
+					},
+				},
+			},
+		}
+	end,
 	keys = {
-		{
-			"<leader>fs",
-			function()
-				Snacks.picker.smart()
-			end,
-			desc = "*Smart* Find Files",
-		},
 		{
 			"<leader>ff",
 			function()
-				Snacks.picker.files()
+				Snacks.picker.smart()
+				-- Snacks.picker.files() -- deprecated
 			end,
 			desc = "Find Files",
 		},

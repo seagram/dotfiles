@@ -1,3 +1,7 @@
 # applications not installed with homebrew
 MonitorControl
 Numi
+Beat
+Swift Shift
+Wipr
+Helium

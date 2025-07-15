@@ -2,7 +2,7 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
-	dependencies = { "OXY2DEV/markview.nvim" },
+	-- dependencies = { "OXY2DEV/markview.nvim" },
 	config = function()
 		local treesitter = require("nvim-treesitter.configs")
 
@@ -22,6 +22,7 @@ return {
 				"sql",
 				"markdown",
 				"markdown_inline",
+				"dockerfile",
 			},
 		})
 	end,
