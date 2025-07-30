@@ -29,29 +29,28 @@ local function mode()
 	return string.format(" %s ", modes[current_mode])
 end
 
--- Define custom highlight groups for modes with background color
-vim.api.nvim_set_hl(0, "GeminiModeNormal", { fg = "#87afff", bg = "#424242" })
-vim.api.nvim_set_hl(0, "GeminiModeInsert", { fg = "#afdf87", bg = "#424242" })
-vim.api.nvim_set_hl(0, "GeminiModeVisual", { fg = "#ffffaf", bg = "#424242" })
-vim.api.nvim_set_hl(0, "GeminiModeReplace", { fg = "#ff8787", bg = "#424242" })
-vim.api.nvim_set_hl(0, "GeminiModeCmdLine", { fg = "#ffaf87", bg = "#424242" })
-vim.api.nvim_set_hl(0, "GeminiModeTerminal", { fg = "#87dfff", bg = "#424242" })
+vim.api.nvim_set_hl(0, "NormalMode", { fg = "#fce8c3" })
+vim.api.nvim_set_hl(0, "InsertMode", { fg = "#ffaf87" })
+vim.api.nvim_set_hl(0, "VisualMode", { fg = "#ffaf87" })
+vim.api.nvim_set_hl(0, "ReplaceMode", { fg = "#ff8787" })
+vim.api.nvim_set_hl(0, "CmdLineMode", { fg = "#ff8787" })
+vim.api.nvim_set_hl(0, "TerminalMode", { fg = "#87dfff" })
 
 local function update_mode_colors()
 	local current_mode = api.nvim_get_mode().mode
-	local mode_color = "%#GeminiModeNormal#"
+	local mode_color = "%#NormalMode#"
 	if current_mode == "n" then
-		mode_color = "%#GeminiModeNormal#"
+		mode_color = "%#NormalMode#"
 	elseif current_mode == "i" or current_mode == "ic" then
-		mode_color = "%#GeminiModeInsert#"
+		mode_color = "%#InsertMode#"
 	elseif current_mode == "v" or current_mode == "V" or current_mode == "" then
-		mode_color = "%#GeminiModeVisual#"
+		mode_color = "%#VisualMode#"
 	elseif current_mode == "R" then
-		mode_color = "%#GeminiModeReplace#"
+		mode_color = "%#ReplaceMode#"
 	elseif current_mode == "c" then
-		mode_color = "%#GeminiModeCmdLine#"
+		mode_color = "%#CmdLineMode#"
 	elseif current_mode == "t" then
-		mode_color = "%#GeminiModeTerminal#"
+		mode_color = "%#TerminalMode#"
 	end
 	return mode_color
 end

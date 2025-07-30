@@ -1,0 +1,73 @@
+return {
+	-- "folke/noice.nvim",
+	-- event = "VeryLazy",
+	-- opts = {},
+	-- dependencies = {
+	-- 	"MunifTanjim/nui.nvim",
+	-- 	"rcarriga/nvim-notify",
+	-- },
+	-- require("noice").setup({
+	-- 	routes = {
+	-- 		{
+	-- 			filter = {
+	-- 				event = "msg_show",
+	-- 				kind = "",
+	-- 			},
+	-- 			view = "mini",
+	-- 			opts = { skip = true },
+	-- 		},
+	-- 		{
+	-- 			view = "mini",
+	-- 			filter = {
+	-- 				event = "notify",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	views = {
+	-- 		cmdline_popup = {
+	-- 			size = {
+	-- 				width = 30,
+	-- 				height = "auto",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	cmdline = {
+	-- 		format = {
+	-- 			search_down = {
+	-- 				view = "cmdline",
+	-- 			},
+	-- 			search_up = {
+	-- 				view = "cmdline",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	messages = {
+	-- 		enabled = true,
+	-- 		view = "mini",
+	-- 		view_error = "mini",
+	-- 		view_warn = "mini",
+	-- 		view_history = "mini",
+	-- 		view_search = "mini",
+	-- 	},
+	-- 	lsp = {
+	-- 		message = {
+	-- 			enabled = true,
+	-- 			view = "mini",
+	-- 		},
+	-- 	},
+	-- 	commands = {
+	-- 		all = {
+	-- 			view = "mini",
+	-- 		},
+	-- 	},
+	-- 	notify = {
+	-- 		view = "notify",
+	-- 	},
+	-- 	vim.keymap.set("n", "<leader>nd", function()
+	-- 		require("noice").cmd("dismiss")
+	-- 	end, { desc = "Dismiss Notifications" }),
+	-- 	vim.keymap.set("n", "<leader>nh", function()
+	-- 		require("noice").cmd("history")
+	-- 	end, { desc = "Notification History" }),
+	-- }),
+}

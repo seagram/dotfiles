@@ -57,7 +57,6 @@ vim.lsp.config("*", {
 	root_markers = { ".git" },
 })
 
--- Dynamically load LSPs from /lsp
 local lsp_configs = {}
 local disable_lsp = {}
 
