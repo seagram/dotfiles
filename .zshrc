@@ -1,104 +1,100 @@
-# command prompt
-PROMPT="%F{049}%1~%f "
+# aliases
+# use '\' before command to ignore alias
+alias ls='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first'
+alias lsl='eza --color=always --long --no-filesize --no-time --no-user --no-permissions --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first'
+alias tree='eza --tree --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first'
+alias sz="source ~/.zshrc"
+alias c="clear"
+alias e="exit"
+alias t="tmux"
+alias v="nvim"
+alias vim="nvim"
+alias lv="vim -c \"normal '0\""
+alias lg="lazygit"
+alias sql="lazysql"
+alias g="gemini --yolo --checkpointing"
+alias man="tldr"
+alias top="btop"
+alias cat="bat -p"
+alias yt-dlp="/Users/callumairlie/.yt-dlp"
+alias yt-audio='yt-dlp -f ba -x --audio-format aac'
+alias yt-video="yt-dlp -f 'bv*[height<=1080]+ba/b[height<=1080]' --recode-video mp4"
 
-# editor
+# exports
+export VISUAL="nvim"
 export EDITOR="nvim"
-export VISUAL="$EDITOR"
+export TERM="tmux-256color"
+export BROWSER="open -a Safari"
+export CLICOLOR=YES
+export AWS_PROFILE="default"
+
+# options
+setopt vi
+setopt auto_menu menu_complete
+setopt autocd
+setopt auto_param_slash
+setopt no_case_glob no_case_match
+unsetopt prompt_sp
+
+# optimize completion init
+autoload -Uz compinit
+if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
+    compinit
+else
+    compinit -C
+fi
+
+# zstyle
+zstyle ':completion:*' menu select # tab opens cmp menu
+zstyle ':completion:*' special-dirs true # force . and .. to show in cmp menu
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;33 # colorize cmp menu
+zstyle ':completion:*' squeeze-slashes false # explicit disable to allow /*/ expansion
 
 # zsh history setup
 HISTSIZE=200
+SAVEHIST=200
 HISTFILE=$HOME/.zhistory
-SAVEHIST=$HISTSIZE
 HISTDUP=erase
-setopt appendhistory
-setopt sharehistory 
+HISTCONTROL=ignoreboth
+setopt appendhistory inc_append_history sharehistory 
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_find_no_dups
-
-# history-based completion using arrow keys
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+
+# zsh-autosuggestions
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+bindkey '^L' autosuggest-execute
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
+export ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # zsh-syntax-highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[unknown-token]='none'
-ZSH_HIGHLIGHT_STYLES[arg0]='fg=051'
-
-# zsh-autosugesstions
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-bindkey '^L' autosuggest-execute
-
-# lsd
-export CLICOLOR=YES
-# match ls_color number to corresponding palette number in ghostty config
-export LS_COLORS='di=96:ln=37:so=37:pi=37:ex=92:bd=37:cd=37:su=37:sg=37:tw=37:ow=37'
-
-# commands
-alias ls="lsd"
-alias sz="source ~/.zshrc"
-alias c="clear"
-alias e="exit"
+ZSH_HIGHLIGHT_STYLES[arg0]='fg=02'
 
 # homebrew
 export HOMEBREW_NO_ENV_HINTS=TRUE
 export HOMEBREW_CASK_OPTS=--no-quarantine
 export HOMEBREW_NO_UPDATE_REPORT_FORMULAE=TRUE
 export HOMEBREW_NO_UPDATE_REPORT_CASKS=TRUE
-alias bd="brew deps --tree --installed --formula"
 alias bu="brew upgrade"
-alias bc="brew list --casks"
-alias bl="brew leaves"
 alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
-
-# neovim
-alias vim="nvim"
-alias v="nvim"
-alias lv="vim -c \"normal '0\""
-
-# git
-alias gs="git status --short"
-alias gd="git diff --output-indicator-new=' ' --output-indicator-old=' '"
-alias ga="git add"
-alias gc="git commit"
-alias gp="git push"
-alias gu="git pull"
-alias gl="git log --all --graph"
-alias gb="git branch"
-alias gi="git init"
-alias gc="gi clone"
+alias bb="brew bundle --file=~/.config/brew/Brewfile --force cleanup"
+alias bt="brew deps --tree --installed"
 
 # go
 export PATH=$(go env GOPATH)/bin:$PATH
-
-# lazygit
-alias lg="lazygit"
-export XDG_CONFIG_HOME="$HOME/.config"
 
 # zoxide
 alias cd="z"
 eval "$(zoxide init zsh)"
 
-# yazi
-alias l="y"
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
-}
-
 # fnm
 eval "$(fnm env --use-on-cd --shell zsh)"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "/Users/callumairlie/.bun/_bun" ] && source "/Users/callumairlie/.bun/_bun"
 
 # pnpm
 export PNPM_HOME="/Users/callumairlie/Library/pnpm"
@@ -108,12 +104,41 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-alias yt-dlp="/Users/callumairlie/.yt-dlp"
-alias yt-audio='yt-dlp -f ba -x --audio-format aac'
-alias yt-video="yt-dlp \"\$@\" -f 'bv*[height=1080]+ba'"
-
 # uv
 export PATH="~/.local/bin:$PATH"
 
-# lazysql
-alias lsql="lazysql"
+# starship.rs
+eval "$(starship init zsh)"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
+# terraform
+autoload -Uz compinit
+compinit
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform
+
+# fzf
+source <(fzf --zsh)
+alias f='nvim $(fzf --style minimal --height 40% --layout reverse --border --preview "bat --color=always --style=numbers --line-range=:500 {}")'
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+_fzf_compgen_path() {
+  fd --hidden --exclude .git . "$1"
+}
+_fzf_compgen_dir() {
+  fd --type=d --hidden --exclude .git . "$1"
+}
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+  --color=fg:-1,fg+:#d0d0d0,bg:-1,bg+:#262626
+  --color=hl:#CBE0F0,hl+:#5fd7ff,info:#CBE0F0,marker:#90a6ba
+  --color=prompt:#B4D0E9,spinner:#B4D0E9,pointer:#90a6ba,header:#87afaf
+  --color=border:#262626,label:#aeaeae,query:#d9d9d9
+  --preview-window="border-rounded" --prompt="> " --marker=">" --pointer="◆"
+  --separator="─" --scrollbar="│" --layout="reverse" --info="right"'
+
+# eza
+export EZA_CONFIG_DIR="~/.config/eza/"
+
+# keys
+source ~/.keys
