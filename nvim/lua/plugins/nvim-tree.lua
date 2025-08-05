@@ -7,10 +7,6 @@ return {
 		vim.g.loaded_netrwPlugin = 1
 
 		nvimtree.setup({
-			view = {
-				-- width = 30,
-			},
-			-- change folder arrow icons
 			renderer = {
 				icons = {
 					webdev_colors = true,
