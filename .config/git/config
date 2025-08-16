@@ -1,0 +1,63 @@
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[user]
+	name = Cal Seagram
+	email = 143629409+seagram@users.noreply.github.com
+[push]
+    autoSetupRemote = true
+    default = current
+[pull]
+    rebase = true
+    default = current
+[rebase]
+    autoStash = true
+[init]
+    defaultBranch = "main"
+[core]
+    excludeFiles = "TODO"
+    editor = "nvim"
+[status]
+    branch = true
+    showStash = true
+[diff]
+    context = 3
+    renames = copies
+    interHunkContext = 10
+[color "diff"]
+    meta = black bold
+    frag = magenta
+    context = white
+    whitespace = yellow reverse
+    old = red
+[log]
+    abbrevCommit = true
+    graphColors = blue,yellow,cyan,magenta,green,red
+[color "decorate"]
+    HEAD = red
+    branch = blue
+    tag = yellow
+    remoteBranch = magenta
+[branch]
+    sort = -committerdate
+[color "branch"]
+    current = magenta
+    local = default
+    remote = yellow
+    upstream = green
+[alias]
+    st = status -s
+    sta = status
+    conf = config --global --edit
+    cge = config --global --edit
+    discard = checkout .
+    rh = reset HEAD
+    aa = add -A
+    cdf = clean -df
+    br = branch
+    bra = branch -a
+    pr = pull --rebase
+    amend = commit -a --amend --no-edit
+    ciam = commit -a --amend --no-edit   plain = blue

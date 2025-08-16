@@ -1,0 +1,12 @@
+.git
+.gitignore
+.gitmodules
+
+^/README._
+^/LICENSE._
+^/COPYING
+
+.DS_Store
+docs/
+other/
+\*.md
