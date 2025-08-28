@@ -33,7 +33,7 @@ style = 'bold dimmed white'
 symbol = " "
 
 [bun]
-format = '[$symbol($version )]($style)'
+format = '[bun ($version )]($style)'
 disabled = false
 version_format = 'v${raw}'
 style = 'bold dimmed white'
