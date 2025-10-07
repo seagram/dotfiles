@@ -21,6 +21,8 @@ export TERM="tmux-256color"
 export BROWSER="open -a Safari"
 export CLICOLOR=YES
 export AWS_PROFILE="default"
+export HOMEBREW_NO_UPDATE_REPORT_FORMULAE=1
+export HOMEBREW_NO_UPDATE_REPORT_CASKS=1
 
 # options
 setopt vi
@@ -61,7 +63,7 @@ export HOMEBREW_NO_ENV_HINTS=TRUE
 export HOMEBREW_CASK_OPTS=--no-quarantine
 alias bu="brew upgrade"
 alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
-alias bt="brew deps --tree --installed"
+alias bt='brew leaves | xargs -n1 brew deps --tree'
 alias bf="brew bundle dump --file=~/.dotfiles/.config/brew/Brewfile --force"
 
 # go
@@ -91,7 +93,5 @@ export EZA_CONFIG_DIR="~/.config/eza/"
 source ~/.keys
 
 alias ai='f=$(find ~/ai/prompts -type f -exec basename {} \; | fzf --height=50%) && cat ~/ai/prompts/"$f" ~/ai/format/short.md | pbcopy'
-export LC_CTYPE="en_US.UTF-8"
-
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 source <(carapace _carapace)

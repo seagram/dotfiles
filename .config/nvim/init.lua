@@ -40,8 +40,8 @@ vim.pack.add({
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.comment" },
     { src = "https://github.com/nvim-mini/mini.icons" },
-    { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/nvim-mini/mini.extra" },
+    { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/nvim-mini/mini.pick" },
     { src = "https://github.com/folke/flash.nvim" },
     { src = "https://github.com/folke/snacks.nvim" },
@@ -50,6 +50,7 @@ vim.pack.add({
     { src = "https://github.com/leath-dub/snipe.nvim" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
     { src = "https://github.com/Saghen/blink.cmp",                version = "v1.6.0" },
+    { src = "https://github.com/A7Lavinraj/fyler.nvim" },
 
 }, { load = true })
 
@@ -72,6 +73,7 @@ require("snipe").setup({
     navigate = { cancel_snipe = "q" },
 })
 require("flash").setup()
+require("fyler").setup()
 
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 require("blink.cmp").setup({
@@ -113,6 +115,9 @@ map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc
 map("n", "<leader>u", function() vim.pack.update() end, { desc = "update" })
 
 map("n", "<leader>e", ":Lexplore<cr>")
+map("n", "<leader>s", "<Cmd>e #<cr>")
+map("n", "-", ":Fyler<cr>")
+
 map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
