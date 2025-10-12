@@ -28,30 +28,20 @@ set.confirm = true
 set.statusline = '%t %r %m'
 set.helpheight = 9999
 
---[[
-TODO:
-- Remove 'mini.surround' -> Replace with native vim motions
-- Remove 'flash.nvim' -> Replace with native vim motions
-- Remove 'snipe.nvim' -> Use native neovim buffer list
---]]
-
 vim.pack.add({
-    { src = "https://github.com/vague2k/vague.nvim" },
-    { src = "https://github.com/williamboman/mason.nvim" },
-    { src = "https://github.com/nvim-mini/mini.comment" },
-    { src = "https://github.com/nvim-mini/mini.icons" },
-    { src = "https://github.com/nvim-mini/mini.extra" },
-    { src = "https://github.com/nvim-mini/mini.surround" },
-    { src = "https://github.com/nvim-mini/mini.pick" },
     { src = "https://github.com/folke/flash.nvim" },
     { src = "https://github.com/folke/snacks.nvim" },
+    { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/folke/which-key.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
     { src = "https://github.com/leath-dub/snipe.nvim" },
+    { src = "https://github.com/nvim-mini/mini.icons" },
+    { src = "https://github.com/nvim-mini/mini.comment" },
+    { src = "https://github.com/williamboman/mason.nvim" },
+    { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
     { src = "https://github.com/Saghen/blink.cmp",                version = "v1.6.0" },
-    { src = "https://github.com/A7Lavinraj/fyler.nvim" },
-
 }, { load = true })
 
 require "vague".setup({ transparent = true, italic = false })
@@ -60,20 +50,42 @@ vim.cmd(":hi statusline guibg=NONE")
 require("mason").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
-require("mini.extra").setup()
-require("mini.pick").setup()
 require("mini.icons").setup()
 require('mini.icons').mock_nvim_web_devicons()
-
-require("nvim-treesitter").setup()
 require("which-key").setup({ preset = "helix", })
 require("typst-preview").setup()
+require("nvim-treesitter").setup()
+require("flash").setup()
+
 require("snipe").setup({
     ui = { position = "bottomleft", open_win_override = { title = "", }, },
     navigate = { cancel_snipe = "q" },
 })
-require("flash").setup()
-require("fyler").setup()
+
+require("oil").setup({
+    skip_confirm_for_simple_edits = true,
+    view_options = {
+        show_hidden = true,
+    },
+    keymaps = {
+        ["-"] = false,
+    },
+    float = {
+        padding = 2,
+        max_width = 30,
+        max_height = 0,
+        border = "rounded",
+        win_options = {
+            winblend = 0,
+        },
+        override = function(conf)
+            conf.anchor = "NE"
+            conf.row = 0
+            conf.col = vim.o.columns
+            return conf
+        end,
+    },
+})
 
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 require("blink.cmp").setup({
@@ -94,7 +106,6 @@ require("snacks").setup({
         layouts = { ivy = { layout = { height = 0.3, title = "", }, }, },
         sources = {
             files = { cmd = "fd", hidden = true, ignored = false, },
-            explorer = { git_status = false, layout = { layout = { position = "right" }, }, },
         },
     },
     indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
@@ -104,21 +115,25 @@ require("snacks").setup({
 
 local map = vim.keymap.set
 
-map("n", "<leader>s", function() require("snipe").open_buffer_menu() end, { desc = "buffers" })
+-- find
 map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
--- map("n", "<leader>f", function() MiniExtra.pickers.oldfiles() end, { desc = "files" })
 map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
--- map("n", "<leader>fe", function() Snacks.picker.diagnostics() end, { desc = "errors" })
--- map("n", "<leader>fn", function() Snacks.picker.notifications() end, { desc = "notifications" })
+
+-- flash
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
+
+-- oil
+map("n", "-", function() require("oil").toggle_float() end, { desc = "toggle oil" })
+
+-- buffers
+map("n", "<leader><leader>", "<C-^>")
+map("n", "<leader>s", function() require("snipe").open_buffer_menu() end, { desc = "buffers" })
+
+-- vim.pack
 map("n", "<leader>u", function() vim.pack.update() end, { desc = "update" })
 
-map("n", "<leader>e", ":Lexplore<cr>")
-map("n", "<leader>s", "<Cmd>e #<cr>")
-map("n", "-", ":Fyler<cr>")
-
-map("n", "<leader><leader>", "<C-^>")
+-- general
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
@@ -170,7 +185,7 @@ autocmd("LspAttach", {
     end,
 })
 
-
+-- format on save
 autocmd("LspAttach", {
     group = augroup("lsp-format", {}),
     callback = function(args)
@@ -188,4 +203,4 @@ autocmd("LspAttach", {
     end,
 })
 
-vim.lsp.enable({ "lua_ls", "ruff", "terraformls", "basedpyright", "tinymist" })
+vim.lsp.enable({ "lua_ls", "ruff", "terraformls", "basedpyright", "tinymist", "zls" })
