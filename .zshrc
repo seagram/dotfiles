@@ -13,8 +13,7 @@ alias man="tldr"
 alias top="btop"
 alias j="just"
 alias pdf="soffice --headless --convert-to pdf"
-alias python="python3"
-alias py="pypy3"
+alias k="kubectl"
 
 # exports
 export VISUAL="nvim"
@@ -77,6 +76,9 @@ eval "$(zoxide init zsh)"
 
 # uv
 export PATH="~/.local/bin:$PATH"
+alias python="uv run python"
+alias python3="uv run python"
+alias p="uv run python"
 
 # starship.rs
 eval "$(starship init zsh)"
@@ -94,8 +96,12 @@ export EZA_CONFIG_DIR="~/.config/eza/"
 # keys
 source ~/.keys
 
-alias ai='f=$(find ~/ai/prompts -type f -exec basename {} \; | fzf --height=50%) && cat ~/ai/prompts/"$f" ~/ai/format/short.md | pbcopy'
-
 # completion
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 source <(carapace _carapace)
+
+# ansible
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# kubernetes
+export KUBECONFIG=~/github/homelab/.kube/config
