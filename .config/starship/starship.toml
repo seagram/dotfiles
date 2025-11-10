@@ -39,7 +39,7 @@ version_format = 'v${raw}'
 style = 'bold dimmed white'
 
 [docker_context]
-format = '[$symbol$context is running...]($style) '
+format = '[$symbol$context ✓]($style) '
 only_with_files = false
 symbol = " "
 style = "bold dimmed white"
@@ -61,6 +61,12 @@ format = '[$symbol($version )]($style)'
 symbol = " "
 style = "bold dimmed white"
 disabled = true
+
+[rust]
+# format = '[$symbol($version )]($style)'
+format = '[rust ($version )]($style)'
+symbol = " "
+style = "bold dimmed white"
 
 [package]
 disabled = true

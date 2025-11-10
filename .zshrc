@@ -1,35 +1,47 @@
 # aliases
 # use '\' before command to ignore alias
 alias ls='eza --color=always --long --no-filesize --no-time --no-user --no-permissions --icons=always --group-directories-first'
+alias lsl='eza --color=always --long --total-size --git --no-time --no-user --no-permissions --icons=always --group-directories-first'
 alias tree='eza --tree --color=always --icons=always --group-directories-first --git-ignore'
 alias sz="source ~/.zshrc"
 alias c="clear"
 alias e="exit"
 alias t="tmux"
 alias v="nvim"
-alias vim="nvim"
 alias lv="vim -c \"normal '0\""
 alias man="tldr"
 alias top="btop"
 alias j="just"
 alias pdf="soffice --headless --convert-to pdf"
 alias k="kubectl"
+alias weather="curl wttr.in"
+alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
+alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
+alias ts="tailscale"
+alias kl="kubectl"
+alias tl="talosctl"
+alias ta="terraform apply --auto-approve"
+alias tp="terraform plan"
+alias ch='f() { curl -s "cht.sh/rust/$1?T" | bat -l rust; }; f'
 
 # exports
 export VISUAL="nvim"
 export EDITOR="nvim"
 export TERM="tmux-256color"
-export BROWSER="open -a Safari"
+export BROWSER="open"
 export CLICOLOR=YES
 export AWS_PROFILE="default"
-export HOMEBREW_NO_UPDATE_REPORT_FORMULAE=1
-export HOMEBREW_NO_UPDATE_REPORT_CASKS=1
 
 # options
 setopt vi
 setopt auto_param_slash
 setopt no_case_glob no_case_match
 unsetopt prompt_sp
+
+# keys
+source ~/.keys
+
+##### zsh #####
 
 # optimize completion init
 autoload -Uz compinit
@@ -59,6 +71,12 @@ typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[unknown-token]='none'
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=02'
 
+# zsh completion
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+source <(carapace _carapace)
+
+##### tools #####
+
 # homebrew
 export HOMEBREW_NO_ENV_HINTS=TRUE
 export HOMEBREW_CASK_OPTS=--no-quarantine
@@ -67,18 +85,18 @@ alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
 alias bt='brew leaves | xargs -n1 brew deps --tree'
 alias bf="brew bundle dump --file=~/.dotfiles/.config/brew/Brewfile --force"
 
-# go
-export PATH=$(go env GOPATH)/bin:$PATH
-
 # zoxide
 alias cd="z"
 eval "$(zoxide init zsh)"
-
-# uv
-export PATH="~/.local/bin:$PATH"
-alias python="uv run python"
-alias python3="uv run python"
-alias p="uv run python"
+fzf-cd-widget() {
+    local dir=$(zoxide query -l --no-tilde | fzf --height 40% --reverse)
+    if [[ -n "$dir" ]]; then
+        zoxide "$dir"
+        zle reset-prompt
+    fi
+}
+zle -N fzf-cd-widget
+bindkey '^f' fzf-cd-widget
 
 # starship.rs
 eval "$(starship init zsh)"
@@ -93,15 +111,40 @@ export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git
 # eza
 export EZA_CONFIG_DIR="~/.config/eza/"
 
-# keys
-source ~/.keys
+# nym
+source ~/.config/nym/aliases.sh
 
-# completion
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-source <(carapace _carapace)
+##### languages #####
+
+# go
+# export PATH=$(go env GOPATH)/bin:$PATH
+
+# python
+export PATH="~/.local/bin:$PATH"
+alias p="python3"
+alias python="python3"
+alias uvr="uv run"
+
+# rust
+alias cn="cargo new"
+alias ci="cargo init"
+alias ca="cargo add"
+alias cb="cargo build"
+alias cr="cargo run"
+alias ct="cargo test"
+alias cc="cargo check"
+alias cf="cargo fmt"
 
 # ansible
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # kubernetes
-export KUBECONFIG=~/github/homelab/.kube/config
+export KUBECONFIG=~/.config/kube/config
+
+# talos
+export TALOSCONFIG=~/.config/talos/config
+
+# javascript
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

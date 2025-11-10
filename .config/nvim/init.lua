@@ -1,9 +1,8 @@
 local global = vim.g
 global.mapleader = " "
 global.have_nerd_font = true
-global.netrw_banner = 0
-global.netrw_liststyle = 3
-global.netrw_winsize = 20
+global.loaded_netrw = 1
+global.loaded_netrwPlugin = 1
 
 local set = vim.opt
 set.clipboard = "unnamedplus"
@@ -25,8 +24,9 @@ set.swapfile = false
 set.undofile = true
 set.wrap = false
 set.confirm = true
-set.statusline = '%t %r %m'
+set.statusline = '%=%t %r %m'
 set.helpheight = 9999
+set.termguicolors = true
 
 vim.pack.add({
     { src = "https://github.com/folke/flash.nvim" },
@@ -36,12 +36,16 @@ vim.pack.add({
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/leath-dub/snipe.nvim" },
     { src = "https://github.com/nvim-mini/mini.icons" },
+    { src = "https://github.com/nvim-mini/mini.pairs" },
     { src = "https://github.com/nvim-mini/mini.comment" },
+    { src = "https://github.com/vimpostor/vim-tpipeline" },
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.surround" },
+    { src = "https://github.com/nvim-tree/nvim-tree.lua" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-    { src = "https://github.com/Saghen/blink.cmp",                version = "v1.6.0" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",             version = "main" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
+    { src = "https://github.com/Saghen/blink.cmp",                            version = "v1.6.0" },
 }, { load = true })
 
 require "vague".setup({ transparent = true, italic = false })
@@ -50,11 +54,12 @@ vim.cmd(":hi statusline guibg=NONE")
 require("mason").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
-require("mini.icons").setup()
+require("mini.pairs").setup()
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
 require("typst-preview").setup()
 require("nvim-treesitter").setup()
+require("nvim-treesitter-textobjects").setup()
 require("flash").setup()
 
 require("snipe").setup({
@@ -62,29 +67,15 @@ require("snipe").setup({
     navigate = { cancel_snipe = "q" },
 })
 
+require("nvim-tree").setup({
+    view = { side = "right", },
+    renderer = { indent_markers = { enable = true, }, },
+    filters = { dotfiles = true, }
+})
+
 require("oil").setup({
     skip_confirm_for_simple_edits = true,
-    view_options = {
-        show_hidden = true,
-    },
-    keymaps = {
-        ["-"] = false,
-    },
-    float = {
-        padding = 2,
-        max_width = 30,
-        max_height = 0,
-        border = "rounded",
-        win_options = {
-            winblend = 0,
-        },
-        override = function(conf)
-            conf.anchor = "NE"
-            conf.row = 0
-            conf.col = vim.o.columns
-            return conf
-        end,
-    },
+    view_options = { show_hidden = true, },
 })
 
 set.completeopt = "menuone,noselect,fuzzy,nosort"
@@ -116,15 +107,20 @@ require("snacks").setup({
 local map = vim.keymap.set
 
 -- find
-map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
-map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
+map("n", "<leader>fr", function() Snacks.picker.smart() end, { desc = "files" })
+map("n", "<leader>fe", function() Snacks.picker.files({ cwd = "." }) end, { desc = "cwd" })
+map("n", "<leader>fg", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
+map("n", "<leader>fd", function() Snacks.picker.zoxide() end, { desc = "cd" })
+
+-- explorer
+map("n", "<leader>e", function() require("nvim-tree.api").tree.toggle() end, { desc = "toggle tree" })
 
 -- flash
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 
 -- oil
-map("n", "-", function() require("oil").toggle_float() end, { desc = "toggle oil" })
+map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
 
 -- buffers
 map("n", "<leader><leader>", "<C-^>")
@@ -146,6 +142,31 @@ map("v", "<C-j>", ":m '>+1<CR>gv=gv")
 map("v", "<C-k>", ":m '<-2<CR>gv=gv")
 map("v", "<", "<gv")
 map("v", ">", ">gv")
+
+
+vim.api.nvim_create_user_command('Treesitter', function()
+    local ensureInstalled = {
+        "python",
+        "terraform",
+        "lua",
+        "rust",
+        "zig",
+        "markdown",
+        "markdown_inline",
+        "typst"
+    }
+    local alreadyInstalled = require("nvim-treesitter.config").get_installed()
+    local parsersToInstall = vim.iter(ensureInstalled)
+        :filter(function(parser) return not vim.tbl_contains(alreadyInstalled, parser) end)
+        :totable()
+
+    if #parsersToInstall > 0 then
+        print("Installing parsers: " .. table.concat(parsersToInstall, ", "))
+        require("nvim-treesitter.install").install(parsersToInstall)
+    else
+        print("All parsers already installed.")
+    end
+end, {})
 
 vim.lsp.document_color.enable()
 
@@ -203,4 +224,26 @@ autocmd("LspAttach", {
     end,
 })
 
-vim.lsp.enable({ "lua_ls", "ruff", "terraformls", "basedpyright", "tinymist", "zls" })
+vim.lsp.enable({
+    "lua_ls",
+    "basedpyright",
+    "ruff",
+    "terraformls",
+    "tinymist",
+    "zls",
+    "rust_analyzer"
+})
+
+-- toggle word wrap
+autocmd("FileType", {
+    pattern = "markdown",
+    callback = function()
+        vim.opt_local.textwidth = 80
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.opt_local.showbreak = "↪ "
+        vim.keymap.set("n", "<leader>w", function()
+            vim.opt_local.wrap = not vim.opt_local.wrap:get()
+        end, { buffer = true, desc = "toggle word wrap" })
+    end,
+})
