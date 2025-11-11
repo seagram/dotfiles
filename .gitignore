@@ -4,3 +4,4 @@
 **/buildx/*
 **/contexts/*
 **/.token**
+**/nvim-pack-lock.json
