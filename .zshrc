@@ -3,26 +3,22 @@
 alias ls='eza --color=always --long --no-filesize --no-time --no-user --no-permissions --icons=always --group-directories-first'
 alias lsl='eza --color=always --long --total-size --git --no-time --no-user --no-permissions --icons=always --group-directories-first'
 alias tree='eza --tree --color=always --icons=always --group-directories-first --git-ignore'
-alias sz="source ~/.zshrc"
+alias sz="exec zsh"
 alias c="clear"
 alias e="exit"
 alias t="tmux"
 alias v="nvim"
-alias lv="vim -c \"normal '0\""
+alias lv="nvim -c \"normal '0\""
 alias man="tldr"
 alias top="btop"
-alias j="just"
 alias pdf="soffice --headless --convert-to pdf"
 alias k="kubectl"
-alias weather="curl wttr.in"
 alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
-alias ts="tailscale"
 alias kl="kubectl"
 alias tl="talosctl"
-alias ta="terraform apply --auto-approve"
 alias tp="terraform plan"
-alias ch='f() { curl -s "cht.sh/rust/$1?T" | bat -l rust; }; f'
+alias ta="terraform apply --auto-approve"
 
 # exports
 export VISUAL="nvim"
@@ -30,7 +26,6 @@ export EDITOR="nvim"
 export TERM="tmux-256color"
 export BROWSER="open"
 export CLICOLOR=YES
-export AWS_PROFILE="default"
 
 # options
 setopt vi
@@ -98,6 +93,9 @@ fzf-cd-widget() {
 zle -N fzf-cd-widget
 bindkey '^f' fzf-cd-widget
 
+# tealdeer
+export TEALDEER_CONFIG_DIR="~/.config/tealdeer"
+
 # starship.rs
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -111,19 +109,11 @@ export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git
 # eza
 export EZA_CONFIG_DIR="~/.config/eza/"
 
-# nym
-source ~/.config/nym/aliases.sh
-
 ##### languages #####
-
-# go
-# export PATH=$(go env GOPATH)/bin:$PATH
 
 # python
 export PATH="~/.local/bin:$PATH"
-alias p="python3"
 alias python="python3"
-alias uvr="uv run"
 
 # rust
 alias cn="cargo new"
@@ -134,6 +124,7 @@ alias cr="cargo run"
 alias ct="cargo test"
 alias cc="cargo check"
 alias cf="cargo fmt"
+alias bac="bacon run -- -q"
 
 # ansible
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
@@ -144,7 +135,5 @@ export KUBECONFIG=~/.config/kube/config
 # talos
 export TALOSCONFIG=~/.config/talos/config
 
-# javascript
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# docker
+export DOCKER_BUILDKIT=1

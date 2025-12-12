@@ -41,6 +41,7 @@ vim.pack.add({
     { src = "https://github.com/vimpostor/vim-tpipeline" },
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.surround" },
+    { src = "https://github.com/A7Lavinraj/fyler.nvim",                       version = "stable" },
     { src = "https://github.com/nvim-tree/nvim-tree.lua" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",             version = "main" },
@@ -62,6 +63,14 @@ require("nvim-treesitter").setup()
 require("nvim-treesitter-textobjects").setup()
 require("flash").setup()
 
+require("fyler").setup({
+    views = {
+        win = {
+            kind = "float"
+        }
+    }
+})
+
 require("snipe").setup({
     ui = { position = "bottomleft", open_win_override = { title = "", }, },
     navigate = { cancel_snipe = "q" },
@@ -78,6 +87,7 @@ require("oil").setup({
     view_options = { show_hidden = true, },
 })
 
+
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 require("blink.cmp").setup({
     keymap = {
@@ -87,7 +97,7 @@ require("blink.cmp").setup({
         ["<C-k>"] = { "select_prev", "fallback" },
     },
     enabled = function()
-        return not vim.tbl_contains({ "fountain", "markdown" }, vim.bo.filetype)
+        return not vim.tbl_contains({ "fountain", "markdown", "typst" }, vim.bo.filetype)
     end,
 })
 
@@ -113,7 +123,8 @@ map("n", "<leader>fg", function() Snacks.picker.grep({ cwd = "." }) end, { desc 
 map("n", "<leader>fd", function() Snacks.picker.zoxide() end, { desc = "cd" })
 
 -- explorer
-map("n", "<leader>e", function() require("nvim-tree.api").tree.toggle() end, { desc = "toggle tree" })
+-- map("n", "<leader>e", function() require("nvim-tree.api").tree.toggle() end, { desc = "toggle tree" })
+map("n", "<leader>e", function() require("fyler").open({ kind = "float" }) end, { desc = "toggle tree" })
 
 -- flash
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
@@ -202,6 +213,7 @@ autocmd("LspAttach", {
         map("<leader>lR", vim.lsp.buf.references, "references")
         map("<leader>lr", vim.lsp.buf.rename, "rename")
         map("<leader>lf", vim.lsp.buf.format, "format")
+        map("<leader>d", vim.diagnostic.open_float, "diagnostic")
         map("<leader>lH", "<cmd>:checkhealth lsp<CR>", "health")
     end,
 })
@@ -236,7 +248,7 @@ vim.lsp.enable({
 
 -- toggle word wrap
 autocmd("FileType", {
-    pattern = "markdown",
+    pattern = { "markdown", "tyspt" },
     callback = function()
         vim.opt_local.textwidth = 80
         vim.opt_local.wrap = true
@@ -245,5 +257,12 @@ autocmd("FileType", {
         vim.keymap.set("n", "<leader>w", function()
             vim.opt_local.wrap = not vim.opt_local.wrap:get()
         end, { buffer = true, desc = "toggle word wrap" })
+    end,
+})
+
+autocmd({ "BufRead", "BufNewFile" }, {
+    pattern = "*.fountain",
+    callback = function()
+        vim.bo.filetype = "fountain"
     end,
 })

@@ -33,6 +33,7 @@ window-width = 70
 window-position-x = 350
 window-position-y = 150
 resize-overlay = never
+
 macos-window-shadow = false
 macos-titlebar-style = hidden
 macos-icon = xray
