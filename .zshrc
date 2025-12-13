@@ -78,7 +78,7 @@ export HOMEBREW_CASK_OPTS=--no-quarantine
 alias bu="brew upgrade"
 alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
 alias bt='brew leaves | xargs -n1 brew deps --tree'
-alias bf="brew bundle dump --file=~/.dotfiles/.config/brew/Brewfile --force"
+alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --force --brews --casks"
 
 # zoxide
 alias cd="z"

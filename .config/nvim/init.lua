@@ -42,7 +42,6 @@ vim.pack.add({
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/A7Lavinraj/fyler.nvim",                       version = "stable" },
-    { src = "https://github.com/nvim-tree/nvim-tree.lua" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",             version = "main" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
@@ -64,11 +63,7 @@ require("nvim-treesitter-textobjects").setup()
 require("flash").setup()
 
 require("fyler").setup({
-    views = {
-        win = {
-            kind = "float"
-        }
-    }
+    views = { win = { kind = "float" } }
 })
 
 require("snipe").setup({
@@ -76,17 +71,10 @@ require("snipe").setup({
     navigate = { cancel_snipe = "q" },
 })
 
-require("nvim-tree").setup({
-    view = { side = "right", },
-    renderer = { indent_markers = { enable = true, }, },
-    filters = { dotfiles = true, }
-})
-
 require("oil").setup({
     skip_confirm_for_simple_edits = true,
     view_options = { show_hidden = true, },
 })
-
 
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 require("blink.cmp").setup({
