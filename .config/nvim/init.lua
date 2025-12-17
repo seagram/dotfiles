@@ -226,11 +226,10 @@ autocmd("LspAttach", {
 
 vim.lsp.enable({
     "lua_ls",
-    "basedpyright",
+    "ty",
     "ruff",
     "terraformls",
     "tinymist",
-    "zls",
     "rust_analyzer"
 })
 

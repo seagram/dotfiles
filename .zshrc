@@ -124,6 +124,8 @@ alias cr="cargo run"
 alias ct="cargo test"
 alias cc="cargo check"
 alias cf="cargo fmt"
+alias rbook="rustup doc --book"
+alias rdocs="rustup doc --std"
 alias bac="bacon run -- -q"
 
 # ansible
