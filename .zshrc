@@ -19,6 +19,7 @@ alias kl="kubectl"
 alias tl="talosctl"
 alias tp="terraform plan"
 alias ta="terraform apply --auto-approve"
+alias lg="lazygit"
 
 # exports
 export VISUAL="nvim"

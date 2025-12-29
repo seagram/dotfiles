@@ -1,7 +1,4 @@
 font-family = MonaspiceNe NFM
-font-style = Regular
-# font-family = BlexMono Nerd Font
-# font-style = Medium
 font-style-bold = Bold
 font-style-italic = Medium Italic
 font-style-bold-italic = Bold Italic
@@ -10,11 +7,10 @@ adjust-cell-width = "-5%"
 
 theme = vague
 window-colorspace = display-p3
-bold-is-bright = true
+bold-color = bright
 background-opacity = 0.9
-background-blur-radius = 10
+background-blur = 15
 unfocused-split-opacity = 0.15
-split-divider-color = "#011423"
 minimum-contrast = 3
 
 mouse-hide-while-typing = true 
