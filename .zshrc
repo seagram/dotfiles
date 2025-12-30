@@ -17,9 +17,10 @@ alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
 alias kl="kubectl"
 alias tl="talosctl"
-alias tp="terraform plan"
+# alias tp="terraform plan"
 alias ta="terraform apply --auto-approve"
 alias lg="lazygit"
+alias tp="open http://localhost:23625 && tinymist preview --partial-rendering true"
 
 # exports
 export VISUAL="nvim"

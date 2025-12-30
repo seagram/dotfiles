@@ -32,7 +32,7 @@ resize-overlay = never
 
 macos-window-shadow = false
 macos-titlebar-style = hidden
-macos-icon = xray
+macos-icon = glass
 
 clipboard-read = allow
 clipboard-write = allow
