@@ -41,6 +41,7 @@ vim.pack.add({
     { src = "https://github.com/vimpostor/vim-tpipeline" },
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.surround" },
+    { src = 'https://github.com/neovim/nvim-lspconfig' },
     { src = "https://github.com/A7Lavinraj/fyler.nvim",                       version = "stable" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",             version = "main" },
