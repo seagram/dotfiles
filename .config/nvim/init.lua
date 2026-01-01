@@ -132,31 +132,6 @@ map("v", ">", ">gv")
 map('n', "<leader>w", ":write<CR>")
 map('n', "<leader>q", ":quit<CR>")
 
-
-vim.api.nvim_create_user_command('Treesitter', function()
-    local ensureInstalled = {
-        "python",
-        "terraform",
-        "lua",
-        "rust",
-        "zig",
-        "markdown",
-        "markdown_inline",
-        "typst"
-    }
-    local alreadyInstalled = require("nvim-treesitter.config").get_installed()
-    local parsersToInstall = vim.iter(ensureInstalled)
-        :filter(function(parser) return not vim.tbl_contains(alreadyInstalled, parser) end)
-        :totable()
-
-    if #parsersToInstall > 0 then
-        print("Installing parsers: " .. table.concat(parsersToInstall, ", "))
-        require("nvim-treesitter.install").install(parsersToInstall)
-    else
-        print("All parsers already installed.")
-    end
-end, {})
-
 vim.lsp.document_color.enable()
 
 vim.diagnostic.config({
