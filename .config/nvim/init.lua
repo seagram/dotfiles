@@ -36,17 +36,14 @@ vim.pack.add({
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/leath-dub/snipe.nvim" },
     { src = "https://github.com/nvim-mini/mini.icons" },
-    { src = "https://github.com/nvim-mini/mini.pairs" },
+    { src = 'https://github.com/neovim/nvim-lspconfig' },
     { src = "https://github.com/nvim-mini/mini.comment" },
     { src = "https://github.com/vimpostor/vim-tpipeline" },
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.surround" },
-    { src = 'https://github.com/neovim/nvim-lspconfig' },
-    { src = "https://github.com/A7Lavinraj/fyler.nvim",                       version = "stable" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter",             version = "main" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
-    { src = "https://github.com/Saghen/blink.cmp",                            version = "v1.6.0" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    { src = "https://github.com/Saghen/blink.cmp",                version = "v1.8.0" },
 }, { load = true })
 
 require "vague".setup({ transparent = true, italic = false })
@@ -55,17 +52,11 @@ vim.cmd(":hi statusline guibg=NONE")
 require("mason").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
-require("mini.pairs").setup()
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
 require("typst-preview").setup()
 require("nvim-treesitter").setup()
-require("nvim-treesitter-textobjects").setup()
 require("flash").setup()
-
-require("fyler").setup({
-    views = { win = { kind = "float" } }
-})
 
 require("snipe").setup({
     ui = { position = "bottomleft", open_win_override = { title = "", }, },
@@ -111,16 +102,12 @@ map("n", "<leader>fe", function() Snacks.picker.files({ cwd = "." }) end, { desc
 map("n", "<leader>fg", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
 map("n", "<leader>fd", function() Snacks.picker.zoxide() end, { desc = "cd" })
 
--- explorer
--- map("n", "<leader>e", function() require("nvim-tree.api").tree.toggle() end, { desc = "toggle tree" })
-map("n", "<leader>e", function() require("fyler").open({ kind = "float" }) end, { desc = "toggle tree" })
-
 -- flash
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 
 -- oil
-map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
+map("n", "<leader>e", ":Oil<CR>", { desc = "toggle oil" })
 
 -- buffers
 map("n", "<leader><leader>", "<C-^>")
@@ -142,6 +129,8 @@ map("v", "<C-j>", ":m '>+1<CR>gv=gv")
 map("v", "<C-k>", ":m '<-2<CR>gv=gv")
 map("v", "<", "<gv")
 map("v", ">", ">gv")
+map('n', "<leader>w", ":write<CR>")
+map('n', "<leader>q", ":quit<CR>")
 
 
 vim.api.nvim_create_user_command('Treesitter', function()
