@@ -21,6 +21,7 @@ alias tl="talosctl"
 alias ta="terraform apply --auto-approve"
 alias lg="lazygit"
 alias tp="open http://localhost:23625 && tinymist preview --partial-rendering true"
+alias journal='f="$(date +"%d-%m-%Y").md" && touch "$f" && nvim "$f"'
 
 # exports
 export VISUAL="nvim"
@@ -61,6 +62,7 @@ setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_find_no_dups
+setopt autocd
 
 # zsh-syntax-highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -141,3 +143,15 @@ export TALOSCONFIG=~/.config/talos/config
 
 # docker
 export DOCKER_BUILDKIT=1
+
+# nym shell integration
+  nym() {
+      local aliases_file="$HOME/.config/nym/aliases.sh"
+      command nym "$@"
+      local exit_code=$?
+      if [[ "$1" =~ ^(add|edit|delete)$ ]] && [[ -f "$aliases_file" ]]; then
+          source "$aliases_file"
+      fi
+      return $exit_code
+  }
+  [ -f ~/.config/nym/aliases.sh ] && source ~/.config/nym/aliases.sh

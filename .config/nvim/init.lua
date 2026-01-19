@@ -132,7 +132,6 @@ map("v", ">", ">gv")
 map('n', "<leader>w", ":write<CR>")
 map('n', "<leader>q", ":quit<CR>")
 
-vim.lsp.document_color.enable()
 
 vim.diagnostic.config({
     signs = {
@@ -198,15 +197,17 @@ vim.lsp.enable({
     "rust_analyzer"
 })
 
+vim.lsp.document_color.enable()
+
 -- toggle word wrap
 autocmd("FileType", {
-    pattern = { "markdown", "tyspt" },
+    pattern = { "markdown", "typst" },
     callback = function()
         vim.opt_local.textwidth = 80
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
         vim.opt_local.showbreak = "↪ "
-        vim.keymap.set("n", "<leader>w", function()
+        vim.keymap.set("n", "<leader>r", function()
             vim.opt_local.wrap = not vim.opt_local.wrap:get()
         end, { buffer = true, desc = "toggle word wrap" })
     end,
