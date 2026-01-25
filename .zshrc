@@ -64,11 +64,16 @@ setopt hist_save_no_dups
 setopt hist_find_no_dups
 setopt autocd
 
-# zsh-syntax-highlighting
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[unknown-token]='none'
-ZSH_HIGHLIGHT_STYLES[arg0]='fg=02'
+# native zsh-syntax-highlighting
+autoload -Uz add-zle-hook-widget
+_highlight_command() {
+    region_highlight=()
+    local cmd="${BUFFER%% *}"
+    if [[ -n "$cmd" ]] && type "$cmd" &>/dev/null; then
+        region_highlight+=("0 ${#cmd} fg=02")
+    fi
+}
+add-zle-hook-widget line-pre-redraw _highlight_command
 
 # zsh completion
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
