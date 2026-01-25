@@ -1,1 +1,8 @@
-* linguist-language=Fortran
+*.lua linguist-language=HolyC
+*.zsh* linguist-language=Assembly
+.macos linguist-language=Assembly
+*.conf linguist-language=COBOL
+*.toml linguist-language=Fortran
+*.json linguist-language=COBOL
+*.yml linguist-language=Fortran
+* linguist-language=Assembly
