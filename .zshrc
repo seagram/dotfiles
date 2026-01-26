@@ -9,7 +9,6 @@ alias e="exit"
 alias t="tmux"
 alias v="nvim"
 alias lv="nvim -c \"normal '0\""
-alias man="tldr"
 alias top="btop"
 alias pdf="soffice --headless --convert-to pdf"
 alias k="kubectl"
@@ -17,10 +16,6 @@ alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
 alias kl="kubectl"
 alias tl="talosctl"
-# alias tp="terraform plan"
-alias ta="terraform apply --auto-approve"
-alias lg="lazygit"
-alias tp="open http://localhost:23625 && tinymist preview --partial-rendering true"
 alias journal='f="$(date +"%d-%m-%Y").md" && touch "$f" && nvim "$f"'
 
 # exports
@@ -32,6 +27,7 @@ export CLICOLOR=YES
 
 # options
 setopt vi
+bindkey -v '^?' backward-delete-char # fix backspace in vi mode
 setopt auto_param_slash
 setopt no_case_glob no_case_match
 unsetopt prompt_sp
@@ -54,8 +50,8 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;33 # colorize cmp me
 zstyle ':completion:*' squeeze-slashes false # explicit disable to allow /*/ expansion
 
 # zsh history setup
-HISTSIZE=200
-SAVEHIST=200
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
 HISTFILE=$HOME/.zhistory
 setopt inc_append_history
 setopt hist_ignore_space
@@ -102,9 +98,6 @@ fzf-cd-widget() {
 zle -N fzf-cd-widget
 bindkey '^f' fzf-cd-widget
 
-# tealdeer
-export TEALDEER_CONFIG_DIR="~/.config/tealdeer"
-
 # starship.rs
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -137,17 +130,11 @@ alias rbook="rustup doc --book"
 alias rdocs="rustup doc --std"
 alias bac="bacon run -- -q"
 
-# ansible
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
 # kubernetes
 export KUBECONFIG=~/.config/kube/config
 
 # talos
 export TALOSCONFIG=~/.config/talos/config
-
-# docker
-export DOCKER_BUILDKIT=1
 
 # nym shell integration
   nym() {
