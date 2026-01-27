@@ -70,48 +70,6 @@ require("oil").setup({
 })
 
 
--- create shortcuts in Oil buffer for flash-like keybindings
-vim.api.nvim_create_autocmd("User", {
-    pattern = "OilEnter",
-    callback = function()
-        vim.schedule(function()
-            local buf, chars, map = vim.api.nvim_get_current_buf(), "asdfghlqwertyuiopzxcvbnm", {}
-            local ns = vim.api.nvim_create_namespace("oil_hints")
-            local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-            local n = #vim.tbl_filter(function(l) return l ~= "" end, lines)
-            local two = n > #chars
-
-            local idx = 0
-            for i, line in ipairs(lines) do
-                if line ~= "" and idx < #chars * #chars then
-                    idx = idx + 1
-                    local hint = two
-                        and
-                        chars:sub(math.ceil(idx / #chars), math.ceil(idx / #chars)) ..
-                        chars:sub((idx - 1) % #chars + 1, (idx - 1) % #chars + 1)
-                        or chars:sub(idx, idx)
-                    map[hint] = i
-                    vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0,
-                        { virt_text = { { hint .. " ", "DiagnosticHint" } }, virt_text_pos = "inline" })
-                end
-            end
-
-            local mapped = {}
-            for hint, line in pairs(map) do
-                local key = two and hint:sub(1, 1) or hint
-                if not mapped[key] then
-                    mapped[key] = true
-                    vim.keymap.set("n", key, function()
-                        local target = two and map[key .. vim.fn.getcharstr()] or line
-                        if target then
-                            vim.api.nvim_win_set_cursor(0, { target, 0 }); require("oil").select()
-                        end
-                    end, { buffer = buf, nowait = true })
-                end
-            end
-        end)
-    end
-})
 
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 require("blink.cmp").setup({
@@ -233,13 +191,57 @@ autocmd("LspAttach", {
     end,
 })
 
+-- create shortcuts in Oil buffer for flash-like keybindings
+autocmd("User", {
+    pattern = "OilEnter",
+    callback = function()
+        vim.schedule(function()
+            local buf, chars, map = vim.api.nvim_get_current_buf(), "asdfghlqwertyuiopzxcvbnm", {}
+            local ns = vim.api.nvim_create_namespace("oil_hints")
+            local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+            local n = #vim.tbl_filter(function(l) return l ~= "" end, lines)
+            local two = n > #chars
+
+            local idx = 0
+            for i, line in ipairs(lines) do
+                if line ~= "" and idx < #chars * #chars then
+                    idx = idx + 1
+                    local hint = two
+                        and
+                        chars:sub(math.ceil(idx / #chars), math.ceil(idx / #chars)) ..
+                        chars:sub((idx - 1) % #chars + 1, (idx - 1) % #chars + 1)
+                        or chars:sub(idx, idx)
+                    map[hint] = i
+                    vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0,
+                        { virt_text = { { hint .. " ", "DiagnosticHint" } }, virt_text_pos = "inline" })
+                end
+            end
+
+            local mapped = {}
+            for hint, line in pairs(map) do
+                local key = two and hint:sub(1, 1) or hint
+                if not mapped[key] then
+                    mapped[key] = true
+                    vim.keymap.set("n", key, function()
+                        local target = two and map[key .. vim.fn.getcharstr()] or line
+                        if target then
+                            vim.api.nvim_win_set_cursor(0, { target, 0 }); require("oil").select()
+                        end
+                    end, { buffer = buf, nowait = true })
+                end
+            end
+        end)
+    end
+})
+
 vim.lsp.enable({
-    "lua_ls",
-    "ty",
-    "ruff",
-    "terraformls",
-    "tinymist",
-    "rust_analyzer"
+    "lua_ls",        -- lua
+    "ty",            -- python
+    "ruff",          -- python
+    "tinymist",      -- typst
+    "rust_analyzer", -- rust
+    "clangd",        -- c/c++
+    "zls",           -- zig
 })
 
 vim.lsp.document_color.enable()
