@@ -17,6 +17,7 @@ alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
 alias kl="kubectl"
 alias tl="talosctl"
 alias journal='f="$(date +"%d-%m-%Y").md" && touch "$f" && nvim "$f"'
+alias cpp='open -a Helium ~/.c/c.html'
 
 # exports
 export VISUAL="nvim"
@@ -117,18 +118,12 @@ export EZA_CONFIG_DIR="~/.config/eza/"
 export PATH="~/.local/bin:$PATH"
 alias python="python3"
 
-# rust
-alias cn="cargo new"
-alias ci="cargo init"
-alias ca="cargo add"
-alias cb="cargo build"
-alias cr="cargo run"
-alias ct="cargo test"
-alias cc="cargo check"
-alias cf="cargo fmt"
-alias rbook="rustup doc --book"
-alias rdocs="rustup doc --std"
-alias bac="bacon run -- -q"
+# c/c++
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export CC="/opt/homebrew/opt/llvm/bin/clang"
+export CXX="$CC++"
+export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/llvm/include"
 
 # kubernetes
 export KUBECONFIG=~/.config/kube/config
@@ -136,14 +131,3 @@ export KUBECONFIG=~/.config/kube/config
 # talos
 export TALOSCONFIG=~/.config/talos/config
 
-# nym shell integration
-  nym() {
-      local aliases_file="$HOME/.config/nym/aliases.sh"
-      command nym "$@"
-      local exit_code=$?
-      if [[ "$1" =~ ^(add|edit|delete)$ ]] && [[ -f "$aliases_file" ]]; then
-          source "$aliases_file"
-      fi
-      return $exit_code
-  }
-  [ -f ~/.config/nym/aliases.sh ] && source ~/.config/nym/aliases.sh
