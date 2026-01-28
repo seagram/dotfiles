@@ -14,10 +14,6 @@ alias pdf="soffice --headless --convert-to pdf"
 alias k="kubectl"
 alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
-alias kl="kubectl"
-alias tl="talosctl"
-alias journal='f="$(date +"%d-%m-%Y").md" && touch "$f" && nvim "$f"'
-alias cpp='open -a Helium ~/.c/c.html'
 
 # exports
 export VISUAL="nvim"
@@ -83,7 +79,7 @@ export HOMEBREW_NO_ENV_HINTS=TRUE
 export HOMEBREW_CASK_OPTS=--no-quarantine
 alias bu="brew upgrade"
 alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
-alias bt='brew leaves | xargs -n1 brew deps --tree'
+alias bt='brew deps --tree $(brew leaves)'
 alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --force --brews --casks"
 
 # zoxide
@@ -124,10 +120,10 @@ export CC="/opt/homebrew/opt/llvm/bin/clang"
 export CXX="$CC++"
 export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/llvm/include"
+alias cpp='open -a Helium ~/.c/c.html'
 
 # kubernetes
 export KUBECONFIG=~/.config/kube/config
 
 # talos
 export TALOSCONFIG=~/.config/talos/config
-
