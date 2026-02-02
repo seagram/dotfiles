@@ -196,7 +196,7 @@ autocmd("User", {
     pattern = "OilEnter",
     callback = function()
         vim.schedule(function()
-            local buf, chars, map = vim.api.nvim_get_current_buf(), "asdfghlqwertyuiopzxcvbnm", {}
+            local buf, chars, map = vim.api.nvim_get_current_buf(), "asfhlqwertuizbnm", {}
             local ns = vim.api.nvim_create_namespace("oil_hints")
             local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
             local n = #vim.tbl_filter(function(l) return l ~= "" end, lines)
