@@ -75,7 +75,7 @@ set.completeopt = "menuone,noselect,fuzzy,nosort"
 require("blink.cmp").setup({
     keymap = {
         preset = "enter",
-        ['<Tab>'] = { "accept" },
+        ['<Tab>'] = { "accept", "fallback" },
         ["<C-j>"] = { "select_next", "fallback" },
         ["<C-k>"] = { "select_prev", "fallback" },
     },
