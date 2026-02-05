@@ -10,10 +10,11 @@ alias t="tmux"
 alias v="nvim"
 alias lv="nvim -c \"normal '0\""
 alias top="btop"
-alias pdf="soffice --headless --convert-to pdf"
+alias pdf='xargs -I{} pandoc "{}" -o "$(basename "{}" .docx).pdf"'
 alias k="kubectl"
 alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
+alias zcc="zig c++"
 
 # exports
 export VISUAL="nvim"
@@ -83,15 +84,17 @@ alias bt='brew deps --tree $(brew leaves)'
 alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --force --brews --casks"
 
 # zoxide
-alias cd="z"
-eval "$(zoxide init zsh)"
-fzf-cd-widget() {
-    local dir=$(zoxide query -l --no-tilde | fzf --height 40% --reverse)
-    if [[ -n "$dir" ]]; then
-        zoxide "$dir"
-        zle reset-prompt
-    fi
-}
+if [ -z "$DISABLE_ZOXIDE" ]; then
+    alias cd="z"
+    eval "$(zoxide init zsh)"
+    fzf-cd-widget() {
+        local dir=$(zoxide query -l --no-tilde | fzf --height 40% --reverse)
+        if [[ -n "$dir" ]]; then
+            zoxide "$dir"
+            zle reset-prompt
+        fi
+    }
+fi
 zle -N fzf-cd-widget
 bindkey '^f' fzf-cd-widget
 
