@@ -48,7 +48,7 @@ vim.pack.add({
 
 require "vague".setup({ transparent = true, italic = false })
 vim.cmd("colorscheme vague")
-vim.cmd(":hi statusline guibg=NONE")
+vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 require("mason").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
