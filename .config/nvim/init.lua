@@ -262,9 +262,4 @@ autocmd("FileType", {
     end,
 })
 
-autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = "*.fountain",
-    callback = function()
-        vim.bo.filetype = "fountain"
-    end,
-})
+vim.filetype.add({ extension = { fountain = "fountain" } })
