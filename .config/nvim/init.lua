@@ -110,7 +110,7 @@ map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "fl
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 
 -- oil
-map("n", "<leader>e", ":Oil<CR>", { desc = "toggle oil" })
+map("n", "<leader>e", "<cmd>Oil<CR>", { desc = "toggle oil" })
 
 -- buffers
 map("n", "<leader><leader>", "<C-^>")
@@ -134,8 +134,8 @@ map("v", "<C-j>", ":m '>+1<CR>gv=gv")
 map("v", "<C-k>", ":m '<-2<CR>gv=gv")
 map("v", "<", "<gv")
 map("v", ">", ">gv")
-map('n', "<leader>w", ":write<CR>")
-map('n', "<leader>q", ":quit<CR>")
+map('n', "<leader>w", "<cmd>write<CR>")
+map('n', "<leader>q", "<cmd>quit<CR>")
 
 
 vim.diagnostic.config({
