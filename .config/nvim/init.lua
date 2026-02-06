@@ -27,6 +27,7 @@ set.confirm = true
 set.statusline = '%=%t %r %m'
 set.helpheight = 9999
 set.termguicolors = true
+set.completeopt = "menuone,noselect,fuzzy,nosort"
 
 vim.pack.add({
     { src = "https://github.com/folke/flash.nvim" },
@@ -69,9 +70,6 @@ require("oil").setup({
     view_options = { show_hidden = true, },
 })
 
-
-
-set.completeopt = "menuone,noselect,fuzzy,nosort"
 require("blink.cmp").setup({
     keymap = {
         preset = "enter",
