@@ -38,6 +38,13 @@ disabled = false
 version_format = 'v${raw}'
 style = 'bold dimmed white'
 
+[c]
+format = '[$symbol ($version )]($style)'
+disabled = false
+symbol = ""
+version_format = 'v${raw}'
+style = 'bold dimmed white'
+
 [docker_context]
 format = '[$symbol$context ✓]($style) '
 only_with_files = false

@@ -116,7 +116,7 @@ map("n", "<leader>s", function() require("snipe").open_buffer_menu() end, { desc
 
 -- vim.pack
 map("n", "<leader>u", function()
-    vim.pack.update({}, { force = true })
+    vim.pack.update(nil, { force = true })
 end, { desc = "update" })
 
 -- general

@@ -15,6 +15,8 @@ alias k="kubectl"
 alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
 alias zcc="zig c++"
+alias l="yazi"
+alias lg="lazygit"
 
 # exports
 export VISUAL="nvim"
