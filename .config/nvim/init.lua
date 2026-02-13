@@ -42,6 +42,7 @@ vim.pack.add({
     { src = "https://github.com/vimpostor/vim-tpipeline" },
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.surround" },
+    { src = "https://github.com/nvim-mini/mini.pairs" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
     { src = "https://github.com/Saghen/blink.cmp",                version = "v1.8.0" },
@@ -53,6 +54,7 @@ vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 require("mason").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
+require("mini.pairs").setup()
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
 require("typst-preview").setup()
