@@ -44,4 +44,6 @@ desktop-notifications = false
 confirm-close-surface = false
 quit-after-last-window-closed = true
 
+custom-shader=shaders/cursor_warp.glsl
+
 command=/opt/homebrew/bin/tmux
