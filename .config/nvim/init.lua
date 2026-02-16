@@ -70,6 +70,18 @@ require("oil").setup({
     skip_confirm_for_simple_edits = true,
     columns = {},
     view_options = { show_hidden = true, },
+    float = {
+        padding = 0,
+        override = function(conf)
+            local width = 40
+            conf.width = width
+            conf.height = vim.o.lines - 2
+            conf.col = vim.o.columns - width
+            conf.row = 0
+            conf.border = "rounded"
+            return conf
+        end,
+    },
 })
 
 require("blink.cmp").setup({
@@ -110,7 +122,8 @@ map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "fl
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 
 -- oil
-map("n", "<leader>e", "<cmd>Oil<CR>", { desc = "toggle oil" })
+-- map("n", "<leader>e", "<cmd>Oil<CR>", { desc = "toggle oil" })
+map("n", "<leader>e", function() require("oil").toggle_float() end, { desc = "toggle oil" })
 
 -- buffers
 map("n", "<leader><leader>", "<C-^>")
