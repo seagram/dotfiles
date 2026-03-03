@@ -6,6 +6,7 @@ global.loaded_netrwPlugin = 1
 
 local set = vim.opt
 set.clipboard = "unnamedplus"
+
 set.number = true
 set.relativenumber = true
 set.fillchars = { eob = " " }
@@ -13,13 +14,19 @@ set.scrolloff = 8
 set.pumheight = 5
 set.cmdheight = 0
 set.winborder = "rounded"
+
 set.tabstop = 4
 set.shiftwidth = 4
+set.softtabstop = 4
 set.expandtab = true
 set.smartindent = true
+set.autoindent = true
+
 set.ignorecase = true
 set.smartcase = true
-set.hlsearch = false
+set.hlsearch = true
+set.incsearch = true
+
 set.swapfile = false
 set.undofile = true
 set.wrap = false
@@ -101,7 +108,35 @@ require("snacks").setup({
         layout = { preset = "ivy", preview = false },
         layouts = { ivy = { layout = { height = 0.3, title = "", }, }, },
         sources = {
-            files = { cmd = "fd", hidden = true, ignored = false, },
+            files = { cmd = "fd", hidden = true, ignored = false },
+            smart = {
+                multi = {
+                    "buffers",
+                    "recent",
+                    {
+                        source = "files",
+                        hidden = true,
+                        cwd = vim.env.HOME,
+                        exclude = {
+                            "Library",
+                            "Applications",
+                            "Movies",
+                            "Music",
+                            "Pictures",
+                            ".Trash",
+                            ".cache",
+                            ".cargo",
+                            ".rustup",
+                            ".npm",
+                            "node_modules",
+                            ".minikube",
+                            ".codex",
+                            ".claude",
+                            ".venv",
+                        },
+                    },
+                },
+            },
         },
     },
     indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
@@ -112,10 +147,8 @@ require("snacks").setup({
 local map = vim.keymap.set
 
 -- find
-map("n", "<leader>fr", function() Snacks.picker.smart() end, { desc = "files" })
-map("n", "<leader>fe", function() Snacks.picker.files({ cwd = "." }) end, { desc = "cwd" })
-map("n", "<leader>fg", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
-map("n", "<leader>fd", function() Snacks.picker.zoxide() end, { desc = "cd" })
+map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
+map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
 
 -- flash
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
@@ -173,18 +206,17 @@ autocmd("LspAttach", {
         local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
         end
-        map("<leader>lh", vim.lsp.buf.hover, "hover")
-        map("<leader>ls", vim.lsp.buf.signature_help, "signature")
-        map("<leader>ld", vim.lsp.buf.declaration, "declaration")
-        map("<leader>lD", vim.lsp.buf.definition, "definition")
-        map("<leader>lt", vim.lsp.buf.type_definition, "type definition")
-        map("<leader>la", vim.lsp.buf.code_action, "code action")
-        map("<leader>li", vim.lsp.buf.implementation, "implementation")
-        map("<leader>lR", vim.lsp.buf.references, "references")
-        map("<leader>lr", vim.lsp.buf.rename, "rename")
-        map("<leader>lf", vim.lsp.buf.format, "format")
+        map("gh", vim.lsp.buf.hover, "hover")
+        map("gs", vim.lsp.buf.signature_help, "signature")
+        map("gD", vim.lsp.buf.declaration, "declaration")
+        map("gd", vim.lsp.buf.definition, "definition")
+        map("gy", vim.lsp.buf.type_definition, "type definition")
+        map("ga", vim.lsp.buf.code_action, "code action")
+        map("gi", vim.lsp.buf.implementation, "implementation")
+        map("gr", vim.lsp.buf.references, "references")
+        map("gR", vim.lsp.buf.rename, "rename")
+        map("gF", vim.lsp.buf.format, "format")
         map("<leader>d", vim.diagnostic.open_float, "diagnostic")
-        map("<leader>lH", "<cmd>:checkhealth lsp<CR>", "health")
     end,
 })
 
