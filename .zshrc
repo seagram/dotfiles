@@ -104,10 +104,8 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 # fzf
 source <(fzf --zsh)
-export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git --ignore-file ~/.config/fd/ignore"
-# export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+export FZF_DEFAULT_COMMAND="fd --hidden --exclude .git --ignore-file ~/.config/fd/ignore . ~"
+export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top'
 
 # eza
 export EZA_CONFIG_DIR="~/.config/eza/"
@@ -124,7 +122,6 @@ export CC="/opt/homebrew/opt/llvm/bin/clang"
 export CXX="$CC++"
 export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/llvm/include"
-alias cpp='open -a Helium ~/.c/c.html'
 
 # kubernetes
 export KUBECONFIG=~/.config/kube/config
