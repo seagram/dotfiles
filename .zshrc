@@ -1,7 +1,6 @@
 # aliases
 # use '\' before command to ignore alias
 alias ls='eza --color=always --long --no-filesize --no-time --no-user --no-permissions --icons=always --group-directories-first'
-alias lsl='eza --color=always --long --total-size --git --no-time --no-user --no-permissions --icons=always --group-directories-first'
 alias tree='eza --tree --color=always --icons=always --group-directories-first --git-ignore'
 alias sz="exec zsh"
 alias c="clear"
@@ -9,7 +8,6 @@ alias e="exit"
 alias t="tmux"
 alias v="nvim"
 alias lv="nvim -c \"normal '0\""
-alias top="btop"
 alias k="kubectl"
 alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
