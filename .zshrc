@@ -10,12 +10,10 @@ alias t="tmux"
 alias v="nvim"
 alias lv="nvim -c \"normal '0\""
 alias top="btop"
-alias pdf='xargs -I{} pandoc "{}" -o "$(basename "{}" .docx).pdf"'
 alias k="kubectl"
 alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
 alias zcc="zig c++"
-alias l="yazi"
 alias lg="lazygit"
 
 # exports
