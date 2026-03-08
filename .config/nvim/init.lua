@@ -289,6 +289,7 @@ vim.lsp.enable({
     "rust_analyzer", -- rust
     "clangd",        -- c/c++
     "zls",           -- zig
+    "terraformls",   -- terraform
 })
 
 vim.lsp.document_color.enable()

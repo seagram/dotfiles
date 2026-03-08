@@ -13,6 +13,8 @@ alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo='open "$(git remote get-url origin)" || echo "no remote found"'
 alias zcc="zig c++"
 alias lg="lazygit"
+alias ta="terraform apply -auto-approve"
+alias td="terraform destroy -auto-approve"
 
 # exports
 export VISUAL="nvim"
@@ -107,6 +109,21 @@ export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --borde
 
 # eza
 export EZA_CONFIG_DIR="~/.config/eza/"
+
+# convert .docx/.doc to .pdf
+pdf() {
+    local input="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+    local output="${input%.*}.pdf"
+    osascript -e "
+        tell application \"Pages\"
+            activate
+            set doc to open POSIX file \"$input\"
+            export doc to POSIX file \"$output\" as PDF
+            close doc
+        end tell
+        tell application \"Pages\" to quit
+    "
+}
 
 ##### languages #####
 
