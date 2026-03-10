@@ -18,10 +18,6 @@ window-padding-x = 9
 window-padding-y = 9
 window-padding-balance = true
 window-padding-color = background
-window-height = 27
-window-width = 70
-window-position-x = 350
-window-position-y = 150
 resize-overlay = never
 
 macos-window-shadow = false
@@ -43,21 +39,17 @@ custom-shader=shaders/cursor_warp.glsl
 
 # command=/opt/homebrew/bin/tmux
 
-# Tabs (replaces tmux windows)
 keybind = ctrl+equal=new_tab
 keybind = ctrl+minus=close_tab
 keybind = ctrl+right_bracket=next_tab
 keybind = ctrl+left_bracket=previous_tab
 
-# Splits (replaces tmux panes)
 keybind = ctrl+apostrophe=new_split:right
 keybind = ctrl+semicolon=new_split:down
 
-# Navigate splits
 keybind = ctrl+comma=goto_split:left
 keybind = ctrl+period=goto_split:right
 
-# Resize splits (using ctrl+a leader)
 keybind = ctrl+a>ctrl+j=resize_split:down,15
 keybind = ctrl+a>ctrl+k=resize_split:up,15
 keybind = ctrl+a>ctrl+h=resize_split:left,15
