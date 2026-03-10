@@ -199,6 +199,7 @@ vim.diagnostic.config({
 
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
+local usercmd = vim.api.nvim_create_user_command
 
 autocmd("LspAttach", {
     group = augroup("lsp-attach", { clear = true }),
@@ -237,6 +238,11 @@ autocmd("LspAttach", {
         end
     end,
 })
+
+-- user command for installing treesitter grammars
+usercmd("TSInstallAll", function()
+    require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "zig", "terraform", "go" })
+end, {})
 
 -- create shortcuts in Oil buffer for flash-like keybindings
 autocmd("User", {
@@ -290,6 +296,7 @@ vim.lsp.enable({
     "clangd",        -- c/c++
     "zls",           -- zig
     "terraformls",   -- terraform
+    "gopls",         -- go
 })
 
 vim.lsp.document_color.enable()
