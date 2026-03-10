@@ -1,10 +1,4 @@
-font-family = DepartureMono Nerd Font
-font-style-bold = Bold
-font-style-italic = Medium Italic
-font-style-bold-italic = Bold Italic
-font-size = 18
-adjust-cell-width = "-5%"
-
+font-size = 17
 theme = vague
 window-colorspace = display-p3
 bold-color = bright
@@ -31,6 +25,7 @@ window-position-y = 150
 resize-overlay = never
 
 macos-window-shadow = false
+macos-window-buttons = hidden
 macos-titlebar-style = hidden
 macos-icon = glass
 
@@ -46,4 +41,24 @@ quit-after-last-window-closed = true
 
 custom-shader=shaders/cursor_warp.glsl
 
-command=/opt/homebrew/bin/tmux
+# command=/opt/homebrew/bin/tmux
+
+# Tabs (replaces tmux windows)
+keybind = ctrl+equal=new_tab
+keybind = ctrl+minus=close_tab
+keybind = ctrl+right_bracket=next_tab
+keybind = ctrl+left_bracket=previous_tab
+
+# Splits (replaces tmux panes)
+keybind = ctrl+apostrophe=new_split:right
+keybind = ctrl+semicolon=new_split:down
+
+# Navigate splits
+keybind = ctrl+comma=goto_split:left
+keybind = ctrl+period=goto_split:right
+
+# Resize splits (using ctrl+a leader)
+keybind = ctrl+a>ctrl+j=resize_split:down,15
+keybind = ctrl+a>ctrl+k=resize_split:up,15
+keybind = ctrl+a>ctrl+h=resize_split:left,15
+keybind = ctrl+a>ctrl+l=resize_split:right,15
