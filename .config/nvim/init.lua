@@ -305,7 +305,7 @@ vim.lsp.document_color.enable()
 autocmd("FileType", {
     pattern = { "markdown", "typst" },
     callback = function()
-        vim.opt_local.textwidth = 80
+        vim.opt_local.textwidth = vim.o.columns
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
         vim.opt_local.showbreak = "↪ "
