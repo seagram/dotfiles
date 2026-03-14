@@ -42,7 +42,6 @@ vim.pack.add({
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/folke/which-key.nvim" },
-    { src = "https://github.com/leath-dub/snipe.nvim" },
     { src = "https://github.com/nvim-mini/mini.icons" },
     { src = 'https://github.com/neovim/nvim-lspconfig' },
     { src = "https://github.com/nvim-mini/mini.comment" },
@@ -67,11 +66,6 @@ require("which-key").setup({ preset = "helix", })
 require("typst-preview").setup()
 require("nvim-treesitter").setup()
 require("flash").setup()
-
-require("snipe").setup({
-    ui = { position = "bottomleft", open_win_override = { title = "", }, },
-    navigate = { cancel_snipe = "q" },
-})
 
 require("oil").setup({
     skip_confirm_for_simple_edits = true,
@@ -108,7 +102,7 @@ require("snacks").setup({
         layouts = { ivy = { layout = { height = 0.3, title = "", }, }, },
         sources = {
             files = { cmd = "fd", hidden = true, ignored = false },
-            explorer = { hidden = true, ignored = false },
+            explorer = { hidden = true, ignored = false, auto_close = true },
             smart = { multi = { "buffers", "recent", { source = "files", hidden = false, cwd = vim.env.HOME, } }, },
         },
     },
@@ -136,7 +130,7 @@ map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
 
 -- buffers
 map("n", "<leader><leader>", "<C-^>")
-map("n", "<leader>s", function() require("snipe").open_buffer_menu() end, { desc = "buffers" })
+map("n", "<leader>s", function() Snacks.picker.buffers() end, { desc = "buffers" })
 
 -- vim.pack
 map("n", "<leader>u", function()
