@@ -108,36 +108,11 @@ require("snacks").setup({
         layouts = { ivy = { layout = { height = 0.3, title = "", }, }, },
         sources = {
             files = { cmd = "fd", hidden = true, ignored = false },
-            smart = {
-                multi = {
-                    "buffers",
-                    "recent",
-                    {
-                        source = "files",
-                        hidden = true,
-                        cwd = vim.env.HOME,
-                        exclude = {
-                            "Library",
-                            "Applications",
-                            "Movies",
-                            "Music",
-                            "Pictures",
-                            ".Trash",
-                            ".cache",
-                            ".cargo",
-                            ".rustup",
-                            ".npm",
-                            "node_modules",
-                            ".minikube",
-                            ".codex",
-                            ".claude",
-                            ".venv",
-                        },
-                    },
-                },
-            },
+            explorer = { hidden = true, ignored = false },
+            smart = { multi = { "buffers", "recent", { source = "files", hidden = false, cwd = vim.env.HOME, } }, },
         },
     },
+    explorer = { replace_netrw = false },
     indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
     notifier = { style = "minimal" },
     styles = { input = { width = 40, noautocmd = false }, notification_history = { minimal = true }, },
@@ -154,8 +129,10 @@ map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "fl
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 
 -- oil
--- map("n", "<leader>e", "<cmd>Oil<CR>", { desc = "toggle oil" })
-map("n", "<leader>e", function() require("oil").toggle_float() end, { desc = "toggle oil" })
+map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
+
+-- explorer
+map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
 
 -- buffers
 map("n", "<leader><leader>", "<C-^>")
