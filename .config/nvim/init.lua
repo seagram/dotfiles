@@ -6,7 +6,6 @@ global.loaded_netrwPlugin = 1
 
 local set = vim.opt
 set.clipboard = "unnamedplus"
-
 set.number = true
 set.relativenumber = true
 set.fillchars = { eob = " " }
@@ -14,19 +13,16 @@ set.scrolloff = 8
 set.pumheight = 5
 set.cmdheight = 0
 set.winborder = "rounded"
-
 set.tabstop = 4
 set.shiftwidth = 4
 set.softtabstop = 4
 set.expandtab = true
 set.smartindent = true
 set.autoindent = true
-
 set.ignorecase = true
 set.smartcase = true
 set.hlsearch = true
 set.incsearch = true
-
 set.swapfile = false
 set.undofile = true
 set.wrap = false
@@ -202,6 +198,10 @@ autocmd("LspAttach", {
 usercmd("TSInstallAll", function()
     require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "zig", "terraform", "go" })
 end, {})
+
+vim.lsp.config("lua_ls", {
+    settings = { Lua = { runtime = { version = "LuaJIT" }, workspace = { library = { vim.env.VIMRUNTIME } }, }, },
+})
 
 vim.lsp.enable({
     "lua_ls",        -- lua
