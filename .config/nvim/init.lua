@@ -80,11 +80,10 @@ require("oil").setup({
     float = {
         padding = 0,
         override = function(conf)
-            local width = 40
-            conf.width = width
-            conf.height = vim.o.lines - 2
-            conf.col = vim.o.columns - width
-            conf.row = 0
+            conf.height = vim.o.lines - 4
+            conf.width = math.floor(conf.height * 2.5)
+            conf.col = math.floor((vim.o.columns - conf.width) / 2)
+            conf.row = math.floor((vim.o.lines - conf.height) / 2)
             conf.border = "rounded"
             return conf
         end,
@@ -244,49 +243,6 @@ usercmd("TSInstallAll", function()
     require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "zig", "terraform", "go" })
 end, {})
 
--- create shortcuts in Oil buffer for flash-like keybindings
-autocmd("User", {
-    pattern = "OilEnter",
-    callback = function()
-        vim.schedule(function()
-            local buf, chars, map = vim.api.nvim_get_current_buf(), "asfhlqwertuizbnm", {}
-            local ns = vim.api.nvim_create_namespace("oil_hints")
-            local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-            local n = #vim.tbl_filter(function(l) return l ~= "" end, lines)
-            local two = n > #chars
-
-            local idx = 0
-            for i, line in ipairs(lines) do
-                if line ~= "" and idx < #chars * #chars then
-                    idx = idx + 1
-                    local hint = two
-                        and
-                        chars:sub(math.ceil(idx / #chars), math.ceil(idx / #chars)) ..
-                        chars:sub((idx - 1) % #chars + 1, (idx - 1) % #chars + 1)
-                        or chars:sub(idx, idx)
-                    map[hint] = i
-                    vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0,
-                        { virt_text = { { hint .. " ", "DiagnosticHint" } }, virt_text_pos = "inline" })
-                end
-            end
-
-            local mapped = {}
-            for hint, line in pairs(map) do
-                local key = two and hint:sub(1, 1) or hint
-                if not mapped[key] then
-                    mapped[key] = true
-                    vim.keymap.set("n", key, function()
-                        local target = two and map[key .. vim.fn.getcharstr()] or line
-                        if target then
-                            vim.api.nvim_win_set_cursor(0, { target, 0 }); require("oil").select()
-                        end
-                    end, { buffer = buf, nowait = true })
-                end
-            end
-        end)
-    end
-})
-
 vim.lsp.enable({
     "lua_ls",        -- lua
     "ty",            -- python
@@ -301,18 +257,21 @@ vim.lsp.enable({
 
 vim.lsp.document_color.enable()
 
--- toggle word wrap
+vim.filetype.add({ extension = { fountain = "fountain" } })
+
+-- general writing
 autocmd("FileType", {
-    pattern = { "markdown", "typst" },
+    pattern = { "markdown", "typst", "fountain" },
     callback = function()
-        vim.opt_local.textwidth = vim.o.columns
-        vim.opt_local.wrap = true
-        vim.opt_local.linebreak = true
-        vim.opt_local.showbreak = "↪ "
+        local loc = vim.opt_local
+        loc.textwidth = vim.o.columns
+        loc.wrap = true
+        loc.linebreak = true
+        loc.showbreak = "↪ "
+        loc.spell = true
+        loc.spelllang = "en"
         vim.keymap.set("n", "<leader>r", function()
-            vim.opt_local.wrap = not vim.opt_local.wrap:get()
+            loc.wrap = not loc.wrap:get()
         end, { buffer = true, desc = "toggle word wrap" })
     end,
 })
-
-vim.filetype.add({ extension = { fountain = "fountain" } })
