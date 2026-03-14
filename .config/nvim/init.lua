@@ -18,18 +18,14 @@ set.shiftwidth = 4
 set.softtabstop = 4
 set.expandtab = true
 set.smartindent = true
-set.autoindent = true
 set.ignorecase = true
 set.smartcase = true
-set.hlsearch = true
-set.incsearch = true
 set.swapfile = false
 set.undofile = true
 set.wrap = false
 set.confirm = true
 set.statusline = '%=%t %r %m'
 set.helpheight = 9999
-set.termguicolors = true
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 
 vim.pack.add({
@@ -53,18 +49,18 @@ vim.pack.add({
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
 }, { load = true })
 
-require "vague".setup({ transparent = true, italic = false })
-vim.cmd("colorscheme vague")
-vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 require("mason").setup()
+require("flash").setup()
+require("typst-preview").setup()
+require("nvim-treesitter").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
-require("typst-preview").setup()
-require("nvim-treesitter").setup()
-require("flash").setup()
+require("vague").setup({ transparent = true, italic = false })
+vim.cmd("colorscheme vague")
+vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 
 require("oil").setup({
     skip_confirm_for_simple_edits = true,
