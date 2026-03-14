@@ -37,21 +37,24 @@ set.termguicolors = true
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 
 vim.pack.add({
+    -- core
+    { src = 'https://github.com/neovim/nvim-lspconfig' },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    { src = "https://github.com/williamboman/mason.nvim" },
+    { src = "https://github.com/Saghen/blink.cmp",                version = "v1.8.0" },
+    -- folke
     { src = "https://github.com/folke/flash.nvim" },
     { src = "https://github.com/folke/snacks.nvim" },
-    { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/folke/which-key.nvim" },
+    -- mini
     { src = "https://github.com/nvim-mini/mini.icons" },
-    { src = 'https://github.com/neovim/nvim-lspconfig' },
     { src = "https://github.com/nvim-mini/mini.comment" },
-    { src = "https://github.com/vimpostor/vim-tpipeline" },
-    { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/nvim-mini/mini.pairs" },
+    -- other
+    { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-    { src = "https://github.com/Saghen/blink.cmp",                version = "v1.8.0" },
 }, { load = true })
 
 require "vague".setup({ transparent = true, italic = false })
@@ -112,32 +115,18 @@ require("snacks").setup({
     styles = { input = { width = 40, noautocmd = false }, notification_history = { minimal = true }, },
 })
 
-local map = vim.keymap.set
 
--- find
+-- keymaps
+local map = vim.keymap.set
 map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
 map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
-
--- flash
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
-
--- oil
 map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
-
--- explorer
 map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
-
--- buffers
-map("n", "<leader><leader>", "<C-^>")
 map("n", "<leader>s", function() Snacks.picker.buffers() end, { desc = "buffers" })
-
--- vim.pack
-map("n", "<leader>u", function()
-    vim.pack.update(nil, { force = true })
-end, { desc = "update" })
-
--- general
+map("n", "<leader>u", function() vim.pack.update(nil, { force = true }) end, { desc = "update" })
+map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
@@ -171,6 +160,7 @@ local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local usercmd = vim.api.nvim_create_user_command
 
+-- lsp
 autocmd("LspAttach", {
     group = augroup("lsp-attach", { clear = true }),
     callback = function(event)
@@ -209,7 +199,6 @@ autocmd("LspAttach", {
     end,
 })
 
--- user command for installing treesitter grammars
 usercmd("TSInstallAll", function()
     require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "zig", "terraform", "go" })
 end, {})
@@ -225,12 +214,11 @@ vim.lsp.enable({
     "terraformls",   -- terraform
     "gopls",         -- go
 })
-
 vim.lsp.document_color.enable()
 
-vim.filetype.add({ extension = { fountain = "fountain" } })
 
 -- general writing
+vim.filetype.add({ extension = { fountain = "fountain" } })
 autocmd("FileType", {
     pattern = { "markdown", "typst", "fountain" },
     callback = function()
