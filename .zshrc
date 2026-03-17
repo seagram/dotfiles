@@ -19,7 +19,6 @@ alias td="terraform destroy -auto-approve"
 # exports
 export VISUAL="nvim"
 export EDITOR="nvim"
-export TERM="tmux-256color"
 export BROWSER="open"
 export CLICOLOR=YES
 
@@ -29,6 +28,7 @@ bindkey -v '^?' backward-delete-char # fix backspace in vi mode
 setopt auto_param_slash
 setopt no_case_glob no_case_match
 unsetopt prompt_sp
+setopt autocd
 
 # keys
 source ~/.keys
@@ -56,7 +56,6 @@ setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_find_no_dups
-setopt autocd
 
 # native zsh-syntax-highlighting
 autoload -Uz add-zle-hook-widget
@@ -90,17 +89,17 @@ if [ -z "$DISABLE_ZOXIDE" ]; then
     fzf-cd-widget() {
         local dir=$(zoxide query -l --no-tilde | fzf --height 40% --reverse)
         if [[ -n "$dir" ]]; then
-            zoxide "$dir"
+            __zoxide_z "$dir"
             zle reset-prompt
         fi
     }
+    zle -N fzf-cd-widget
+    bindkey '^f' fzf-cd-widget
 fi
-zle -N fzf-cd-widget
-bindkey '^f' fzf-cd-widget
 
 # starship.rs
-eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init zsh)"
 
 # fzf
 source <(fzf --zsh)
@@ -108,7 +107,7 @@ export FZF_DEFAULT_COMMAND="fd --hidden --exclude .git --ignore-file ~/.config/f
 export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top'
 
 # eza
-export EZA_CONFIG_DIR="~/.config/eza/"
+export EZA_CONFIG_DIR=~/.config/eza/
 
 # convert .docx/.doc to .pdf
 pdf() {
@@ -128,7 +127,7 @@ pdf() {
 ##### languages #####
 
 # python
-export PATH="~/.local/bin:$PATH"
+export PATH=~/.local/bin:$PATH
 alias python="python3"
 
 # c/c++
