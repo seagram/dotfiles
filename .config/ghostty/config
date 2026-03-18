@@ -42,20 +42,4 @@ split-inherit-working-directory = true
 
 custom-shader=shaders/cursor_warp.glsl
 
-# command=/opt/homebrew/bin/tmux
-
-keybind = ctrl+equal=new_tab
-keybind = ctrl+minus=close_tab
-keybind = ctrl+right_bracket=next_tab
-keybind = ctrl+left_bracket=previous_tab
-
-keybind = ctrl+apostrophe=new_split:right
-keybind = ctrl+semicolon=new_split:down
-
-keybind = ctrl+comma=goto_split:left
-keybind = ctrl+period=goto_split:right
-
-keybind = ctrl+a>ctrl+j=resize_split:down,15
-keybind = ctrl+a>ctrl+k=resize_split:up,15
-keybind = ctrl+a>ctrl+h=resize_split:left,15
-keybind = ctrl+a>ctrl+l=resize_split:right,15
+command=/opt/homebrew/bin/tmux
