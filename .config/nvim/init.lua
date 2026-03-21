@@ -1,3 +1,6 @@
+-- vim.env.PATH = vim.env.PATH .. ":/opt/homebrew/bin"
+-- vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/site")
+
 local global = vim.g
 global.mapleader = " "
 global.have_nerd_font = true
@@ -23,10 +26,16 @@ set.smartcase = true
 set.swapfile = false
 set.undofile = true
 set.wrap = false
+set.hlsearch = false
 set.confirm = true
 set.statusline = '%=%t %r %m'
 set.helpheight = 9999
 set.completeopt = "menuone,noselect,fuzzy,nosort"
+set.foldmethod = "expr"
+set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+set.foldtext = ""
+set.foldnestmax = 1
+set.foldlevelstart = 99
 
 vim.pack.add({
     -- core
@@ -47,6 +56,7 @@ vim.pack.add({
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/chomosuke/typst-preview.nvim" },
+    { src = "https://github.com/vimpostor/vim-tpipeline" },
 }, { load = true })
 
 require("mason").setup()
