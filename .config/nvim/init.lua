@@ -127,6 +127,7 @@ map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc
 map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
 map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
 map("n", "<leader>s", function() Snacks.picker.buffers() end, { desc = "buffers" })
+map("n", "<leader>z", function() Snacks.picker.spelling() end, { desc = "spell check" })
 map("n", "<leader>u", function() vim.pack.update(nil, { force = true }) end, { desc = "update" })
 map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-d>", "<C-d>zz")
