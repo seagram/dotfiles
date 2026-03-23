@@ -1,6 +1,3 @@
--- vim.env.PATH = vim.env.PATH .. ":/opt/homebrew/bin"
--- vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/site")
-
 local global = vim.g
 global.mapleader = " "
 global.have_nerd_font = true
@@ -59,7 +56,6 @@ vim.pack.add({
     { src = "https://github.com/vimpostor/vim-tpipeline" },
 }, { load = true })
 
-require("mason").setup()
 require("flash").setup()
 require("typst-preview").setup()
 require("nvim-treesitter").setup()
@@ -203,11 +199,27 @@ autocmd("LspAttach", {
 })
 
 usercmd("TSInstallAll", function()
-    require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "zig", "terraform", "go" })
+    require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "zig", "terraform", "go",
+        "haskell" })
 end, {})
 
 vim.lsp.config("lua_ls", {
     settings = { Lua = { runtime = { version = "LuaJIT" }, workspace = { library = { vim.env.VIMRUNTIME } }, }, },
+})
+
+require("mason").setup({
+    ensure_installed = {
+        "gopls",                   -- go
+        "clangd",                  -- c/c++
+        "haskell-language-server", -- haskell
+        "lua-language-server",     -- lua
+        "ruff",                    -- python
+        "rust_analyzer",           -- rust
+        "terraform-ls",            -- terraform
+        "tinymist",                -- typst
+        "ty",                      -- python
+        "zls",                     -- zig
+    }
 })
 
 vim.lsp.enable({
@@ -220,6 +232,7 @@ vim.lsp.enable({
     "zls",           -- zig
     "terraformls",   -- terraform
     "gopls",         -- go
+    "hls",           -- haskell
 })
 vim.lsp.document_color.enable()
 
