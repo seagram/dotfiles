@@ -130,13 +130,6 @@ pdf() {
 export PATH=~/.local/bin:$PATH
 alias python="python3"
 
-# c/c++
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export CC="/opt/homebrew/opt/llvm/bin/clang"
-export CXX="$CC++"
-export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/llvm/include"
-
 # kubernetes
 export KUBECONFIG=~/.config/kube/config
 
