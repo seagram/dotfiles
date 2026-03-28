@@ -15,6 +15,8 @@ alias zcc="zig c++"
 alias lg="lazygit"
 alias ta="terraform apply -auto-approve"
 alias td="terraform destroy -auto-approve"
+alias mr="mise run"
+alias me="mise exec --"
 
 # exports
 export VISUAL="nvim"
