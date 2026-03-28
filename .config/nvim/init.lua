@@ -103,7 +103,7 @@ require("snacks").setup({
         layouts = { ivy = { layout = { height = 0.3, title = "", }, }, },
         sources = {
             files = { cmd = "fd", hidden = true, ignored = false },
-            explorer = { hidden = true, ignored = false, auto_close = true },
+            explorer = { hidden = true, ignored = true, auto_close = true },
             smart = { multi = { "buffers", "recent", { source = "files", hidden = false, cwd = vim.env.HOME, } }, },
         },
     },
