@@ -1,5 +1,4 @@
 # aliases
-# use '\' before command to ignore alias
 alias ls='eza --color=always --long --no-filesize --no-time --no-user --no-permissions --icons=always --group-directories-first'
 alias tree='eza --tree --color=always --icons=always --group-directories-first --git-ignore'
 alias sz="exec zsh"
@@ -8,7 +7,6 @@ alias e="exit"
 alias t="tmux"
 alias v="nvim"
 alias lv=$'nvim -c "normal \'0"'
-alias k="kubectl"
 alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
 alias repo="open \$(git remote get-url origin) || echo 'no remote found'"
 alias zcc="zig c++"
@@ -17,6 +15,8 @@ alias ta="terraform apply -auto-approve"
 alias td="terraform destroy -auto-approve"
 alias mr="mise run"
 alias me="mise exec --"
+alias d="docker"
+alias k="kubectl"
 
 # exports
 export VISUAL="nvim"
@@ -25,6 +25,7 @@ export BROWSER="open"
 export CLICOLOR=YES
 
 # options
+stty -ixon # disable XON/XOFF to free ctrl+s keybinding
 setopt vi
 bindkey -v '^?' backward-delete-char # fix backspace in vi mode
 setopt auto_param_slash
