@@ -107,7 +107,7 @@ eval "$(starship init zsh)"
 # fzf
 source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND="fd --hidden --exclude .git --ignore-file ~/.config/fd/ignore . ~"
-export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top'
+export FZF_DEFAULT_OPTS_FILE=~/.config/fzf/config
 
 # eza
 export EZA_CONFIG_DIR=~/.config/eza/
