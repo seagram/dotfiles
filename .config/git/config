@@ -60,4 +60,7 @@
     bra = branch -a
     pr = pull --rebase
     amend = commit -a --amend --no-edit
-    ciam = commit -a --amend --no-edit   plain = blue
+    ciam = commit -a --amend --no-edit
+    trim = !git fetch -p && git branch --merged main | grep -v '^\\*\\|main' | xargs git branch -d
+[color "status"]
+    plain = blue
