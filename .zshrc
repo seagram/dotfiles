@@ -16,6 +16,7 @@ alias me="mise exec --"
 alias d="docker"
 alias k="kubectl"
 alias to="nvim ~/.todo.md"
+alias cr="cargo run"
 
 # exports
 export VISUAL="nvim"
@@ -107,6 +108,9 @@ eval "$(starship init zsh)"
 source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND="fd --hidden --exclude .git --ignore-file ~/.config/fd/ignore . ~"
 export FZF_DEFAULT_OPTS_FILE=~/.config/fzf/config
+
+# tv
+eval "$(tv init zsh)"
 
 # eza
 export EZA_CONFIG_DIR=~/.config/eza/
