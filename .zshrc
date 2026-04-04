@@ -7,7 +7,7 @@ alias e="exit"
 alias t="tmux"
 alias v="nvim"
 alias lv=$'nvim -c "normal \'0"'
-alias dot="cd ~/github/dotfiles/ && stow -t ~/ ."
+alias dot="cd ~/github/dotfiles/ && stow --ignore='\.DS_Store' -t ~/ ."
 alias repo="open \$(git remote get-url origin) || echo 'no remote found'"
 alias zcc="zig c++"
 alias lg="lazygit"
