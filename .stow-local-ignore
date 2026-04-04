@@ -1,10 +1,7 @@
 .git
 .gitignore
 .gitmodules
-
 ^/README.*
 ^/LICENSE.*
 ^/COPYING
-
 .DS_Store
-README.md
