@@ -15,7 +15,6 @@ alias mr="mise run"
 alias me="mise exec --"
 alias d="docker"
 alias k="kubectl"
-alias to="nvim ~/.todo.md"
 alias cr="cargo run"
 
 # exports
@@ -35,8 +34,6 @@ setopt autocd
 
 # keys
 source ~/.keys
-
-##### zsh #####
 
 # optimize completion init
 autoload -Uz compinit
@@ -74,8 +71,6 @@ add-zle-hook-widget line-pre-redraw _highlight_command
 # zsh completion
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 source <(carapace _carapace)
-
-##### tools #####
 
 # homebrew
 export HOMEBREW_NO_ENV_HINTS=TRUE
@@ -129,8 +124,6 @@ pdf() {
         tell application \"Pages\" to quit
     "
 }
-
-##### languages #####
 
 # python
 export PATH=~/.local/bin:$PATH
