@@ -1,0 +1,15 @@
+[metadata]
+name = "channels"
+description = "list all channels"
+
+[source]
+command = "tv list-channels | awk '$1 != \"channels\"'" # exclude `channels` from search
+display = "{split: :0}"
+
+[keybindings]
+enter = "actions:switch"
+
+[actions.switch]
+description = "switch to channel"
+command = "tv '{split: :0}'"
+mode = "execute"
