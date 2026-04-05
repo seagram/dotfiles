@@ -6,4 +6,4 @@ description = "files"
 command = "fd -t f -H"
 
 [preview]
-command = "bat -n --color=always {}"
+command = "cat {}"
