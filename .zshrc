@@ -9,12 +9,9 @@ alias v="nvim"
 alias lv=$'nvim -c "normal \'0"'
 alias dot="cd ~/github/dotfiles/ && stow --ignore='\.DS_Store' -t ~/ ."
 alias repo="open \$(git remote get-url origin) || echo 'no remote found'"
-alias zcc="zig c++"
 alias lg="lazygit"
 alias mr="mise run"
 alias me="mise exec --"
-alias d="docker"
-alias k="kubectl"
 alias cr="cargo run"
 
 # exports
