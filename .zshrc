@@ -84,31 +84,23 @@ alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --forc
 if [ -z "$DISABLE_ZOXIDE" ]; then
     alias cd="z"
     eval "$(zoxide init zsh)"
-    fzf-cd-widget() {
-        local dir=$(zoxide query -l --no-tilde | fzf --height 40% --reverse)
-        if [[ -n "$dir" ]]; then
-            __zoxide_z "$dir"
-            zle reset-prompt
-        fi
-    }
-    zle -N fzf-cd-widget
-    bindkey '^f' fzf-cd-widget
 fi
 
 # starship.rs
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
-# fzf
-source <(fzf --zsh)
-export FZF_DEFAULT_COMMAND="fd --hidden --exclude .git --ignore-file ~/.config/fd/ignore . ~"
-export FZF_DEFAULT_OPTS_FILE=~/.config/fzf/config
-
 # tv
 eval "$(tv init zsh)"
+tv-cd() { local d=$(tv dirs); [[ -n $d ]] && cd "$d" && zle reset-prompt; }
+zle -N tv-cd
+bindkey '^f' tv-cd
 
 # eza
 export EZA_CONFIG_DIR=~/.config/eza/
+
+# pi
+export PI_CODING_AGENT_DIR=~/.config/pi
 
 # convert .docx/.doc to .pdf
 pdf() {
