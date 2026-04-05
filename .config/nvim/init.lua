@@ -199,8 +199,7 @@ autocmd("LspAttach", {
 })
 
 usercmd("TSInstallAll", function()
-    require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "zig", "terraform", "go",
-        "haskell" })
+    require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "terraform", "go", })
 end, {})
 
 vim.lsp.config("lua_ls", {
@@ -209,16 +208,15 @@ vim.lsp.config("lua_ls", {
 
 require("mason").setup({
     ensure_installed = {
-        "gopls",                   -- go
-        "clangd",                  -- c/c++
-        "haskell-language-server", -- haskell
-        "lua-language-server",     -- lua
-        "ruff",                    -- python
-        "rust_analyzer",           -- rust
-        "terraform-ls",            -- terraform
-        "tinymist",                -- typst
-        "ty",                      -- python
-        "zls",                     -- zig
+        "gopls",               -- go
+        "clangd",              -- c/c++
+        "lua-language-server", -- lua
+        "ruff",                -- python
+        "rust_analyzer",       -- rust
+        "terraform-ls",        -- terraform
+        "tinymist",            -- typst
+        "ty",                  -- python
+        "zls",                 -- zig
     }
 })
 
@@ -232,7 +230,6 @@ vim.lsp.enable({
     "zls",           -- zig
     "terraformls",   -- terraform
     "gopls",         -- go
-    "hls",           -- haskell
 })
 vim.lsp.document_color.enable()
 
