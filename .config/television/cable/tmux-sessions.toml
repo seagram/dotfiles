@@ -1,0 +1,15 @@
+[metadata]
+name = "tmux-sessions"
+description = "launch preconfigured tmux sessions"
+requirements = ["tmux"]
+
+[source]
+command = "~/.config/tmux/tsl.sh --list"
+
+[keybindings]
+enter = "actions:launch"
+
+[actions.launch]
+description = "Launch tmux session"
+command = "~/.config/tmux/tsl.sh '{}'"
+mode = "execute"
