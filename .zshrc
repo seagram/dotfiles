@@ -5,6 +5,7 @@ alias sz="exec zsh"
 alias c="clear"
 alias e="exit"
 alias t="tmux"
+alias tvt="tv tmux-sessions"
 alias v="nvim"
 alias lv=$'nvim -c "normal \'0"'
 alias dot="cd ~/github/dotfiles/ && stow --ignore='\.DS_Store' -t ~/ ."
