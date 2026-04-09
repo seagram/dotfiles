@@ -14,6 +14,7 @@ alias lg="lazygit"
 alias mr="mise run"
 alias me="mise exec --"
 alias cr="cargo run"
+alias ts="tailscale"
 
 # exports
 export VISUAL="nvim"
