@@ -68,22 +68,7 @@ require("vague").setup({ transparent = true, italic = false })
 vim.cmd("colorscheme vague")
 vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 
-require("oil").setup({
-    skip_confirm_for_simple_edits = true,
-    columns = {},
-    view_options = { show_hidden = true, },
-    float = {
-        padding = 0,
-        override = function(conf)
-            conf.height = vim.o.lines - 4
-            conf.width = math.floor(conf.height * 2.5)
-            conf.col = math.floor((vim.o.columns - conf.width) / 2)
-            conf.row = math.floor((vim.o.lines - conf.height) / 2)
-            conf.border = "rounded"
-            return conf
-        end,
-    },
-})
+require("oil").setup({ skip_confirm_for_simple_edits = true, view_options = { show_hidden = true, }, })
 
 require("blink.cmp").setup({
     keymap = {
@@ -103,7 +88,7 @@ require("snacks").setup({
         layouts = { ivy = { layout = { height = 0.3, title = "", }, }, },
         sources = {
             files = { cmd = "fd", hidden = true, ignored = false },
-            explorer = { hidden = true, ignored = true, auto_close = true },
+            explorer = { hidden = true, ignored = true, auto_close = true, win = { list = { keys = { ["t"] = "tab" } } } },
             smart = { multi = { "buffers", "recent", { source = "files", hidden = false, cwd = vim.env.HOME, } }, },
         },
     },
@@ -118,14 +103,25 @@ require("snacks").setup({
 local map = vim.keymap.set
 map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
 map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
+map("n", "<leader>t", function()
+    Snacks.picker.files({
+        win = {
+            input = { keys = { ["<CR>"] = { "tab", mode = { "n", "i" } } } },
+            list = { keys = { ["<CR>"] = "tab" } },
+        },
+    })
+end, { desc = "files in new tab" })
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
 map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
 map("n", "<leader>s", function() Snacks.picker.buffers() end, { desc = "buffers" })
 map("n", "<leader>z", function() Snacks.picker.spelling() end, { desc = "spell check" })
+map("n", "<leader>rd", function() vim.fn.jobstart({ "rustup", "doc", "--std" }, { detach = true }) end)
 map("n", "<leader>u", function() vim.pack.update(nil, { force = true }) end, { desc = "update" })
 map("n", "<leader><leader>", "<C-^>")
+map("n", "<C-l>", "<cmd>tabnext<CR>", { desc = "next tab" })
+map("n", "<C-h>", "<cmd>tabprevious<CR>", { desc = "previous tab" })
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
