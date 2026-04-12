@@ -95,6 +95,7 @@ require("snacks").setup({
     explorer = { replace_netrw = false },
     indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
     notifier = { style = "minimal" },
+    zen = { toggles = { dim = false }, show = { statusline = false, tabline = false }, win = { style = "zen", minimal = true, width = 100, wo = { wrap = true, number = false, relativenumber = false, signcolumn = "no", statuscolumn = "", }, }, },
     styles = { input = { width = 40, noautocmd = false }, notification_history = { minimal = true }, },
 })
 
@@ -103,20 +104,13 @@ require("snacks").setup({
 local map = vim.keymap.set
 map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
 map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
-map("n", "<leader>t", function()
-    Snacks.picker.files({
-        win = {
-            input = { keys = { ["<CR>"] = { "tab", mode = { "n", "i" } } } },
-            list = { keys = { ["<CR>"] = "tab" } },
-        },
-    })
-end, { desc = "files in new tab" })
+map("n", "<leader>t", function() Snacks.picker.files({ win = { input = { keys = { ["<CR>"] = { "tab", mode = { "n", "i" } } } }, list = { keys = { ["<CR>"] = "tab" } }, }, }) end, { desc = "files in new tab" })
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
 map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
-map("n", "<leader>s", function() Snacks.picker.buffers() end, { desc = "buffers" })
-map("n", "<leader>z", function() Snacks.picker.spelling() end, { desc = "spell check" })
+map("n", "<leader>b", function() Snacks.picker.buffers() end, { desc = "buffers" })
+map("n", "<leader>s", function() Snacks.picker.spelling() end, { desc = "spell check" })
 map("n", "<leader>rd", function() vim.fn.jobstart({ "rustup", "doc", "--std" }, { detach = true }) end)
 map("n", "<leader>u", function() vim.pack.update(nil, { force = true }) end, { desc = "update" })
 map("n", "<leader><leader>", "<C-^>")
@@ -239,13 +233,10 @@ autocmd("FileType", {
     callback = function()
         local loc = vim.opt_local
         loc.textwidth = vim.o.columns
-        loc.wrap = true
-        loc.linebreak = true
-        loc.showbreak = "↪ "
         loc.spell = true
         loc.spelllang = "en"
-        vim.keymap.set("n", "<leader>r", function()
-            loc.wrap = not loc.wrap:get()
-        end, { buffer = true, desc = "toggle word wrap" })
+        vim.keymap.set("n", "<leader>z", function()
+            Snacks.zen()
+        end, { buffer = true, desc = "toggle zen mode" })
     end,
 })
