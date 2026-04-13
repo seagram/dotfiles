@@ -33,32 +33,28 @@ set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 set.foldtext = ""
 set.foldnestmax = 1
 set.foldlevelstart = 99
+set.ttimeoutlen = 1
 
 vim.pack.add({
-    -- core
     { src = 'https://github.com/neovim/nvim-lspconfig' },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/Saghen/blink.cmp",                version = "v1.8.0" },
-    -- folke
     { src = "https://github.com/folke/flash.nvim" },
     { src = "https://github.com/folke/snacks.nvim" },
     { src = "https://github.com/folke/which-key.nvim" },
-    -- mini
     { src = "https://github.com/nvim-mini/mini.icons" },
     { src = "https://github.com/nvim-mini/mini.comment" },
     { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/nvim-mini/mini.pairs" },
-    -- other
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/vague2k/vague.nvim" },
-    { src = "https://github.com/chomosuke/typst-preview.nvim" },
     { src = "https://github.com/vimpostor/vim-tpipeline" },
 }, { load = true })
 
+
+require("mason").setup()
 require("flash").setup()
-require("typst-preview").setup()
-require("nvim-treesitter").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
@@ -99,12 +95,10 @@ require("snacks").setup({
     styles = { input = { width = 40, noautocmd = false }, notification_history = { minimal = true }, },
 })
 
-
 -- keymaps
 local map = vim.keymap.set
 map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
 map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
-map("n", "<leader>t", function() Snacks.picker.files({ win = { input = { keys = { ["<CR>"] = { "tab", mode = { "n", "i" } } } }, list = { keys = { ["<CR>"] = "tab" } }, }, }) end, { desc = "files in new tab" })
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
@@ -112,7 +106,6 @@ map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
 map("n", "<leader>b", function() Snacks.picker.buffers() end, { desc = "buffers" })
 map("n", "<leader>s", function() Snacks.picker.spelling() end, { desc = "spell check" })
 map("n", "<leader>rd", function() vim.fn.jobstart({ "rustup", "doc", "--std" }, { detach = true }) end)
-map("n", "<leader>u", function() vim.pack.update(nil, { force = true }) end, { desc = "update" })
 map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-l>", "<cmd>tabnext<CR>", { desc = "next tab" })
 map("n", "<C-h>", "<cmd>tabprevious<CR>", { desc = "previous tab" })
@@ -131,19 +124,10 @@ map("v", ">", ">gv")
 map('n', "<leader>w", "<cmd>write<CR>")
 map('n', "<leader>q", "<cmd>quit<CR>")
 
-
-vim.diagnostic.config({
-    signs = {
-        text = {
-            [vim.diagnostic.severity.ERROR] = "󰝤 ",
-            [vim.diagnostic.severity.WARN] = "󰝤 ",
-            [vim.diagnostic.severity.HINT] = "󰝤 ",
-            [vim.diagnostic.severity.INFO] = "󰝤 ",
-        },
-    },
-    float = { border = "rounded", source = true, },
-    virtual_text = { current_line = true, },
-})
+local sign = "󰝤 "
+local vd = vim.diagnostic
+local sev = vd.severity
+vd.config({ signs = { text = { [sev.ERROR] = sign, [sev.WARN] = sign, [sev.HINT] = sign, [sev.INFO] = sign, }, }, float = { border = "rounded", source = true }, virtual_text = { current_line = true }, })
 
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
@@ -188,45 +172,62 @@ autocmd("LspAttach", {
     end,
 })
 
+vim.cmd('syntax off')
+local treesitter_grammars = { "python", "typst", "rust", "terraform", "go", "yaml" }
+autocmd("FileType", {
+    group = augroup("treesitter-start", { clear = true }),
+    callback = function(args)
+        pcall(vim.treesitter.start, args.buf)
+    end,
+})
+
 usercmd("TSInstallAll", function()
-    require("nvim-treesitter").install({ "lua", "python", "typst", "rust", "c", "cpp", "terraform", "go", "nix", })
+    require("nvim-treesitter").install(treesitter_grammars)
+end, {})
+
+usercmd("TSUninstallAll", function()
+    local ts, i = require("nvim-treesitter"), require("nvim-treesitter").get_installed()
+    if #i == 0 then return vim.notify("err: no grammars installed", vim.log.levels.INFO) end
+    ts.uninstall(i, { summary = true })
+end, {})
+
+
+usercmd("PackUpdateAll", function()
+    local p = vim.iter(vim.pack.get()):map(function(x) return x.spec.name end):totable()
+    if #p == 0 then return vim.notify("err: no plugins installed", vim.log.levels.INFO) end
+    vim.pack.update(p, { force = true })
+end, {})
+
+usercmd("PackUninstallAll", function()
+    local p = vim.iter(vim.pack.get()):map(function(x) return x.spec.name end):totable()
+    if #p == 0 then return vim.notify("err: no plugins installed", vim.log.levels.INFO) end
+    vim.pack.del(p, { force = true })
+    vim.cmd("qa!")
+end, {})
+
+local mason_lsps = { "gopls", "lua-language-server", "rust-analyzer", "terraform-ls", "tinymist", "ty", }
+local nvim_lsps = { "gopls", "lua_ls", "rust_analyzer", "terraformls", "tinymist", "ty", "clangd", }
+usercmd("MasonInstallAll", function()
+    vim.cmd("MasonInstall " .. table.concat(mason_lsps, " "))
 end, {})
 
 vim.lsp.config("lua_ls", {
     settings = { Lua = { runtime = { version = "LuaJIT" }, workspace = { library = { vim.env.VIMRUNTIME } }, }, },
 })
 
-require("mason").setup({
-    ensure_installed = {
-        "gopls",               -- go
-        "clangd",              -- c/c++
-        "lua-language-server", -- lua
-        "ruff",                -- python
-        "rust_analyzer",       -- rust
-        "terraform-ls",        -- terraform
-        "tinymist",            -- typst
-        "ty",                  -- python
-        "zls",                 -- zig
-        "nil",                 -- nix
-    }
-})
-
-vim.lsp.enable({
-    "lua_ls",        -- lua
-    "ty",            -- python
-    "ruff",          -- python
-    "tinymist",      -- typst
-    "rust_analyzer", -- rust
-    "clangd",        -- c/c++
-    "zls",           -- zig
-    "terraformls",   -- terraform
-    "gopls",         -- go
-    "nil",           -- nix
-})
+vim.lsp.enable(nvim_lsps)
 vim.lsp.document_color.enable()
 
-
 -- general writing
+vim.pack.add({ { src = "https://github.com/chomosuke/typst-preview.nvim" }, }, { load = function() end })
+autocmd("FileType", {
+    pattern = "typst",
+    once = true,
+    callback = function()
+        vim.cmd.packadd("typst-preview.nvim")
+        require("typst-preview").setup()
+    end
+})
 vim.filetype.add({ extension = { fountain = "fountain" } })
 autocmd("FileType", {
     pattern = { "markdown", "typst", "fountain" },
@@ -235,8 +236,6 @@ autocmd("FileType", {
         loc.textwidth = vim.o.columns
         loc.spell = true
         loc.spelllang = "en"
-        vim.keymap.set("n", "<leader>z", function()
-            Snacks.zen()
-        end, { buffer = true, desc = "toggle zen mode" })
+        vim.keymap.set("n", "<leader>z", function() Snacks.zen() end, { buffer = true, desc = "toggle zen mode" })
     end,
 })
