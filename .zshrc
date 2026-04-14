@@ -89,12 +89,6 @@ fi
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
-# tv
-eval "$(tv init zsh)"
-tv-cd() { local d=$(tv dirs); [[ -n $d ]] && cd "$d" && zle reset-prompt; }
-zle -N tv-cd
-bindkey '^f' tv-cd
-
 # eza
 export EZA_CONFIG_DIR=~/.config/eza/
 
@@ -125,3 +119,6 @@ export KUBECONFIG=~/.config/kube/config
 
 # talos
 export TALOSCONFIG=~/.config/talos/config
+
+source <(fzf --zsh)
+export FZF_DEFAULT_OPTS_FILE=~/.config/fzf/config
