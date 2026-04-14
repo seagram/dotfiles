@@ -173,7 +173,7 @@ autocmd("LspAttach", {
 })
 
 vim.cmd('syntax off')
-local treesitter_grammars = { "python", "typst", "rust", "terraform", "go", "yaml" }
+local treesitter_grammars = { "python", "typst", "rust", "terraform", "go", "yaml", "xml", "zsh" }
 autocmd("FileType", {
     group = augroup("treesitter-start", { clear = true }),
     callback = function(args)
