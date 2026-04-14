@@ -11,6 +11,8 @@ set.relativenumber = true
 set.fillchars = { eob = " " }
 set.scrolloff = 8
 set.pumheight = 5
+set.pummaxwidth = 100
+set.pumborder = "rounded"
 set.cmdheight = 0
 set.winborder = "rounded"
 set.tabstop = 4
@@ -39,7 +41,6 @@ vim.pack.add({
     { src = 'https://github.com/neovim/nvim-lspconfig' },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
     { src = "https://github.com/williamboman/mason.nvim" },
-    { src = "https://github.com/Saghen/blink.cmp",                version = "v1.8.0" },
     { src = "https://github.com/folke/flash.nvim" },
     { src = "https://github.com/folke/snacks.nvim" },
     { src = "https://github.com/folke/which-key.nvim" },
@@ -65,18 +66,6 @@ vim.cmd("colorscheme vague")
 vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 
 require("oil").setup({ skip_confirm_for_simple_edits = true, view_options = { show_hidden = true, }, })
-
-require("blink.cmp").setup({
-    keymap = {
-        preset = "enter",
-        ['<Tab>'] = { "accept", "fallback" },
-        ["<C-j>"] = { "select_next", "fallback" },
-        ["<C-k>"] = { "select_prev", "fallback" },
-    },
-    enabled = function()
-        return not vim.tbl_contains({ "fountain", "markdown", "typst" }, vim.bo.filetype)
-    end,
-})
 
 require("snacks").setup({
     picker = {
@@ -137,6 +126,7 @@ local usercmd = vim.api.nvim_create_user_command
 autocmd("LspAttach", {
     group = augroup("lsp-attach", { clear = true }),
     callback = function(event)
+        local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
         local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
         end
@@ -151,6 +141,20 @@ autocmd("LspAttach", {
         map("gR", vim.lsp.buf.rename, "rename")
         map("gF", vim.lsp.buf.format, "format")
         map("<leader>d", vim.diagnostic.open_float, "diagnostic")
+
+        if client:supports_method("textDocument/completion")
+            and not vim.tbl_contains({ "fountain", "markdown", "typst" }, vim.bo[event.buf].filetype) then
+            vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+            local function pum_map(lhs, when_visible, when_hidden, desc)
+                vim.keymap.set("i", lhs, function()
+                    return vim.fn.pumvisible() == 1 and when_visible or when_hidden
+                end, { expr = true, buffer = event.buf, desc = desc })
+            end
+            pum_map("<C-j>", "<C-n>", "<C-j>", "next completion")
+            pum_map("<C-k>", "<C-p>", "<C-k>", "prev completion")
+            pum_map("<Tab>", "<C-y>", "<Tab>", "accept completion")
+            pum_map("<Esc>", "<C-e><Esc>", "<Esc>", "cancel completion")
+        end
     end,
 })
 
@@ -190,7 +194,6 @@ usercmd("TSUninstallAll", function()
     if #i == 0 then return vim.notify("err: no grammars installed", vim.log.levels.INFO) end
     ts.uninstall(i, { summary = true })
 end, {})
-
 
 usercmd("PackUpdateAll", function()
     local p = vim.iter(vim.pack.get()):map(function(x) return x.spec.name end):totable()
