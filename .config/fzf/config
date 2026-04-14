@@ -1,0 +1,11 @@
+--height ~10
+--layout reverse
+--border none
+--info='inline:   '
+--prompt "› "
+--pointer " "
+--marker " "
+--no-separator
+--scrollbar ""
+--color=fg:7,fg+:7,hl:8,hl+:8,border:8,info:8,prompt:7,spinner:8,pointer:8,marker:8,header:8
+--no-bold
