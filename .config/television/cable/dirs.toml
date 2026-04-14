@@ -1,6 +1,0 @@
-[metadata]
-name = "dirs"
-description = "directories"
-
-[source]
-command = "fd -t d -H"

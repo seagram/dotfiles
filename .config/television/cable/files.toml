@@ -1,9 +1,0 @@
-[metadata]
-name = "files"
-description = "files"
-
-[source]
-command = "fd -t f -H"
-
-[preview]
-command = "cat {}"
