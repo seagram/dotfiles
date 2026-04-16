@@ -1,8 +1,6 @@
 local global = vim.g
 global.mapleader = " "
 global.have_nerd_font = true
-global.loaded_netrw = 1
-global.loaded_netrwPlugin = 1
 
 local set = vim.opt
 set.clipboard = "unnamedplus"
@@ -65,7 +63,12 @@ require("vague").setup({ transparent = true, italic = false })
 vim.cmd("colorscheme vague")
 vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 
-require("oil").setup({ skip_confirm_for_simple_edits = true, view_options = { show_hidden = true, }, })
+require("oil").setup({
+    default_file_explorer = false,
+    skip_confirm_for_simple_edits = true,
+    keymaps = { ["="] = "actions.close", },
+    view_options = { show_hidden = true, },
+})
 
 require("snacks").setup({
     picker = {
@@ -90,7 +93,8 @@ map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
 map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
-map("n", "<leader>o", function() require("oil").toggle_float() end, { desc = "toggle oil" })
+map("n", "-", function() require("oil").open() end, { desc = "open oil" })
+map("n", "<leader>r", "<cmd>Vexplore<CR>", { desc = "open netrw" })
 map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
 map("n", "<leader>b", function() Snacks.picker.buffers() end, { desc = "buffers" })
 map("n", "<leader>s", function() Snacks.picker.spelling() end, { desc = "spell check" })
@@ -176,8 +180,8 @@ autocmd("LspAttach", {
     end,
 })
 
-vim.cmd('syntax off')
-local treesitter_grammars = { "python", "typst", "rust", "terraform", "go", "yaml", "xml", "zsh" }
+-- vim.cmd('syntax off')
+local treesitter_grammars = { "typst", "rust", "terraform", "yaml", "xml", "zsh" }
 autocmd("FileType", {
     group = augroup("treesitter-start", { clear = true }),
     callback = function(args)
@@ -195,21 +199,27 @@ usercmd("TSUninstallAll", function()
     ts.uninstall(i, { summary = true })
 end, {})
 
-usercmd("PackUpdateAll", function()
+local installed_pack_names = function()
     local p = vim.iter(vim.pack.get()):map(function(x) return x.spec.name end):totable()
     if #p == 0 then return vim.notify("err: no plugins installed", vim.log.levels.INFO) end
+    return p
+end
+
+usercmd("PackUpdateAll", function()
+    local p = installed_pack_names()
+    if not p then return end
     vim.pack.update(p, { force = true })
 end, {})
 
 usercmd("PackUninstallAll", function()
-    local p = vim.iter(vim.pack.get()):map(function(x) return x.spec.name end):totable()
-    if #p == 0 then return vim.notify("err: no plugins installed", vim.log.levels.INFO) end
+    local p = installed_pack_names()
+    if not p then return end
     vim.pack.del(p, { force = true })
     vim.cmd("qa!")
 end, {})
 
-local mason_lsps = { "gopls", "lua-language-server", "rust-analyzer", "terraform-ls", "tinymist", "ty", }
-local nvim_lsps = { "gopls", "lua_ls", "rust_analyzer", "terraformls", "tinymist", "ty", "clangd", }
+local mason_lsps = { "lua-language-server", "rust-analyzer", "terraform-ls", "tinymist" }
+local nvim_lsps = { "lua_ls", "rust_analyzer", "terraformls", "tinymist" }
 usercmd("MasonInstallAll", function()
     vim.cmd("MasonInstall " .. table.concat(mason_lsps, " "))
 end, {})
@@ -221,7 +231,6 @@ vim.lsp.config("lua_ls", {
 vim.lsp.enable(nvim_lsps)
 vim.lsp.document_color.enable()
 
--- general writing
 vim.pack.add({ { src = "https://github.com/chomosuke/typst-preview.nvim" }, }, { load = function() end })
 autocmd("FileType", {
     pattern = "typst",
