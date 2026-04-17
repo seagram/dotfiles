@@ -218,8 +218,8 @@ usercmd("PackUninstallAll", function()
     vim.cmd("qa!")
 end, {})
 
-local mason_lsps = { "lua-language-server", "rust-analyzer", "terraform-ls", "tinymist" }
-local nvim_lsps = { "lua_ls", "rust_analyzer", "terraformls", "tinymist" }
+local mason_lsps = { "lua-language-server", "rust-analyzer", "terraform-ls", "tinymist", "clangd" }
+local nvim_lsps = { "lua_ls", "rust_analyzer", "terraformls", "tinymist", "clangd" }
 usercmd("MasonInstallAll", function()
     vim.cmd("MasonInstall " .. table.concat(mason_lsps, " "))
 end, {})
