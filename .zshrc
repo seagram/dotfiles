@@ -13,6 +13,9 @@ alias repo="open \$(git remote get-url origin) || echo 'no remote found'"
 alias lg="lazygit"
 alias mr="mise run"
 alias me="mise exec --"
+alias x="mise exec --"
+alias d="docker"
+alias k="kubectl"
 alias cr="cargo run"
 alias ts="tailscale"
 
@@ -120,5 +123,9 @@ export KUBECONFIG=~/.config/kube/config
 # talos
 export TALOSCONFIG=~/.config/talos/config
 
+# fzf
 source <(fzf --zsh)
 export FZF_DEFAULT_OPTS_FILE=~/.config/fzf/config
+
+# mise
+eval "$(mise activate zsh)"
