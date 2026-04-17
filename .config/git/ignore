@@ -1,5 +1,3 @@
 .DS_Store
-.claude
-CLAUDE.md
-node_modules
+AGENTS.md
 TODO.md
