@@ -25,7 +25,7 @@ set.undofile = true
 set.wrap = false
 set.hlsearch = false
 set.confirm = true
-set.statusline = '%=%t %r %m'
+set.laststatus = 0 -- set.statusline = '%=%t %r %m'
 set.helpheight = 9999
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 set.foldmethod = "expr"
@@ -47,8 +47,6 @@ vim.pack.add({
     { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/nvim-mini/mini.pairs" },
     { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/vague2k/vague.nvim" },
-    { src = "https://github.com/vimpostor/vim-tpipeline" },
 }, { load = true })
 
 
@@ -59,8 +57,7 @@ require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
-require("vague").setup({ transparent = true, italic = false })
-vim.cmd("colorscheme vague")
+vim.cmd.colorscheme("quiet")
 vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
 
 require("oil").setup({
@@ -80,7 +77,7 @@ require("snacks").setup({
             smart = { multi = { "buffers", "recent", { source = "files", hidden = false, cwd = vim.env.HOME, } }, },
         },
     },
-    explorer = { replace_netrw = false },
+    explorer = { replace_netrw = true },
     indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
     notifier = { style = "minimal" },
     zen = { toggles = { dim = false }, show = { statusline = false, tabline = false }, win = { style = "zen", minimal = true, width = 100, wo = { wrap = true, number = false, relativenumber = false, signcolumn = "no", statuscolumn = "", }, }, },
@@ -98,6 +95,10 @@ map("n", "<leader>r", "<cmd>Vexplore<CR>", { desc = "open netrw" })
 map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
 map("n", "<leader>b", function() Snacks.picker.buffers() end, { desc = "buffers" })
 map("n", "<leader>s", function() Snacks.picker.spelling() end, { desc = "spell check" })
+map("n", "<leader>c", function() Snacks.picker.commands() end, { desc = "commands" })
+map("n", "<leader>ghi", function() Snacks.picker.gh_issue() end, { desc = "github issues" })
+map("n", "<leader>ghp", function() Snacks.picker.gh_pr() end, { desc = "github prs" })
+map("n", "<leader>d", function() Snacks.picker.diagnostics() end, { desc = "diagnostics" })
 map("n", "<leader>rd", function() vim.fn.jobstart({ "rustup", "doc", "--std" }, { detach = true }) end)
 map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-l>", "<cmd>tabnext<CR>", { desc = "next tab" })
