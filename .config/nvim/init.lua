@@ -47,6 +47,8 @@ vim.pack.add({
     { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/nvim-mini/mini.pairs" },
     { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
+    { src = "https://github.com/nvim-telescope/telescope.nvim" },
 }, { load = true })
 
 
@@ -68,15 +70,6 @@ require("oil").setup({
 })
 
 require("snacks").setup({
-    picker = {
-        layout = { preset = "ivy", preview = false },
-        layouts = { ivy = { layout = { height = 0.3, title = "", }, }, },
-        sources = {
-            files = { cmd = "fd", hidden = true, ignored = false },
-            explorer = { hidden = true, ignored = true, auto_close = true, win = { list = { keys = { ["t"] = "tab" } } } },
-            smart = { multi = { "buffers", "recent", { source = "files", hidden = false, cwd = vim.env.HOME, } }, },
-        },
-    },
     explorer = { replace_netrw = true },
     indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
     notifier = { style = "minimal" },
@@ -84,21 +77,43 @@ require("snacks").setup({
     styles = { input = { width = 40, noautocmd = false }, notification_history = { minimal = true }, },
 })
 
+local telescope = require("telescope")
+local themes = require("telescope.themes")
+local tel_builtin = require("telescope.builtin")
+local tel_no_win_titles = { prompt_title = false, results_title = false }
+telescope.setup({
+    defaults = vim.tbl_deep_extend("force", themes.get_ivy({}), {
+        layout_config = { height = 0.25 },
+    }, tel_no_win_titles),
+    pickers = {
+        find_files = vim.tbl_extend("force", {
+            preview = false,
+            hidden = true,
+            find_command = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix" },
+        }, tel_no_win_titles),
+        live_grep = vim.tbl_extend("force", {
+            additional_args = function() return { "--hidden" } end,
+        }, tel_no_win_titles),
+        buffers = vim.tbl_extend("force", {}, tel_no_win_titles),
+        spell_suggest = vim.tbl_extend("force", {}, tel_no_win_titles),
+        commands = vim.tbl_extend("force", {}, tel_no_win_titles),
+        diagnostics = vim.tbl_extend("force", {}, tel_no_win_titles),
+    },
+})
+
 -- keymaps
 local map = vim.keymap.set
-map("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "files" })
-map("n", "<leader>g", function() Snacks.picker.grep({ cwd = "." }) end, { desc = "grep" })
+map("n", "<leader>f", tel_builtin.find_files, { desc = "files" })
+map("n", "<leader>g", tel_builtin.live_grep, { desc = "grep" })
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 map("n", "-", function() require("oil").open() end, { desc = "open oil" })
 map("n", "<leader>r", "<cmd>Vexplore<CR>", { desc = "open netrw" })
 map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
-map("n", "<leader>b", function() Snacks.picker.buffers() end, { desc = "buffers" })
-map("n", "<leader>s", function() Snacks.picker.spelling() end, { desc = "spell check" })
-map("n", "<leader>c", function() Snacks.picker.commands() end, { desc = "commands" })
-map("n", "<leader>ghi", function() Snacks.picker.gh_issue() end, { desc = "github issues" })
-map("n", "<leader>ghp", function() Snacks.picker.gh_pr() end, { desc = "github prs" })
-map("n", "<leader>d", function() Snacks.picker.diagnostics() end, { desc = "diagnostics" })
+map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
+map("n", "<leader>s", tel_builtin.spell_suggest, { desc = "spell check" })
+map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
+map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
 map("n", "<leader>rd", function() vim.fn.jobstart({ "rustup", "doc", "--std" }, { detach = true }) end)
 map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-l>", "<cmd>tabnext<CR>", { desc = "next tab" })
