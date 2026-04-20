@@ -18,6 +18,7 @@ alias d="docker"
 alias k="kubectl"
 alias cr="cargo run"
 alias ts="tailscale"
+alias ff="fastfetch"
 
 # exports
 export VISUAL="nvim"
