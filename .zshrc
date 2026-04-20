@@ -39,11 +39,13 @@ setopt autocd
 source ~/.keys
 
 # optimize completion init
+zmodload zsh/datetime zsh/stat
 autoload -Uz compinit
-if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
-    compinit
+zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+if zstat -A zcompdump_mtime +mtime -- "$zcompdump" 2>/dev/null && (( EPOCHSECONDS - zcompdump_mtime[1] < 86400 )); then
+    compinit -C -d "$zcompdump"
 else
-    compinit -C
+    compinit -d "$zcompdump"
 fi
 
 # zstyle
@@ -73,7 +75,7 @@ add-zle-hook-widget line-pre-redraw _highlight_command
 
 # zsh completion
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-source <(carapace _carapace)
+source <(carapace _carapace zsh)
 
 # homebrew
 export HOMEBREW_NO_ENV_HINTS=TRUE
