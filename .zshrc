@@ -1,5 +1,5 @@
 # aliases
-alias ls='eza --color=always --long --no-filesize --no-time --no-user --no-permissions --icons=always --group-directories-first'
+alias ls='eza --color=always --oneline --icons=always --group-directories-first'
 alias tree='eza --tree --color=always --icons=always --group-directories-first --git-ignore'
 alias sz="exec zsh"
 alias c="clear"
