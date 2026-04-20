@@ -1,6 +1,8 @@
 local global = vim.g
 global.mapleader = " "
 global.have_nerd_font = true
+global.loaded_netrw = 1
+global.loaded_netrwPlugin = 1
 
 local set = vim.opt
 set.clipboard = "unnamedplus"
@@ -47,6 +49,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-mini/mini.surround" },
     { src = "https://github.com/nvim-mini/mini.pairs" },
     { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/nvim-tree/nvim-tree.lua" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
 }, { load = true })
@@ -69,8 +72,18 @@ require("oil").setup({
     view_options = { show_hidden = true, },
 })
 
+local nvim_tree_api = require("nvim-tree.api")
+require("nvim-tree").setup({
+    git = { enable = false },
+    filters = { dotfiles = false },
+    view = { width = 30, side = "right" },
+    renderer = { group_empty = true },
+    actions = {
+        open_file = { quit_on_open = true },
+    },
+})
+
 require("snacks").setup({
-    explorer = { replace_netrw = true },
     indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
     notifier = { style = "minimal" },
     zen = { toggles = { dim = false }, show = { statusline = false, tabline = false }, win = { style = "zen", minimal = true, width = 100, wo = { wrap = true, number = false, relativenumber = false, signcolumn = "no", statuscolumn = "", }, }, },
@@ -89,6 +102,7 @@ telescope.setup({
         find_files = vim.tbl_extend("force", {
             preview = false,
             hidden = true,
+            cwd = vim.uv.os_homedir(),
             find_command = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix" },
         }, tel_no_win_titles),
         live_grep = vim.tbl_extend("force", {
@@ -108,8 +122,7 @@ map("n", "<leader>g", tel_builtin.live_grep, { desc = "grep" })
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 map("n", "-", function() require("oil").open() end, { desc = "open oil" })
-map("n", "<leader>r", "<cmd>Vexplore<CR>", { desc = "open netrw" })
-map("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer" })
+map("n", "<leader>e", function() nvim_tree_api.tree.toggle({ find_file = true, focus = true }) end, { desc = "tree" })
 map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
 map("n", "<leader>s", tel_builtin.spell_suggest, { desc = "spell check" })
 map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
