@@ -62,8 +62,15 @@ require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
+
 vim.cmd.colorscheme("quiet")
-vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
+local hl = vim.api.nvim_set_hl
+hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+hl(0, "LineNr", { fg = "#707070" })
+hl(0, "CursorLineNr", { fg = "#707070", bg = "#303030" })
+hl(0, "Visual", { bg = "#707070" })
+hl(0, "IncSearch", { bg = "#707070" })
+hl(0, "StatusLine", { bg = "NONE" })
 
 require("oil").setup({
     default_file_explorer = false,
