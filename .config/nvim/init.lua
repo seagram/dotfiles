@@ -52,6 +52,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-tree/nvim-tree.lua" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
+    { src = "https://github.com/vague-theme/vague.nvim" },
 }, { load = true })
 
 
@@ -62,15 +63,8 @@ require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
-
-vim.cmd.colorscheme("quiet")
-local hl = vim.api.nvim_set_hl
-hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
-hl(0, "LineNr", { fg = "#707070" })
-hl(0, "CursorLineNr", { fg = "#707070", bg = "#303030" })
-hl(0, "Visual", { bg = "#707070" })
-hl(0, "IncSearch", { bg = "#707070" })
-hl(0, "StatusLine", { bg = "NONE" })
+require("vague").setup({ transparent = true })
+vim.cmd.colorscheme("vague")
 
 require("oil").setup({
     default_file_explorer = false,
@@ -217,7 +211,35 @@ autocmd("LspAttach", {
 })
 
 -- vim.cmd('syntax off')
-local treesitter_grammars = { "typst", "rust", "terraform", "yaml", "xml", "zsh" }
+local languages = {
+    rust = { ts = "rust", mason = "rust-analyzer", lsp = "rust_analyzer" },
+    typst = { ts = "typst", mason = "tinymist", lsp = "tinymist" },
+    terraform = { ts = "terraform", mason = "terraform-ls", lsp = "terraformls" },
+    lua = { mason = "lua-language-server", lsp = "lua_ls" },
+    c = { mason = "clangd", lsp = "clangd" },  -- ts installed in neovim by default
+    haskell = { ts = "haskell", lsp = "hls" }, -- lsp installed with ghcup
+    lean = { ts = "lean" },
+    odin = { ts = "odin", mason = "ols", lsp = "ols" },
+    zig = { ts = "zig", mason = "zls", lsp = "zls" },
+    go = { ts = "go", mason = "gopls", lsp = "gopls" },
+    python = { ts = "python", mason = "ty", lsp = "ty" },
+    typescript = { ts = "typescript", mason = "tsgo", lsp = "tsgo" },
+    -- treesitter only
+    yaml = { ts = "yaml" },
+    xml = { ts = "xml" },
+    zsh = { ts = "zsh" },
+}
+
+local function collect_languages(key)
+    local out = {}
+    for _, lang in pairs(languages) do if lang[key] then out[#out + 1] = lang[key] end end
+    return out
+end
+
+local treesitter_grammars = collect_languages("ts")
+local mason_lsps = collect_languages("mason")
+local nvim_lsps = collect_languages("lsp")
+
 autocmd("FileType", {
     group = augroup("treesitter-start", { clear = true }),
     callback = function(args)
@@ -254,8 +276,6 @@ usercmd("PackUninstallAll", function()
     vim.cmd("qa!")
 end, {})
 
-local mason_lsps = { "lua-language-server", "rust-analyzer", "terraform-ls", "tinymist", "clangd" }
-local nvim_lsps = { "lua_ls", "rust_analyzer", "terraformls", "tinymist", "clangd" }
 usercmd("MasonInstallAll", function()
     vim.cmd("MasonInstall " .. table.concat(mason_lsps, " "))
 end, {})
@@ -281,7 +301,7 @@ autocmd("FileType", {
     pattern = { "markdown", "typst", "fountain" },
     callback = function()
         local loc = vim.opt_local
-        loc.textwidth = vim.o.columns
+        -- loc.textwidth = vim.o.columns
         loc.spell = true
         loc.spelllang = "en"
         vim.keymap.set("n", "<leader>z", function() Snacks.zen() end, { buffer = true, desc = "toggle zen mode" })
