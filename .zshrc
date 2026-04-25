@@ -27,9 +27,9 @@ export BROWSER="open"
 export CLICOLOR=YES
 
 # options
-stty -ixon # disable XON/XOFF to free ctrl+s keybinding
+stty -ixon
 setopt vi
-bindkey -v '^?' backward-delete-char # fix backspace in vi mode
+bindkey -v '^?' backward-delete-char
 setopt auto_param_slash
 setopt no_case_glob no_case_match
 unsetopt prompt_sp
