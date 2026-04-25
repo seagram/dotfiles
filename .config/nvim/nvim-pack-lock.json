@@ -49,6 +49,10 @@
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "https://github.com/folke/snacks.nvim"
     },
+    "telescope-spell-errors.nvim": {
+      "rev": "1567a8bf0998fe65ef6cb8c40f62a0eec0b7d774",
+      "src": "https://github.com/matkrin/telescope-spell-errors.nvim"
+    },
     "telescope.nvim": {
       "rev": "506338434fec5ad19cb1f8d45bf92d66c4917393",
       "src": "https://github.com/nvim-telescope/telescope.nvim"

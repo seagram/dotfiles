@@ -39,7 +39,7 @@ set.ttimeoutlen = 1
 
 vim.pack.add({
     { src = 'https://github.com/neovim/nvim-lspconfig' },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",    version = "main" },
     { src = "https://github.com/williamboman/mason.nvim" },
     { src = "https://github.com/folke/flash.nvim" },
     { src = "https://github.com/folke/snacks.nvim" },
@@ -52,6 +52,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-tree/nvim-tree.lua" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
+    { src = "https://github.com/matkrin/telescope-spell-errors.nvim" },
     { src = "https://github.com/vague-theme/vague.nvim" },
 }, { load = true })
 
@@ -115,6 +116,7 @@ telescope.setup({
         diagnostics = vim.tbl_extend("force", {}, tel_no_win_titles),
     },
 })
+telescope.load_extension("spell_errors")
 
 -- keymaps
 local map = vim.keymap.set
@@ -126,7 +128,7 @@ map("n", "<leader>o", function() require("oil").open() end, { desc = "open oil" 
 map("n", "-", function() require("oil").open() end, { desc = "open oil" })
 map("n", "<leader>e", function() nvim_tree_api.tree.toggle({ find_file = true, focus = true }) end, { desc = "tree" })
 map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
-map("n", "<leader>s", tel_builtin.spell_suggest, { desc = "spell check" })
+map("n", "<leader>s", telescope.extensions.spell_errors.spell_errors, { desc = "spell errors" })
 map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
 map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
 map("n", "<leader>rd", function() vim.fn.jobstart({ "rustup", "doc", "--std" }, { detach = true }) end)
