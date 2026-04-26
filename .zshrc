@@ -5,7 +5,6 @@ alias sz="exec zsh"
 alias c="clear"
 alias e="exit"
 alias t="tmux"
-alias tvt="tv tmux-sessions"
 alias v="nvim"
 alias lv=$'nvim -c "normal \'0"'
 alias dot="cd ~/github/dotfiles/ && stow --ignore='\.DS_Store' -t ~/ ."
@@ -13,17 +12,13 @@ alias repo="open \$(git remote get-url origin) || echo 'no remote found'"
 alias lg="lazygit"
 alias mr="mise run"
 alias me="mise exec --"
-alias x="mise exec --"
-alias d="docker"
-alias k="kubectl"
-alias cr="cargo run"
 alias ts="tailscale"
 alias ff="fastfetch"
 
 # exports
 export VISUAL="nvim"
 export EDITOR="nvim"
-export BROWSER="open"
+export BROWSER="open -a Helium"
 export CLICOLOR=YES
 
 # options
@@ -73,10 +68,6 @@ _highlight_command() {
 }
 add-zle-hook-widget line-pre-redraw _highlight_command
 
-# zsh completion
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-source <(carapace _carapace zsh)
-
 # homebrew
 export HOMEBREW_NO_ENV_HINTS=TRUE
 export HOMEBREW_CASK_OPTS=--no-quarantine
@@ -85,50 +76,25 @@ alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
 alias bt='brew deps --tree $(brew leaves)'
 alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --force --brews --casks"
 
-# zoxide
-if [ -z "$DISABLE_ZOXIDE" ]; then
-    alias cd="z"
-    eval "$(zoxide init zsh)"
-fi
+# carapace
+source <(carapace _carapace zsh)
 
-# starship.rs
+# zoxide
+alias cd="z"
+eval "$(zoxide init zsh)"
+
+# starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
 # eza
 export EZA_CONFIG_DIR=~/.config/eza/
 
-# pi
-export PI_CODING_AGENT_DIR=~/.config/pi
-
-# convert .docx/.doc to .pdf
-pdf() {
-    local input="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
-    local output="${input%.*}.pdf"
-    osascript -e "
-        tell application \"Pages\"
-            activate
-            set doc to open POSIX file \"$input\"
-            export doc to POSIX file \"$output\" as PDF
-            close doc
-        end tell
-        tell application \"Pages\" to quit
-    "
-}
-
-# python
-export PATH=~/.local/bin:$PATH
-alias python="python3"
-
-# kubernetes
-export KUBECONFIG=~/.config/kube/config
-
-# talos
-export TALOSCONFIG=~/.config/talos/config
-
 # fzf
-source <(fzf --zsh)
+export FZF_DEFAULT_COMMAND='fd --type d . ~'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS_FILE=~/.config/fzf/config
+source <(fzf --zsh)
 
 # mise
 eval "$(mise activate zsh)"
