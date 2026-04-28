@@ -32,9 +32,10 @@ set.helpheight = 9999
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 set.foldmethod = "expr"
 set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+set.foldcolumn = "0"
 set.foldtext = ""
-set.foldnestmax = 1
 set.foldlevelstart = 99
+set.foldnestmax = 1
 set.ttimeoutlen = 1
 
 vim.pack.add({
@@ -95,25 +96,27 @@ require("snacks").setup({
 local telescope = require("telescope")
 local themes = require("telescope.themes")
 local tel_builtin = require("telescope.builtin")
-local tel_no_win_titles = { prompt_title = false, results_title = false }
+local ui = { prompt_title = false, results_title = false }
 telescope.setup({
     defaults = vim.tbl_deep_extend("force", themes.get_ivy({}), {
         layout_config = { height = 0.25 },
-    }, tel_no_win_titles),
+        prompt_prefix = "",
+        selection_caret = " ",
+    }, ui),
     pickers = {
         find_files = vim.tbl_extend("force", {
             preview = false,
             hidden = true,
             cwd = vim.uv.os_homedir(),
             find_command = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix" },
-        }, tel_no_win_titles),
+        }, ui),
         live_grep = vim.tbl_extend("force", {
             additional_args = function() return { "--hidden" } end,
-        }, tel_no_win_titles),
-        buffers = vim.tbl_extend("force", {}, tel_no_win_titles),
-        spell_suggest = vim.tbl_extend("force", {}, tel_no_win_titles),
-        commands = vim.tbl_extend("force", {}, tel_no_win_titles),
-        diagnostics = vim.tbl_extend("force", {}, tel_no_win_titles),
+        }, ui),
+        buffers = vim.tbl_extend("force", {}, ui),
+        spell_suggest = vim.tbl_extend("force", {}, ui),
+        commands = vim.tbl_extend("force", {}, ui),
+        diagnostics = vim.tbl_extend("force", {}, ui),
     },
 })
 telescope.load_extension("spell_errors")
@@ -131,7 +134,6 @@ map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
 map("n", "<leader>s", telescope.extensions.spell_errors.spell_errors, { desc = "spell errors" })
 map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
 map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
-map("n", "<leader>rd", function() vim.fn.jobstart({ "rustup", "doc", "--std" }, { detach = true }) end)
 map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-l>", "<cmd>tabnext<CR>", { desc = "next tab" })
 map("n", "<C-h>", "<cmd>tabprevious<CR>", { desc = "previous tab" })
@@ -307,6 +309,6 @@ autocmd("FileType", {
         -- loc.textwidth = vim.o.columns
         loc.spell = true
         loc.spelllang = "en"
-        vim.keymap.set("n", "<leader>z", function() Snacks.zen() end, { buffer = true, desc = "toggle zen mode" })
+        vim.keymap.set("n", "<leader>m", function() Snacks.zen() end, { buffer = true, desc = "toggle zen mode" })
     end,
 })
