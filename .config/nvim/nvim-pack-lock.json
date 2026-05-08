@@ -5,7 +5,7 @@
       "src": "https://github.com/folke/flash.nvim"
     },
     "mason.nvim": {
-      "rev": "12ddd182d9efbdc848b540f16484a583d52da0fb",
+      "rev": "cb8445f8ce85d957416c106b780efd51c6298f89",
       "src": "https://github.com/williamboman/mason.nvim"
     },
     "mini.comment": {
@@ -25,11 +25,11 @@
       "src": "https://github.com/nvim-mini/mini.surround"
     },
     "nvim-lspconfig": {
-      "rev": "21db1fd40cbcbf1524ae154ab8f394fdf085749a",
+      "rev": "cd576dd72d31ddffcbfa6d064c0dd697ca218758",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-tree.lua": {
-      "rev": "24cfcc94372e526fd9e1c2803ede9e0f1715e33f",
+      "rev": "f9bfc0059eca24546b69a7006110463da4808f8f",
       "src": "https://github.com/nvim-tree/nvim-tree.lua"
     },
     "nvim-treesitter": {
@@ -54,7 +54,7 @@
       "src": "https://github.com/matkrin/telescope-spell-errors.nvim"
     },
     "telescope.nvim": {
-      "rev": "506338434fec5ad19cb1f8d45bf92d66c4917393",
+      "rev": "f04ab730b8f9c6bf3f54a206d0dcddfd70c52d59",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
     },
     "typst-preview.nvim": {
