@@ -8,5 +8,6 @@ aliases:
     co: pr checkout
     il: issue list
     ic: issue create
+    d: dash
 http_unix_socket:
 browser:
