@@ -57,7 +57,6 @@ vim.pack.add({
     { src = "https://github.com/vague-theme/vague.nvim" },
 }, { load = true })
 
-
 require("mason").setup()
 require("flash").setup()
 require("mini.comment").setup()
@@ -121,6 +120,7 @@ telescope.setup({
 })
 telescope.load_extension("spell_errors")
 
+
 -- keymaps
 local map = vim.keymap.set
 map("n", "<leader>f", tel_builtin.find_files, { desc = "files" })
@@ -153,9 +153,9 @@ map('n', "<leader>w", "<cmd>write<CR>")
 map('n', "<leader>q", "<cmd>quit<CR>")
 
 local sign = "󰝤 "
-local vd = vim.diagnostic
-local sev = vd.severity
-vd.config({ signs = { text = { [sev.ERROR] = sign, [sev.WARN] = sign, [sev.HINT] = sign, [sev.INFO] = sign, }, }, float = { border = "rounded", source = true }, virtual_text = { current_line = true }, })
+local d = vim.diagnostic
+local s = d.severity
+d.config({ signs = { text = { [s.ERROR] = sign, [s.WARN] = sign, [s.HINT] = sign, [s.INFO] = sign, }, }, float = { border = "rounded", source = true }, virtual_text = { current_line = true }, })
 
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
@@ -217,18 +217,21 @@ autocmd("LspAttach", {
 
 -- vim.cmd('syntax off')
 local languages = {
+    -- general
+    c = { mason = "clangd", lsp = "clangd" }, -- ts installed in neovim by default
     rust = { ts = "rust", mason = "rust-analyzer", lsp = "rust_analyzer" },
+    zig = { ts = "zig", mason = "zls", lsp = "zls" },
+    -- other
     typst = { ts = "typst", mason = "tinymist", lsp = "tinymist" },
     terraform = { ts = "terraform", mason = "terraform-ls", lsp = "terraformls" },
     lua = { mason = "lua-language-server", lsp = "lua_ls" },
-    c = { mason = "clangd", lsp = "clangd" },  -- ts installed in neovim by default
-    haskell = { ts = "haskell", lsp = "hls" }, -- lsp installed with ghcup
-    lean = { ts = "lean" },
-    odin = { ts = "odin", mason = "ols", lsp = "ols" },
-    zig = { ts = "zig", mason = "zls", lsp = "zls" },
-    go = { ts = "go", mason = "gopls", lsp = "gopls" },
-    python = { ts = "python", mason = "ty", lsp = "ty" },
-    typescript = { ts = "typescript", mason = "tsgo", lsp = "tsgo" },
+    lean = { ts = "lean", mason = "lean-language-server", lsp = "leanls" },
+    -- disabled
+    -- haskell = { ts = "haskell", lsp = "hls" }, -- lsp installed with ghcup
+    -- go = { ts = "go", mason = "gopls", lsp = "gopls" },
+    -- odin = { ts = "odin", mason = "ols", lsp = "ols" },
+    -- python = { ts = "python", mason = "ty", lsp = "ty" },
+    -- typescript = { ts = "typescript", mason = "tsgo", lsp = "tsgo" },
     -- treesitter only
     yaml = { ts = "yaml" },
     xml = { ts = "xml" },
@@ -285,12 +288,21 @@ usercmd("MasonInstallAll", function()
     vim.cmd("MasonInstall " .. table.concat(mason_lsps, " "))
 end, {})
 
-vim.lsp.config("lua_ls", {
-    settings = { Lua = { runtime = { version = "LuaJIT" }, workspace = { library = { vim.env.VIMRUNTIME } }, }, },
-})
+local lsp = vim.lsp
+lsp.config("lua_ls",
+    { settings = { Lua = { runtime = { version = "LuaJIT" }, workspace = { library = { vim.env.VIMRUNTIME } }, }, }, })
+lsp.enable(nvim_lsps)
+lsp.document_color.enable()
 
-vim.lsp.enable(nvim_lsps)
-vim.lsp.document_color.enable()
+vim.pack.add({ { src = "https://github.com/Julian/lean.nvim" }, }, { load = function() end })
+autocmd("FileType", {
+    pattern = "lean",
+    once = true,
+    callback = function()
+        vim.cmd.packadd("lean.nvim")
+        require("lean").setup { mappings = true }
+    end
+})
 
 vim.pack.add({ { src = "https://github.com/chomosuke/typst-preview.nvim" }, }, { load = function() end })
 autocmd("FileType", {
@@ -301,6 +313,7 @@ autocmd("FileType", {
         require("typst-preview").setup()
     end
 })
+
 vim.filetype.add({ extension = { fountain = "fountain" } })
 autocmd("FileType", {
     pattern = { "markdown", "typst", "fountain" },
