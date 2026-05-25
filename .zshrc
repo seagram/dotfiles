@@ -98,7 +98,3 @@ source <(fzf --zsh)
 
 # mise
 eval "$(mise activate zsh)"
-
-# go
-export GOPATH="$HOME/.go"
-export PATH="$GOPATH/bin:$PATH"
