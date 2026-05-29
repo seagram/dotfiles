@@ -55,7 +55,32 @@ vim.pack.add({
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/matkrin/telescope-spell-errors.nvim" },
     { src = "https://github.com/vague-theme/vague.nvim" },
+    { src = "https://github.com/dmtrKovalenko/fff.nvim" },
 }, { load = true })
+
+vim.api.nvim_create_autocmd("PackChanged", {
+    callback = function(ev)
+        local name, kind = ev.data.spec.name, ev.data.kind
+        if name == "fff.nvim" and (kind == "install" or kind == "update") then
+            if not ev.data.active then vim.cmd.packadd("fff.nvim") end
+            require("fff.download").download_or_build_binary()
+        end
+    end,
+})
+
+require("fff").setup({
+    prompt = " ",
+    title = "files",
+    grep = { modes = { "plain", "fuzzy" } },
+    lazy_sync = true,
+    layout = {
+        height = 0.8,
+        width = 0.8,
+        preview_position = "right",
+    },
+    preview = { enabled = true },
+    debug = { enabled = false, show_scores = false },
+})
 
 require("mason").setup()
 require("flash").setup()
@@ -64,8 +89,21 @@ require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
-require("vague").setup({ transparent = true })
-vim.cmd.colorscheme("vague")
+-- require("vague").setup({ transparent = true })
+-- vim.cmd.colorscheme("vague")
+vim.cmd.colorscheme("quiet")
+local hl = vim.api.nvim_set_hl
+local sel = { bg = "#181818", blend = 25, ctermbg = "NONE" }
+hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+hl(0, "LineNr", { fg = "#707070" })
+hl(0, "CursorLine", sel)
+hl(0, "CursorLineNr", vim.tbl_extend("force", sel, { fg = "#707070" }))
+hl(0, "Visual", { bg = "#707070" })
+hl(0, "IncSearch", { bg = "#707070" })
+hl(0, "StatusLine", { bg = "NONE" })
+hl(0, "Pmenu", { bg = "NONE", ctermbg = "NONE" })
+hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" })
+hl(0, "PmenuSel", vim.tbl_extend("force", sel, { fg = "#dadada" }))
 
 require("oil").setup({
     default_file_explorer = false,
@@ -103,15 +141,6 @@ telescope.setup({
         selection_caret = " ",
     }, ui),
     pickers = {
-        find_files = vim.tbl_extend("force", {
-            preview = false,
-            hidden = true,
-            cwd = vim.uv.os_homedir(),
-            find_command = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix" },
-        }, ui),
-        live_grep = vim.tbl_extend("force", {
-            additional_args = function() return { "--hidden" } end,
-        }, ui),
         buffers = vim.tbl_extend("force", {}, ui),
         spell_suggest = vim.tbl_extend("force", {}, ui),
         commands = vim.tbl_extend("force", {}, ui),
@@ -123,17 +152,22 @@ telescope.load_extension("spell_errors")
 
 -- keymaps
 local map = vim.keymap.set
-map("n", "<leader>f", tel_builtin.find_files, { desc = "files" })
-map("n", "<leader>g", tel_builtin.live_grep, { desc = "grep" })
+--- fff
+map("n", "<leader>f", function() require("fff").find_files() end, { desc = "files" })
+map("n", "<leader>g", function() require("fff").live_grep({ title = "grep" }) end, { desc = "grep" })
+--- telescope
+map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
+map("n", "<leader>s", telescope.extensions.spell_errors.spell_errors, { desc = "spelling" })
+map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
+-- map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
+-- flash
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
-map("n", "<leader>o", function() require("oil").open() end, { desc = "open oil" })
+-- oil
 map("n", "-", function() require("oil").open() end, { desc = "open oil" })
+-- nvim-tree
 map("n", "<leader>e", function() nvim_tree_api.tree.toggle({ find_file = true, focus = true }) end, { desc = "tree" })
-map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
-map("n", "<leader>s", telescope.extensions.spell_errors.spell_errors, { desc = "spell errors" })
-map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
-map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
+-- general
 map("n", "<leader><leader>", "<C-^>")
 map("n", "<C-l>", "<cmd>tabnext<CR>", { desc = "next tab" })
 map("n", "<C-h>", "<cmd>tabprevious<CR>", { desc = "previous tab" })
@@ -218,20 +252,20 @@ autocmd("LspAttach", {
 -- vim.cmd('syntax off')
 local languages = {
     -- general
-    c = { mason = "clangd", lsp = "clangd" }, -- ts installed in neovim by default
     rust = { ts = "rust", mason = "rust-analyzer", lsp = "rust_analyzer" },
-    zig = { ts = "zig", mason = "zls", lsp = "zls" },
     -- other
     typst = { ts = "typst", mason = "tinymist", lsp = "tinymist" },
-    terraform = { ts = "terraform", mason = "terraform-ls", lsp = "terraformls" },
     lua = { mason = "lua-language-server", lsp = "lua_ls" },
-    lean = { ts = "lean", mason = "lean-language-server", lsp = "leanls" },
     -- disabled
+    -- c = { mason = "clangd", lsp = "clangd" }, -- ts installed in neovim by default
+    -- zig = { ts = "zig", mason = "zls", lsp = "zls" },
     -- haskell = { ts = "haskell", lsp = "hls" }, -- lsp installed with ghcup
     -- go = { ts = "go", mason = "gopls", lsp = "gopls" },
     -- odin = { ts = "odin", mason = "ols", lsp = "ols" },
     -- python = { ts = "python", mason = "ty", lsp = "ty" },
     -- typescript = { ts = "typescript", mason = "tsgo", lsp = "tsgo" },
+    -- terraform = { ts = "terraform", mason = "terraform-ls", lsp = "terraformls" },
+    -- lean = { ts = "lean", mason = "lean-language-server", lsp = "leanls" },
     -- treesitter only
     yaml = { ts = "yaml" },
     xml = { ts = "xml" },
