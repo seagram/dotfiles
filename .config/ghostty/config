@@ -1,3 +1,4 @@
+# docs: https://ghostty.org/docs/config/reference
 font-size = 17
 theme = Black Metal (Marduk)
 window-colorspace = display-p3
@@ -9,7 +10,7 @@ minimum-contrast = 3
 
 mouse-hide-while-typing = true 
 shell-integration = zsh
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,title
 cursor-style = underline
 cursor-style-blink = false
 adjust-underline-thickness = 50%
@@ -23,7 +24,7 @@ resize-overlay = never
 
 macos-window-shadow = false
 macos-window-buttons = hidden
-macos-titlebar-style = hidden
+# macos-titlebar-style = hidden
 macos-icon = glass
 
 clipboard-read = allow
@@ -43,6 +44,13 @@ split-inherit-working-directory = true
 keybind = ctrl+'=new_split:right
 keybind = ctrl+,=goto_split:left
 keybind = ctrl+.=goto_split:right
+
+macos-titlebar-style = tabs
+macos-titlebar-proxy-icon = hidden
+keybind = ctrl+==new_tab
+keybind = ctrl++=new_tab
+keybind = ctrl+]=next_tab
+keybind = ctrl+[=previous_tab
 
 custom-shader=shaders/cursor_warp.glsl
 
