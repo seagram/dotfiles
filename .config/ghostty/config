@@ -10,7 +10,7 @@ minimum-contrast = 3
 
 mouse-hide-while-typing = true 
 shell-integration = zsh
-shell-integration-features = no-cursor,title
+shell-integration-features = no-cursor
 cursor-style = underline
 cursor-style-blink = false
 adjust-underline-thickness = 50%
