@@ -1,2 +1,12 @@
 [settings]
 color_theme = "base16"
+experimental = true
+dotfiles.root = "~/github/dotfiles"
+dotfiles.default_mode = "symlink"
+
+[dotfiles]
+"~/.zshrc" = {}
+"~/.ignore" = {}
+"~/.hushlogin" = {}
+"~/.config/*" = "../../.config/*"
+
