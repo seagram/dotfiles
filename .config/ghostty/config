@@ -5,7 +5,7 @@ window-colorspace = display-p3
 bold-color = bright
 background-opacity = 0.9
 background-blur = 15
-unfocused-split-opacity = 0.5
+unfocused-split-opacity = 1
 minimum-contrast = 3
 
 mouse-hide-while-typing = true 
@@ -26,6 +26,7 @@ macos-window-shadow = false
 macos-window-buttons = hidden
 # macos-titlebar-style = hidden
 macos-icon = glass
+bell-features = no-border,no-title
 
 clipboard-read = allow
 clipboard-write = allow
@@ -53,5 +54,6 @@ keybind = ctrl+]=next_tab
 keybind = ctrl+[=previous_tab
 
 custom-shader=shaders/cursor_warp.glsl
+custom-shader=shaders/focused_split_border.glsl
 
 # command=/opt/homebrew/bin/tmux (not using right now)
