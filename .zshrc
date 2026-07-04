@@ -8,10 +8,13 @@ alias v="nvim"
 alias t="nvim ~/.todo"
 alias lv=$'nvim -c "normal \'0"'
 alias repo="open \$(git remote get-url origin) || echo 'no remote found'"
+alias l="yazi"
 alias lg="lazygit"
 alias mr="mise run"
 alias me="mise exec --"
 alias ts="tailscale"
+alias tsu="tailscale up"
+alias tsd="tailscale down"
 alias ff="fastfetch"
 
 # exports
@@ -73,7 +76,7 @@ export HOMEBREW_CASK_OPTS=--no-quarantine
 alias bu="brew upgrade"
 alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
 alias bt='brew deps --tree $(brew leaves)'
-alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --force --brews --casks"
+alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --force --brews --casks --no-describe"
 
 # carapace
 source <(carapace _carapace zsh)
