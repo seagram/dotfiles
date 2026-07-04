@@ -9,4 +9,3 @@ dotfiles.default_mode = "symlink"
 "~/.ignore" = {}
 "~/.hushlogin" = {}
 "~/.config/*" = "../../.config/*"
-
