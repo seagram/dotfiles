@@ -3,9 +3,14 @@ color_theme = "base16"
 experimental = true
 dotfiles.root = "~/github/dotfiles"
 dotfiles.default_mode = "symlink"
+minimum_release_age = "0s"
 
 [dotfiles]
 "~/.zshrc" = {}
 "~/.ignore" = {}
 "~/.hushlogin" = {}
 "~/.config/*" = "../../.config/*"
+
+[tools]
+node = "24"
+pi = "latest"
