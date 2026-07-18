@@ -1,0 +1,14 @@
+.git/
+.DS_Store
+.localized
+node_modules/
+target/
+dist/
+build/
+*.pdf
+*.PDF
+*.mov
+*.mp4
+*.jpg
+*.jpeg
+*.png

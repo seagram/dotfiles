@@ -1,0 +1,6 @@
+# paths are relative to $HOME — one per line
+.ssh
+Desktop
+Documents
+Downloads
+github
