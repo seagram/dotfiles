@@ -8,7 +8,7 @@ local set = vim.opt
 set.clipboard = "unnamedplus"
 set.number = true
 set.relativenumber = true
-set.fillchars = { eob = " " }
+set.fillchars = { eob = " ", vert = " ", horiz = " " }
 set.scrolloff = 8
 set.pumheight = 5
 set.pummaxwidth = 100
@@ -27,7 +27,7 @@ set.undofile = true
 set.wrap = false
 set.hlsearch = false
 set.confirm = true
-set.laststatus = 0 -- set.statusline = '%=%t %r %m'
+set.laststatus = 0
 set.helpheight = 9999
 set.completeopt = "menuone,noselect,fuzzy,nosort"
 set.foldmethod = "expr"
@@ -37,50 +37,31 @@ set.foldtext = ""
 set.foldlevelstart = 99
 set.foldnestmax = 1
 set.ttimeoutlen = 1
+set.list = true
+set.listchars = { leadmultispace = "┊   " }
 
 vim.pack.add({
-    { src = 'https://github.com/neovim/nvim-lspconfig' },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter",    version = "main" },
-    { src = "https://github.com/williamboman/mason.nvim" },
-    { src = "https://github.com/folke/flash.nvim" },
-    { src = "https://github.com/folke/snacks.nvim" },
-    { src = "https://github.com/folke/which-key.nvim" },
-    { src = "https://github.com/nvim-mini/mini.icons" },
-    { src = "https://github.com/nvim-mini/mini.comment" },
-    { src = "https://github.com/nvim-mini/mini.surround" },
-    { src = "https://github.com/nvim-mini/mini.pairs" },
-    { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/nvim-tree/nvim-tree.lua" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/nvim-telescope/telescope.nvim" },
-    { src = "https://github.com/matkrin/telescope-spell-errors.nvim" },
-    { src = "https://github.com/vague-theme/vague.nvim" },
-    { src = "https://github.com/dmtrKovalenko/fff.nvim" },
+    "https://github.com/neovim/nvim-lspconfig",
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    "https://github.com/williamboman/mason.nvim",
+    "https://github.com/seagram/mtl.nvim",
+    "https://github.com/seagram/pack.nvim",
+    "https://github.com/seagram/void.nvim",
+    "https://github.com/folke/flash.nvim",
+    "https://github.com/folke/which-key.nvim",
+    "https://github.com/nvim-mini/mini.icons",
+    "https://github.com/nvim-mini/mini.comment",
+    "https://github.com/nvim-mini/mini.surround",
+    "https://github.com/nvim-mini/mini.pairs",
+    "https://github.com/stevearc/oil.nvim",
+    "https://github.com/nvim-tree/nvim-tree.lua",
+    "https://github.com/nvim-lua/plenary.nvim",
+    "https://github.com/nvim-telescope/telescope.nvim",
+    "https://github.com/matkrin/telescope-spell-errors.nvim",
+    "https://github.com/chomosuke/typst-preview.nvim",
 }, { load = true })
 
-vim.api.nvim_create_autocmd("PackChanged", {
-    callback = function(ev)
-        local name, kind = ev.data.spec.name, ev.data.kind
-        if name == "fff.nvim" and (kind == "install" or kind == "update") then
-            if not ev.data.active then vim.cmd.packadd("fff.nvim") end
-            require("fff.download").download_or_build_binary()
-        end
-    end,
-})
-
-require("fff").setup({
-    prompt = " ",
-    title = "files",
-    grep = { modes = { "plain", "fuzzy" } },
-    lazy_sync = true,
-    layout = {
-        height = 0.8,
-        width = 0.8,
-        preview_position = "right",
-    },
-    preview = { enabled = true },
-    debug = { enabled = false, show_scores = false },
-})
+vim.cmd.colorscheme("void")
 
 require("mason").setup()
 require("flash").setup()
@@ -89,21 +70,12 @@ require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
 require('mini.icons').mock_nvim_web_devicons()
 require("which-key").setup({ preset = "helix", })
--- require("vague").setup({ transparent = true })
--- vim.cmd.colorscheme("vague")
-vim.cmd.colorscheme("quiet")
-local hl = vim.api.nvim_set_hl
-local sel = { bg = "#181818", blend = 25, ctermbg = "NONE" }
-hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
-hl(0, "LineNr", { fg = "#707070" })
-hl(0, "CursorLine", sel)
-hl(0, "CursorLineNr", vim.tbl_extend("force", sel, { fg = "#707070" }))
-hl(0, "Visual", { bg = "#707070" })
-hl(0, "IncSearch", { bg = "#707070" })
-hl(0, "StatusLine", { bg = "NONE" })
-hl(0, "Pmenu", { bg = "NONE", ctermbg = "NONE" })
-hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" })
-hl(0, "PmenuSel", vim.tbl_extend("force", sel, { fg = "#dadada" }))
+require("typst-preview").setup({ open_cmd = "open -a Helium %s", })
+
+require("mtl").enable({
+    haskell = { mason = false }, -- hls installed with ghcup
+    typst,
+})
 
 require("oil").setup({
     default_file_explorer = false,
@@ -115,91 +87,89 @@ require("oil").setup({
 local nvim_tree_api = require("nvim-tree.api")
 require("nvim-tree").setup({
     git = { enable = false },
-    filters = { dotfiles = false },
+    filters = { dotfiles = false, custom = { "^\\.DS_Store$" }, },
     view = { width = 30, side = "right" },
     renderer = { group_empty = true },
-    actions = {
-        open_file = { quit_on_open = true },
-    },
-})
-
-require("snacks").setup({
-    indent = { indent = { char = "┊" }, animate = { enabled = false }, scope = { enabled = false } },
-    notifier = { style = "minimal" },
-    zen = { toggles = { dim = false }, show = { statusline = false, tabline = false }, win = { style = "zen", minimal = true, width = 100, wo = { wrap = true, number = false, relativenumber = false, signcolumn = "no", statuscolumn = "", }, }, },
-    styles = { input = { width = 40, noautocmd = false }, notification_history = { minimal = true }, },
+    actions = { open_file = { quit_on_open = true }, },
 })
 
 local telescope = require("telescope")
-local themes = require("telescope.themes")
 local tel_builtin = require("telescope.builtin")
-local ui = { prompt_title = false, results_title = false }
+local hide_titles = { prompt_title = false, results_title = false, preview_title = false }
+local home = vim.fn.expand("~")
+local path_display_tilde = function(_, path) return path:sub(1, #home) == home and "~" .. path:sub(#home + 1) or path end
+telescope.load_extension("spell_errors")
 telescope.setup({
-    defaults = vim.tbl_deep_extend("force", themes.get_ivy({}), {
-        layout_config = { height = 0.25 },
-        prompt_prefix = "",
-        selection_caret = " ",
-    }, ui),
+    defaults = {
+        prompt_prefix = " ", selection_caret = " ",
+        layout_strategy = "horizontal", sorting_strategy = "descending",
+        layout_config = { width = 0.7, height = 0.7, preview_width = 0.55 },
+    },
     pickers = {
-        buffers = vim.tbl_extend("force", {}, ui),
-        spell_suggest = vim.tbl_extend("force", {}, ui),
-        commands = vim.tbl_extend("force", {}, ui),
-        diagnostics = vim.tbl_extend("force", {}, ui),
+        find_files = vim.tbl_extend("force", hide_titles, {
+            path_display = path_display_tilde,
+            find_command = { "fd", "--type", "f", "--color", "never" },
+        }),
+        buffers = hide_titles,
+        diagnostics = hide_titles,
+        commands = vim.tbl_extend("force", {
+            entry_maker = function(entry) return { value = entry, ordinal = entry.name, display = entry.name } end,
+        }, hide_titles),
     },
 })
-telescope.load_extension("spell_errors")
 
-
--- keymaps
 local map = vim.keymap.set
---- fff
-map("n", "<leader>f", function() require("fff").find_files() end, { desc = "files" })
-map("n", "<leader>g", function() require("fff").live_grep({ title = "grep" }) end, { desc = "grep" })
---- telescope
+map("n", "<leader>f", function()
+    local roots = {}
+    for line in io.lines(vim.fn.expand("~/.config/fd/roots")) do
+        if line:match("%S") and not line:match("^%s*#") then roots[#roots + 1] = vim.fn.expand("~/" .. line) end
+    end
+    tel_builtin.find_files({ search_dirs = roots, hidden = true })
+end, { desc = "files" })
 map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
-map("n", "<leader>s", telescope.extensions.spell_errors.spell_errors, { desc = "spelling" })
+map("n", "<leader>s", function() telescope.extensions.spell_errors.spell_errors(hide_titles) end, { desc = "spelling" })
 map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
--- map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
--- flash
+map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
 map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
 map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
--- oil
 map("n", "-", function() require("oil").open() end, { desc = "open oil" })
--- nvim-tree
 map("n", "<leader>e", function() nvim_tree_api.tree.toggle({ find_file = true, focus = true }) end, { desc = "tree" })
--- general
-map("n", "<leader><leader>", "<C-^>")
+map('n', "<leader>w", "<cmd>write<CR>", { desc = "write" })
+map('n', "<leader>q", "<cmd>quit<CR>", { desc = "quit" })
+map("n", "<leader><leader>", "<C-^>", { desc = "last buffer" })
 map("n", "<C-l>", "<cmd>tabnext<CR>", { desc = "next tab" })
 map("n", "<C-h>", "<cmd>tabprevious<CR>", { desc = "previous tab" })
-map("n", "<C-d>", "<C-d>zz")
-map("n", "<C-u>", "<C-u>zz")
-map("n", "n", "nzzzv")
-map("n", "N", "Nzzzv")
-map("n", "<C-k>", ":m .-2<CR>==")
-map("n", "<C-j>", ":m .+1<CR>==")
-map("n", "yb", "ggVGy")
-map("n", "db", "ggVGd")
-map("v", "<C-j>", ":m '>+1<CR>gv=gv")
-map("v", "<C-k>", ":m '<-2<CR>gv=gv")
-map("v", "<", "<gv")
-map("v", ">", ">gv")
-map('n', "<leader>w", "<cmd>write<CR>")
-map('n', "<leader>q", "<cmd>quit<CR>")
+map("n", "<C-d>", "<C-d>zz", { desc = "scroll down" })
+map("n", "<C-u>", "<C-u>zz", { desc = "scroll up" })
+map("n", "n", "nzzzv", { desc = "next match" })
+map("n", "N", "Nzzzv", { desc = "prev match" })
+map("n", "<C-k>", ":m .-2<CR>==", { desc = "move line up" })
+map("n", "<C-j>", ":m .+1<CR>==", { desc = "move line down" })
+map("n", "yb", "ggVGy", { desc = "yank buffer" })
+map("n", "db", "ggVGd", { desc = "delete buffer" })
+map("v", "<C-j>", ":m '>+1<CR>gv=gv", { desc = "move selection down" })
+map("v", "<C-k>", ":m '<-2<CR>gv=gv", { desc = "move selection up" })
+map("v", "<", "<gv", { desc = "indent left" })
+map("v", ">", ">gv", { desc = "indent right" })
 
-local sign = "󰝤 "
-local d = vim.diagnostic
-local s = d.severity
-d.config({ signs = { text = { [s.ERROR] = sign, [s.WARN] = sign, [s.HINT] = sign, [s.INFO] = sign, }, }, float = { border = "rounded", source = true }, virtual_text = { current_line = true }, })
+local s = vim.diagnostic.severity
+vim.diagnostic.config({
+    signs = { text = { [s.ERROR] = "E ", [s.WARN] = "W ", [s.HINT] = "H ", [s.INFO] = "I ", }, },
+    float = { border = "rounded", source = true },
+    virtual_text = { prefix = "" },
+})
 
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local usercmd = vim.api.nvim_create_user_command
 
 -- lsp
+vim.lsp.document_color.enable()
 autocmd("LspAttach", {
     group = augroup("lsp-attach", { clear = true }),
     callback = function(event)
         local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
+        -- lsp keymaps
         local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
         end
@@ -213,8 +183,9 @@ autocmd("LspAttach", {
         map("gr", vim.lsp.buf.references, "references")
         map("gR", vim.lsp.buf.rename, "rename")
         map("gF", vim.lsp.buf.format, "format")
-        map("<leader>d", vim.diagnostic.open_float, "diagnostic")
+        map("gf", vim.diagnostic.open_float, "diagnostic")
 
+        -- native completion
         if client:supports_method("textDocument/completion")
             and not vim.tbl_contains({ "fountain", "markdown", "typst" }, vim.bo[event.buf].filetype) then
             vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
@@ -228,134 +199,17 @@ autocmd("LspAttach", {
             pum_map("<Tab>", "<C-y>", "<Tab>", "accept completion")
             pum_map("<Esc>", "<C-e><Esc>", "<Esc>", "cancel completion")
         end
-    end,
-})
 
--- format on save
-autocmd("LspAttach", {
-    group = augroup("lsp-format", {}),
-    callback = function(args)
-        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+        -- format on save
         if not client:supports_method("textDocument/willSaveWaitUntil")
             and client:supports_method("textDocument/formatting") then
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                group = vim.api.nvim_create_augroup("lsp-format", { clear = false }),
-                buffer = args.buf,
+            autocmd("BufWritePre", {
+                group = augroup("lsp-format", { clear = false }),
+                buffer = event.buf,
                 callback = function()
-                    vim.lsp.buf.format({ bufnr = args.buf, timeout_ms = 1000 })
+                    vim.lsp.buf.format({ bufnr = event.buf, timeout_ms = 1000 })
                 end,
             })
         end
-    end,
-})
-
--- vim.cmd('syntax off')
-local languages = {
-    -- general
-    rust = { ts = "rust", mason = "rust-analyzer", lsp = "rust_analyzer" },
-    -- other
-    typst = { ts = "typst", mason = "tinymist", lsp = "tinymist" },
-    lua = { mason = "lua-language-server", lsp = "lua_ls" },
-    -- disabled
-    -- c = { mason = "clangd", lsp = "clangd" }, -- ts installed in neovim by default
-    -- zig = { ts = "zig", mason = "zls", lsp = "zls" },
-    -- haskell = { ts = "haskell", lsp = "hls" }, -- lsp installed with ghcup
-    -- go = { ts = "go", mason = "gopls", lsp = "gopls" },
-    -- odin = { ts = "odin", mason = "ols", lsp = "ols" },
-    -- python = { ts = "python", mason = "ty", lsp = "ty" },
-    -- typescript = { ts = "typescript", mason = "tsgo", lsp = "tsgo" },
-    -- terraform = { ts = "terraform", mason = "terraform-ls", lsp = "terraformls" },
-    -- lean = { ts = "lean", mason = "lean-language-server", lsp = "leanls" },
-    -- treesitter only
-    yaml = { ts = "yaml" },
-    xml = { ts = "xml" },
-    zsh = { ts = "zsh" },
-}
-
-local function collect_languages(key)
-    local out = {}
-    for _, lang in pairs(languages) do if lang[key] then out[#out + 1] = lang[key] end end
-    return out
-end
-
-local treesitter_grammars = collect_languages("ts")
-local mason_lsps = collect_languages("mason")
-local nvim_lsps = collect_languages("lsp")
-
-autocmd("FileType", {
-    group = augroup("treesitter-start", { clear = true }),
-    callback = function(args)
-        pcall(vim.treesitter.start, args.buf)
-    end,
-})
-
-usercmd("TSInstallAll", function()
-    require("nvim-treesitter").install(treesitter_grammars)
-end, {})
-
-usercmd("TSUninstallAll", function()
-    local ts, i = require("nvim-treesitter"), require("nvim-treesitter").get_installed()
-    if #i == 0 then return vim.notify("err: no grammars installed", vim.log.levels.INFO) end
-    ts.uninstall(i, { summary = true })
-end, {})
-
-local installed_pack_names = function()
-    local p = vim.iter(vim.pack.get()):map(function(x) return x.spec.name end):totable()
-    if #p == 0 then return vim.notify("err: no plugins installed", vim.log.levels.INFO) end
-    return p
-end
-
-usercmd("PackUpdateAll", function()
-    local p = installed_pack_names()
-    if not p then return end
-    vim.pack.update(p, { force = true })
-end, {})
-
-usercmd("PackUninstallAll", function()
-    local p = installed_pack_names()
-    if not p then return end
-    vim.pack.del(p, { force = true })
-    vim.cmd("qa!")
-end, {})
-
-usercmd("MasonInstallAll", function()
-    vim.cmd("MasonInstall " .. table.concat(mason_lsps, " "))
-end, {})
-
-local lsp = vim.lsp
-lsp.config("lua_ls",
-    { settings = { Lua = { runtime = { version = "LuaJIT" }, workspace = { library = { vim.env.VIMRUNTIME } }, }, }, })
-lsp.enable(nvim_lsps)
-lsp.document_color.enable()
-
-vim.pack.add({ { src = "https://github.com/Julian/lean.nvim" }, }, { load = function() end })
-autocmd("FileType", {
-    pattern = "lean",
-    once = true,
-    callback = function()
-        vim.cmd.packadd("lean.nvim")
-        require("lean").setup { mappings = true }
-    end
-})
-
-vim.pack.add({ { src = "https://github.com/chomosuke/typst-preview.nvim" }, }, { load = function() end })
-autocmd("FileType", {
-    pattern = "typst",
-    once = true,
-    callback = function()
-        vim.cmd.packadd("typst-preview.nvim")
-        require("typst-preview").setup()
-    end
-})
-
-vim.filetype.add({ extension = { fountain = "fountain" } })
-autocmd("FileType", {
-    pattern = { "markdown", "typst", "fountain" },
-    callback = function()
-        local loc = vim.opt_local
-        -- loc.textwidth = vim.o.columns
-        loc.spell = true
-        loc.spelllang = "en"
-        vim.keymap.set("n", "<leader>m", function() Snacks.zen() end, { buffer = true, desc = "toggle zen mode" })
     end,
 })
