@@ -94,10 +94,10 @@ style = 'bold dimmed white'
 [cmd_duration]
 disabled = true
 
-# [custom.tailscale]
-# description = 'show if tailscale is up'
-# when = '~/path/vpncheck'
-# command = 'true'
-# format = '[󱗼 ]($style) '
-# style = 'bold dimmed white'
-# os = 'macos'
+[custom.tailscale]
+description = 'show if tailscale is up'
+when = '~/.local/bin/tailscale-check'
+command = 'true'
+format = '[󱗼 ]($style) '
+style = 'bold dimmed white'
+os = 'macos'
