@@ -9,7 +9,6 @@ unfocused-split-opacity = 1
 minimum-contrast = 3
 
 mouse-hide-while-typing = true 
-shell-integration = zsh
 shell-integration-features = no-cursor
 cursor-style = underline
 cursor-style-blink = false
@@ -26,15 +25,15 @@ macos-window-shadow = false
 macos-window-buttons = hidden
 # macos-titlebar-style = hidden
 macos-icon = glass
-bell-features = no-border,no-title
+bell-features = audio,no-system,attention,no-title,no-border
 
 clipboard-read = allow
 clipboard-write = allow
 clipboard-trim-trailing-spaces = true
 copy-on-select = clipboard
 
-app-notifications = false
-desktop-notifications = false
+app-notifications = true
+desktop-notifications = true
 confirm-close-surface = false
 quit-after-last-window-closed = true
 
@@ -56,4 +55,4 @@ keybind = ctrl+[=previous_tab
 custom-shader=shaders/cursor_warp.glsl
 custom-shader=shaders/focused_split_border.glsl
 
-# command=/opt/homebrew/bin/tmux (not using right now)
+# [note] to fix inherit cwd: sudo scutil --set HostName hostname

@@ -3,11 +3,11 @@
 // a heuristic: split panes are usually narrower or shorter than single panes.
 
 const float BORDER_WIDTH = 3.0;
-const vec3 BORDER_COLOR = vec3(0.86, 0.91, 0.93);
+const vec3 BORDER_COLOR = vec3(0.60, 0.63, 0.64);
 
 // Tune these if the border appears on single-pane tabs, or fails to appear on
 // split panes. Values are physical pixels, not terminal cells.
-const float SPLIT_WIDTH_THRESHOLD = 1800.0;
+const float SPLIT_WIDTH_THRESHOLD = 1600.0;
 const float SPLIT_HEIGHT_THRESHOLD = 1000.0;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
