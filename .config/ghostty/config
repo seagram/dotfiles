@@ -3,10 +3,14 @@ font-size = 17
 theme = Black Metal (Marduk)
 window-colorspace = display-p3
 bold-color = bright
-background-opacity = 0.9
+minimum-contrast = 3
+
+background-opacity = 1
 background-blur = 15
 unfocused-split-opacity = 1
-minimum-contrast = 3
+background-image = ./images/3.jpg
+background-image-opacity = 0.3
+background-image-fit = cover
 
 mouse-hide-while-typing = true 
 shell-integration-features = no-cursor
@@ -40,6 +44,7 @@ quit-after-last-window-closed = true
 window-inherit-working-directory = true
 tab-inherit-working-directory = true
 split-inherit-working-directory = true
+# [note] to fix inherit cwd: sudo scutil --set HostName hostname
 
 keybind = ctrl+'=new_split:right
 keybind = ctrl+,=goto_split:left
@@ -55,4 +60,3 @@ keybind = ctrl+[=previous_tab
 custom-shader=shaders/cursor_warp.glsl
 custom-shader=shaders/focused_split_border.glsl
 
-# [note] to fix inherit cwd: sudo scutil --set HostName hostname
