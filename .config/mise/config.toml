@@ -7,7 +7,6 @@ minimum_release_age = "0s"
 
 [dotfiles]
 "~/.zshrc" = {}
-"~/.ignore" = {}
 "~/.hushlogin" = {}
 "~/.config/*" = "../../.config/*"
 
