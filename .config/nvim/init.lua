@@ -43,39 +43,27 @@ set.listchars = { leadmultispace = "┊   " }
 vim.pack.add({
     "https://github.com/neovim/nvim-lspconfig",
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-    "https://github.com/williamboman/mason.nvim",
-    "https://github.com/seagram/mtl.nvim",
-    "https://github.com/seagram/pack.nvim",
     "https://github.com/seagram/void.nvim",
-    "https://github.com/folke/flash.nvim",
     "https://github.com/folke/which-key.nvim",
-    "https://github.com/nvim-mini/mini.icons",
     "https://github.com/nvim-mini/mini.comment",
     "https://github.com/nvim-mini/mini.surround",
     "https://github.com/nvim-mini/mini.pairs",
     "https://github.com/stevearc/oil.nvim",
     "https://github.com/nvim-tree/nvim-tree.lua",
-    "https://github.com/nvim-lua/plenary.nvim",
-    "https://github.com/nvim-telescope/telescope.nvim",
-    "https://github.com/matkrin/telescope-spell-errors.nvim",
     "https://github.com/chomosuke/typst-preview.nvim",
 }, { load = true })
 
+require("void").setup({ syntax = false })
 vim.cmd.colorscheme("void")
-
-require("mason").setup()
-require("flash").setup()
 require("mini.comment").setup()
 require("mini.surround").setup()
 require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
-require('mini.icons').mock_nvim_web_devicons()
-require("which-key").setup({ preset = "helix", })
-require("typst-preview").setup({ open_cmd = "open -a Helium %s", })
-
-require("mtl").enable({
-    haskell = { mason = false }, -- hls installed with ghcup
-    typst,
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "typst", -- autopair `$` in typst buffers
+    callback = function() MiniPairs.map_buf(0, "i", "$", { action = "closeopen", pair = "$$" }) end,
 })
+require("which-key").setup({ preset = "helix", show_help = false, })
+require("typst-preview").setup({ open_cmd = "open -a Helium %s", })
 
 require("oil").setup({
     default_file_explorer = false,
@@ -89,49 +77,15 @@ require("nvim-tree").setup({
     git = { enable = false },
     filters = { dotfiles = false, custom = { "^\\.DS_Store$" }, },
     view = { width = 30, side = "right" },
-    renderer = { group_empty = true },
+    renderer = {
+        add_trailing = true, group_empty = true,
+        root_folder_label = false,
+        icons = { show = { file = false, folder = false, folder_arrow = false, git = false } },
+    },
     actions = { open_file = { quit_on_open = true }, },
 })
 
-local telescope = require("telescope")
-local tel_builtin = require("telescope.builtin")
-local hide_titles = { prompt_title = false, results_title = false, preview_title = false }
-local home = vim.fn.expand("~")
-local path_display_tilde = function(_, path) return path:sub(1, #home) == home and "~" .. path:sub(#home + 1) or path end
-telescope.load_extension("spell_errors")
-telescope.setup({
-    defaults = {
-        prompt_prefix = " ", selection_caret = " ",
-        layout_strategy = "horizontal", sorting_strategy = "descending",
-        layout_config = { width = 0.7, height = 0.7, preview_width = 0.55 },
-    },
-    pickers = {
-        find_files = vim.tbl_extend("force", hide_titles, {
-            path_display = path_display_tilde,
-            find_command = { "fd", "--type", "f", "--color", "never" },
-        }),
-        buffers = hide_titles,
-        diagnostics = hide_titles,
-        commands = vim.tbl_extend("force", {
-            entry_maker = function(entry) return { value = entry, ordinal = entry.name, display = entry.name } end,
-        }, hide_titles),
-    },
-})
-
 local map = vim.keymap.set
-map("n", "<leader>f", function()
-    local roots = {}
-    for line in io.lines(vim.fn.expand("~/.config/fd/roots")) do
-        if line:match("%S") and not line:match("^%s*#") then roots[#roots + 1] = vim.fn.expand("~/" .. line) end
-    end
-    tel_builtin.find_files({ search_dirs = roots, hidden = true })
-end, { desc = "files" })
-map("n", "<leader>b", tel_builtin.buffers, { desc = "buffers" })
-map("n", "<leader>s", function() telescope.extensions.spell_errors.spell_errors(hide_titles) end, { desc = "spelling" })
-map("n", "<leader>c", tel_builtin.commands, { desc = "commands" })
-map("n", "<leader>d", tel_builtin.diagnostics, { desc = "diagnostics" })
-map({ "n", "x", "o" }, "f", function() require("flash").jump() end, { desc = "flash" })
-map({ "n", "x", "o" }, "F", function() require("flash").treesitter() end, { desc = "flash text objects" })
 map("n", "-", function() require("oil").open() end, { desc = "open oil" })
 map("n", "<leader>e", function() nvim_tree_api.tree.toggle({ find_file = true, focus = true }) end, { desc = "tree" })
 map('n', "<leader>w", "<cmd>write<CR>", { desc = "write" })
@@ -164,7 +118,11 @@ local augroup = vim.api.nvim_create_augroup
 local usercmd = vim.api.nvim_create_user_command
 
 -- lsp
+vim.lsp.enable("hls")
+vim.lsp.enable("tinymist")
+
 vim.lsp.document_color.enable()
+
 autocmd("LspAttach", {
     group = augroup("lsp-attach", { clear = true }),
     callback = function(event)
