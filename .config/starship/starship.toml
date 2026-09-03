@@ -9,8 +9,8 @@ command_timeout = 1000
 [character]
 # disabled = true
 # symbol list = › λ \$
-success_symbol = ''
-error_symbol = ''
+success_symbol = 'λ'
+error_symbol = 'λ'
 
 ##### modules #####
 
