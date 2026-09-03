@@ -12,5 +12,6 @@ auto_update = true
 "~/.config/*" = "../../.config/*"
 
 [tools]
+clojure = "latest"
 ffmpeg = "8.1.2"
 node = "24"
