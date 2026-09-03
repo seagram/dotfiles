@@ -20,6 +20,8 @@ alias tsu="tailscale up"
 alias tsd="tailscale down"
 alias ff="fastfetch"
 alias md="gh markdown-preview"
+alias cl="clojure"
+alias clj="clojure"
 
 # exports
 export VISUAL="nvim"
@@ -100,7 +102,7 @@ zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --color=always $realpath' # f
 # homebrew
 export HOMEBREW_NO_ENV_HINTS=TRUE
 export HOMEBREW_CASK_OPTS=--no-quarantine
-alias bu="brew update && brew upgrade -y && mise self-update -y"
+alias bu="brew update && brew upgrade -y && mise self-update -y && nvim --headless +'lua vim.pack.update(nil, { force = true })' +qa"
 alias ba="brew autoremove -v && brew cleanup -s --prune=all -v"
 alias bt='brew deps --tree $(brew leaves)'
 alias bf="brew bundle dump --file=~/github/dotfiles/.config/brew/Brewfile --force --brews --casks --no-describe"
