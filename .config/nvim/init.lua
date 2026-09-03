@@ -120,6 +120,7 @@ local usercmd = vim.api.nvim_create_user_command
 -- lsp
 vim.lsp.enable("hls")
 vim.lsp.enable("tinymist")
+vim.lsp.enable("clojure_lsp")
 
 vim.lsp.document_color.enable()
 
@@ -145,7 +146,7 @@ autocmd("LspAttach", {
 
         -- native completion
         if client:supports_method("textDocument/completion")
-            and not vim.tbl_contains({ "fountain", "markdown", "typst" }, vim.bo[event.buf].filetype) then
+            and not vim.tbl_contains({ "fountain", "markdown",}, vim.bo[event.buf].filetype) then
             vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
             local function pum_map(lhs, when_visible, when_hidden, desc)
                 vim.keymap.set("i", lhs, function()
