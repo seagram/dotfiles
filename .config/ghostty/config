@@ -13,7 +13,7 @@ background-image-opacity = 0.3
 background-image-fit = cover
 
 mouse-hide-while-typing = true 
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,no-title
 cursor-style = underline
 cursor-style-blink = false
 adjust-underline-thickness = 50%

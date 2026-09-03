@@ -4,6 +4,7 @@ experimental = true
 dotfiles.root = "~/github/dotfiles"
 dotfiles.default_mode = "symlink"
 minimum_release_age = "0s"
+auto_update = true
 
 [dotfiles]
 "~/.zshrc" = {}
@@ -11,4 +12,5 @@ minimum_release_age = "0s"
 "~/.config/*" = "../../.config/*"
 
 [tools]
+ffmpeg = "8.1.2"
 node = "24"

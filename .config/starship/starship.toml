@@ -1,14 +1,21 @@
+##### prompt #####
+# previously: format = """$directory$character"""
+# previously: right_format = """$all"""
 add_newline = false
-format = """$directory$character"""
-right_format = """$all"""
+format = """$character"""
+right_format = """$directory$all"""
 command_timeout = 1000
 
 [character]
-disabled = true
+# disabled = true
+# symbol list = › λ \$
+success_symbol = ''
+error_symbol = ''
+
+##### modules #####
 
 [git_branch]
-symbol = " "
-format = '[$symbol$branch]($style) '
+format = '[$branch]($style) '
 style = 'bold dimmed white'
 
 [git_status]
@@ -26,35 +33,11 @@ staged = 'S${count}'
 renamed = 'R'
 deleted = 'D'
 
-[aws]
-format = '[$symbol(profile: "$profile" )(\(region: $region\) )]($style)'
-disabled = true
-style = 'bold dimmed white'
-symbol = " "
-
-[bun]
-format = '[bun ($version )]($style)'
-disabled = false
-version_format = 'v${raw}'
-style = 'bold dimmed white'
-
-[c]
-format = '[$symbol ($version )]($style)'
-disabled = false
-symbol = ""
-version_format = 'v${raw}'
-style = 'bold dimmed white'
-
 [docker_context]
 format = '[$symbol$context ✓]($style) '
 only_with_files = false
 symbol = " "
 style = "bold dimmed white"
-
-[golang]
-format = '[$symbol($version )]($style)'
-symbol = ' '
-style = 'bold dimmed white'
 
 [hostname]
 disabled = false
@@ -63,20 +46,9 @@ format = 'on [$hostname]($style)'
 ssh_symbol = " "
 style = "bold dimmed white"
 
-[lua]
-format = '[$symbol($version )]($style)'
-symbol = " "
-style = "bold dimmed white"
-disabled = true
-
 [rust]
-# format = '[$symbol($version )]($style)'
 format = '[rust ($version )]($style)'
-symbol = " "
 style = "bold dimmed white"
-
-[package]
-disabled = true
 
 [python]
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
@@ -91,8 +63,21 @@ format = '[󱁢 $workspace]($style) '
 format = '[$symbol($version )]($style)'
 style = 'bold dimmed white'
 
+##### disabled #####
+
 [cmd_duration]
 disabled = true
+
+[typst]
+disabled = true
+
+[package]
+disabled = true
+
+[lua]
+disabled = true
+
+##### custom #####
 
 [custom.tailscale]
 description = 'show if tailscale is up'
