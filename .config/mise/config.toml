@@ -9,9 +9,11 @@ auto_update = true
 [dotfiles]
 "~/.zshrc" = {}
 "~/.hushlogin" = {}
-"~/.config/*" = "../../.config/*"
+"~/.config/*" = {}
 
 [tools]
 clojure = "latest"
-ffmpeg = "8.1.2"
+babashka = "latest"
+"github:clojure-lsp/clojure-lsp" = { version = "latest", matching = "native" }
+java = "temurin-25"
 node = "24"
