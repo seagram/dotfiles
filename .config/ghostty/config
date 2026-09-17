@@ -1,4 +1,5 @@
 # docs: https://ghostty.org/docs/config/reference
+auto-update-channel = tip
 font-size = 17
 theme = Black Metal (Marduk)
 window-colorspace = display-p3
@@ -8,7 +9,7 @@ minimum-contrast = 3
 background-opacity = 1
 background-blur = 15
 unfocused-split-opacity = 1
-background-image = ./images/1.jpg
+background-image = ./images/4.jpg
 background-image-opacity = 0.3
 background-image-fit = cover
 
@@ -40,7 +41,6 @@ clipboard-write = allow
 clipboard-trim-trailing-spaces = true
 copy-on-select = clipboard
 
-app-notifications = true
 desktop-notifications = true
 confirm-close-surface = false
 quit-after-last-window-closed = true
@@ -55,7 +55,7 @@ keybind = ctrl+,=goto_split:left
 keybind = ctrl+.=goto_split:right
 
 macos-titlebar-style = tabs
-macos-titlebar-proxy-icon = hidden
+window-title-font-family = JetBrains Mono
 keybind = ctrl+==new_tab
 keybind = ctrl++=new_tab
 keybind = ctrl+]=next_tab
