@@ -2,5 +2,6 @@
 .config/clojure/.cpcache/
 .config/clojure/.lsp/
 .config/clojure/.clj-kondo/
+.config/clojure/tools/
 .lsp/
 .DS_Store
