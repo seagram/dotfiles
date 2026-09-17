@@ -33,6 +33,19 @@ staged = 'S${count}'
 renamed = 'R'
 deleted = 'D'
 
+[java]
+disabled = true
+
+[custom.clojure]
+detect_extensions = ['clj', 'cljs', 'cljc']
+symbol = ' '
+format = '[${symbol}clojure]($style)'
+style = 'bold dimmed white'
+
+[mise]
+disabled = false
+format = 'mise '
+
 [docker_context]
 format = '[$symbol$context ✓]($style) '
 only_with_files = false
