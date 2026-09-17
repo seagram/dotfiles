@@ -1,2 +1,6 @@
 .config/ghostty/images/*
+.config/clojure/.cpcache/
+.config/clojure/.lsp/
+.config/clojure/.clj-kondo/
+.lsp/
 .DS_Store
