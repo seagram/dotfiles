@@ -9,7 +9,7 @@ alias t="nvim ~/.todo"
 alias lv=$'nvim -c "normal \'0"'
 alias repo="open \$(git remote get-url origin) || echo 'no remote found'"
 alias top='top -o cpu -n 35 -s 2 -stats command,cpu,mem,time,pid,ports,user'
-alias l="spf"
+alias l="yazi"
 alias lg="lazygit"
 alias m="mise"
 alias mr="mise run"
@@ -20,7 +20,6 @@ alias tsu="tailscale up"
 alias tsd="tailscale down"
 alias ff="fastfetch"
 alias md="gh markdown-preview"
-alias cl="clojure"
 alias clj="clojure"
 
 # exports
@@ -143,11 +142,3 @@ export EZA_CONFIG_DIR=~/.config/eza/
 
 # mise
 eval "$(mise activate zsh)"
-
-# haskell
-alias g="ghc"
-alias gi="ghci -v0"
-[ -f ~/.ghcup/env ] && . ~/.ghcup/env
-
-# roc
-export PATH="$PATH:$HOME/.roc"
