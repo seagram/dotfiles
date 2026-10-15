@@ -63,6 +63,10 @@ style = "bold dimmed white"
 format = '[rust ($version )]($style)'
 style = "bold dimmed white"
 
+[bun]
+format = '[bun ($version )]($style)'
+style = "bold dimmed white"
+
 [python]
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 symbol = " "
