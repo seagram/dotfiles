@@ -10,6 +10,7 @@ auto_update = true
 "~/.zshrc" = {}
 "~/.hushlogin" = {}
 "~/.config/*" = {}
+"~/Library/Application Support/typst/packages" = { source = "../typst/packages" }
 
 [tools]
 clojure = "latest"
