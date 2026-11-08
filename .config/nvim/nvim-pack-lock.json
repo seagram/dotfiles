@@ -1,41 +1,49 @@
 {
   "plugins": {
+    "artio.nvim": {
+      "rev": "ebf5ed35bf17babeee20b04129ce60a382214687",
+      "src": "https://codeberg.org/maivi/artio.nvim"
+    },
+    "black-metal-theme-neovim": {
+      "rev": "14f15d89956a4cd9da3a40cb36982e6e1fa5a4f4",
+      "src": "https://github.com/metalelf0/black-metal-theme-neovim"
+    },
+    "conjure": {
+      "rev": "b23c76a8c874fe7ac5ad95255efc66173b049088",
+      "src": "https://github.com/Olical/conjure"
+    },
     "mini.comment": {
-      "rev": "27a29d6b949b9497f80a0a03421e89fed71d8c37",
+      "rev": "3aa39b795c6dc54dbeaf2863aa91215850c4c8e0",
       "src": "https://github.com/nvim-mini/mini.comment"
     },
     "mini.pairs": {
-      "rev": "b1c5a726921b7a8c9321e9a7a208aa0571de5810",
+      "rev": "03eb1f0062a2cee5314d1ac3939246e4bb21352e",
       "src": "https://github.com/nvim-mini/mini.pairs"
     },
     "mini.surround": {
-      "rev": "8d5d0c5aa92449368ac251e85451d79d8f69d296",
+      "rev": "5357f00aca51a3b43e7775901b1ad9699f8c2678",
       "src": "https://github.com/nvim-mini/mini.surround"
     },
     "nvim-lspconfig": {
-      "rev": "85e732c62ac59ab7c12df71ddd020baa87948390",
+      "rev": "993d048db0d83d8e8ba3f9cb376456321acdcce3",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-tree.lua": {
-      "rev": "b2aadda94b107480c48e548d6db51c6840b7b33c",
+      "rev": "7e1da84aaffb413e1fa47b3895e5caa12501142d",
       "src": "https://github.com/nvim-tree/nvim-tree.lua"
     },
     "nvim-treesitter": {
-      "rev": "427e9222363d07c32d6db6169e4049c28d58d141",
+      "rev": "19bdfc04f40ed2ccb3340591d125f759b0406875",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "oil.nvim": {
-      "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
+      "rev": "d3733d933833a0e59b813ecec99341527adf0c28",
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "typst-preview.nvim": {
       "rev": "1c2e19486397be1c580b560fc50ee36abe329c46",
       "src": "https://github.com/chomosuke/typst-preview.nvim"
-    },
-    "void.nvim": {
-      "rev": "340adb9820824c734b82e8afcea90802a8c4d6fe",
-      "src": "https://github.com/seagram/void.nvim"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",

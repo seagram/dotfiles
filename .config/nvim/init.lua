@@ -1,10 +1,16 @@
 local global = vim.g
+local set = vim.opt
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
+local usercmd = vim.api.nvim_create_user_command
+local map = vim.keymap.set
+
 global.mapleader = " "
+global.maplocalleader = ","
 global.have_nerd_font = true
 global.loaded_netrw = 1
 global.loaded_netrwPlugin = 1
 
-local set = vim.opt
 set.clipboard = "unnamedplus"
 set.number = true
 set.relativenumber = true
@@ -40,54 +46,6 @@ set.ttimeoutlen = 1
 set.list = true
 set.listchars = { leadmultispace = "┊   " }
 
-vim.pack.add({
-    "https://github.com/neovim/nvim-lspconfig",
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-    "https://github.com/seagram/void.nvim",
-    "https://github.com/folke/which-key.nvim",
-    "https://github.com/nvim-mini/mini.comment",
-    "https://github.com/nvim-mini/mini.surround",
-    "https://github.com/nvim-mini/mini.pairs",
-    "https://github.com/stevearc/oil.nvim",
-    "https://github.com/nvim-tree/nvim-tree.lua",
-    "https://github.com/chomosuke/typst-preview.nvim",
-}, { load = true })
-
-require("void").setup({ syntax = false })
-vim.cmd.colorscheme("void")
-require("mini.comment").setup()
-require("mini.surround").setup()
-require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "typst", -- autopair `$` in typst buffers
-    callback = function() MiniPairs.map_buf(0, "i", "$", { action = "closeopen", pair = "$$" }) end,
-})
-require("which-key").setup({ preset = "helix", show_help = false, })
-require("typst-preview").setup({ open_cmd = "open -a Helium %s", })
-
-require("oil").setup({
-    default_file_explorer = false,
-    skip_confirm_for_simple_edits = true,
-    keymaps = { ["="] = "actions.close", },
-    view_options = { show_hidden = true, },
-})
-
-local nvim_tree_api = require("nvim-tree.api")
-require("nvim-tree").setup({
-    git = { enable = false },
-    filters = { dotfiles = false, custom = { "^\\.DS_Store$" }, },
-    view = { width = 30, side = "right" },
-    renderer = {
-        add_trailing = true, group_empty = true,
-        root_folder_label = false,
-        icons = { show = { file = false, folder = false, folder_arrow = false, git = false } },
-    },
-    actions = { open_file = { quit_on_open = true }, },
-})
-
-local map = vim.keymap.set
-map("n", "-", function() require("oil").open() end, { desc = "open oil" })
-map("n", "<leader>e", function() nvim_tree_api.tree.toggle({ find_file = true, focus = true }) end, { desc = "tree" })
 map('n', "<leader>w", "<cmd>write<CR>", { desc = "write" })
 map('n', "<leader>q", "<cmd>quit<CR>", { desc = "quit" })
 map("n", "<leader><leader>", "<C-^>", { desc = "last buffer" })
@@ -106,47 +64,106 @@ map("v", "<C-k>", ":m '<-2<CR>gv=gv", { desc = "move selection up" })
 map("v", "<", "<gv", { desc = "indent left" })
 map("v", ">", ">gv", { desc = "indent right" })
 
-local s = vim.diagnostic.severity
+vim.pack.add({
+    "https://github.com/neovim/nvim-lspconfig",
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    "https://github.com/folke/which-key.nvim",
+    "https://github.com/nvim-mini/mini.comment",
+    "https://github.com/nvim-mini/mini.surround",
+    "https://github.com/nvim-mini/mini.pairs",
+    "https://github.com/stevearc/oil.nvim",
+    "https://github.com/nvim-tree/nvim-tree.lua",
+    "https://github.com/chomosuke/typst-preview.nvim",
+    "https://github.com/Olical/conjure",
+    "https://github.com/metalelf0/black-metal-theme-neovim",
+    "https://codeberg.org/maivi/artio.nvim",
+}, { load = true })
+
+require("black-metal").setup({ transparent = true, })
+vim.cmd.colorscheme("marduk")
+vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
+vim.cmd("hi! link CursorLineNr LineNr")
+vim.cmd("hi LineNr guifg=#303030 ctermfg=236")
+
+require('vim._core.ui2').enable()
+require("artio").setup({
+    opts = { infolist = {}, },
+    mappings = {
+        ["<c-j>"] = "down",
+        ["<c-k>"] = "up",
+        ["<cr>"] = "accept",
+        ["<esc>"] = "cancel",
+        ["<c-l>"] = "togglepreview",
+    },
+})
+map("n", "<leader>ff", "<Plug>(artio-files)")
+map("n", "<leader>fg", "<Plug>(artio-grep)")
+map("n", "<leader>fs", "<Plug>(artio-smart)")
+map("n", "<leader>fo", "<Plug>(artio-oldfiles)")
+
+require("mini.comment").setup()
+
+require("mini.surround").setup()
+
+require("mini.pairs").setup({ mappings = { ['"'] = false, ["'"] = false, ['`'] = false, }, })
+autocmd("FileType", {
+    pattern = "typst",
+    callback = function() MiniPairs.map_buf(0, "i", "$", { action = "closeopen", pair = "$$" }) end,
+})
+
+autocmd("FileType", {
+    pattern = { "markdown", "typst" },
+    command = "setlocal spell spelllang=en_us",
+})
+
+require("which-key").setup({
+    preset = "helix",
+    show_help = false,
+    triggers = {
+        { "<auto>", mode = "nxso" },
+        { "<localleader>", mode = { "n", "v" } },
+    },
+})
+
+require("typst-preview").setup({ open_cmd = "open -a Helium %s", })
+map("n", "<leader>tp", "<cmd>TypstPreview<CR>", { desc = "typst preview" })
+
+require("oil").setup({
+    default_file_explorer = false,
+    skip_confirm_for_simple_edits = true,
+    keymaps = { ["="] = "actions.close", },
+    view_options = { show_hidden = true, },
+})
+map("n", "-", function() require("oil").open() end, { desc = " oil" })
+
+local nvim_tree_api = require("nvim-tree.api")
+require("nvim-tree").setup({
+    git = { enable = false },
+    filters = { dotfiles = false, custom = { "^\\.DS_Store$" }, },
+    view = { width = 30, side = "right" },
+    renderer = {
+        add_trailing = true, group_empty = true,
+        root_folder_label = false,
+        icons = { show = { file = false, folder = false, folder_arrow = false, git = false } },
+    },
+    actions = { open_file = { quit_on_open = true }, },
+})
+map("n", "<leader>e", function() nvim_tree_api.tree.toggle({ find_file = true, focus = true }) end, { desc = "tree" })
+
 vim.diagnostic.config({
-    signs = { text = { [s.ERROR] = "E ", [s.WARN] = "W ", [s.HINT] = "H ", [s.INFO] = "I ", }, },
     float = { border = "rounded", source = true },
     virtual_text = { prefix = "" },
 })
 
-local autocmd = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
-local usercmd = vim.api.nvim_create_user_command
-
--- lsp
-vim.lsp.enable("hls")
-vim.lsp.enable("tinymist")
 vim.lsp.enable("clojure_lsp")
-
-vim.lsp.document_color.enable()
 
 autocmd("LspAttach", {
     group = augroup("lsp-attach", { clear = true }),
     callback = function(event)
         local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
-        -- lsp keymaps
-        local map = function(keys, func, desc)
-            vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
-        end
-        map("gh", vim.lsp.buf.hover, "hover")
-        map("gs", vim.lsp.buf.signature_help, "signature")
-        map("gD", vim.lsp.buf.declaration, "declaration")
-        map("gd", vim.lsp.buf.definition, "definition")
-        map("gy", vim.lsp.buf.type_definition, "type definition")
-        map("ga", vim.lsp.buf.code_action, "code action")
-        map("gi", vim.lsp.buf.implementation, "implementation")
-        map("gr", vim.lsp.buf.references, "references")
-        map("gR", vim.lsp.buf.rename, "rename")
-        map("gF", vim.lsp.buf.format, "format")
-        map("gf", vim.diagnostic.open_float, "diagnostic")
-
         -- native completion
         if client:supports_method("textDocument/completion")
-            and not vim.tbl_contains({ "fountain", "markdown",}, vim.bo[event.buf].filetype) then
+            and not vim.tbl_contains({ "fountain", "markdown" }, vim.bo[event.buf].filetype) then
             vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
             local function pum_map(lhs, when_visible, when_hidden, desc)
                 vim.keymap.set("i", lhs, function()
@@ -158,8 +175,6 @@ autocmd("LspAttach", {
             pum_map("<Tab>", "<C-y>", "<Tab>", "accept completion")
             pum_map("<Esc>", "<C-e><Esc>", "<Esc>", "cancel completion")
         end
-
-        -- format on save
         if not client:supports_method("textDocument/willSaveWaitUntil")
             and client:supports_method("textDocument/formatting") then
             autocmd("BufWritePre", {
@@ -172,3 +187,35 @@ autocmd("LspAttach", {
         end
     end,
 })
+
+global["conjure#log#hud#enabled"] = false
+global["conjure#log#botright"] = true
+global["conjure#log#split#width"] = 0.4
+autocmd("FileType", { pattern = "clojure", callback = function()
+    require("which-key").add({{ buffer = true, mode = { "n", "v" },
+        { "<localleader>", group = "conjure" },
+        { "<localleader>c", group = "connect" },
+        { "<localleader>e", group = "eval" },
+        { "<localleader>ec", group = "eval comment" },
+        { "<localleader>g", group = "goto" },
+        { "<localleader>l", group = "log" },
+        { "<localleader>r", group = "refresh" },
+        { "<localleader>s", group = "session" },
+        { "<localleader>t", group = "test" },
+        { "<localleader>v", group = "view" },
+        { "<localleader>x", group = "expand" },
+    }})
+    local conjure_origin
+    local function is_conjure_log(win)
+        return vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win)):find("conjure%-log%-") ~= nil
+    end
+    map("n", "<leader>l", function()
+        local cur = vim.api.nvim_get_current_win()
+        if not is_conjure_log(cur) then conjure_origin = cur end
+        require("conjure.log").toggle()
+        local target = conjure_origin
+        if target and vim.api.nvim_win_is_valid(target) and not is_conjure_log(target) then
+            vim.api.nvim_set_current_win(target)
+        end
+    end, { buffer = true, desc = "conjure log" })
+end })
