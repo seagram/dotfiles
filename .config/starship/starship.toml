@@ -1,18 +1,11 @@
-##### prompt #####
-# previously: format = """$directory$character"""
-# previously: right_format = """$all"""
 add_newline = false
 format = """$character"""
 right_format = """$directory$all"""
 command_timeout = 1000
 
 [character]
-# disabled = true
-# symbol list = › λ \$
 success_symbol = 'λ'
 error_symbol = 'λ'
-
-##### modules #####
 
 [git_branch]
 format = '[$branch]($style) '
@@ -32,9 +25,6 @@ modified = 'M'
 staged = 'S${count}'
 renamed = 'R'
 deleted = 'D'
-
-[java]
-disabled = true
 
 [custom.clojure]
 detect_extensions = ['clj', 'cljs', 'cljc']
@@ -68,6 +58,7 @@ format = '[bun ($version )]($style)'
 style = "bold dimmed white"
 
 [python]
+disabled = true
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 symbol = " "
 pyenv_version_name = false
@@ -79,8 +70,6 @@ format = '[󱁢 $workspace]($style) '
 [nodejs]
 format = '[$symbol($version )]($style)'
 style = 'bold dimmed white'
-
-##### disabled #####
 
 [cmd_duration]
 disabled = true
@@ -94,12 +83,5 @@ disabled = true
 [lua]
 disabled = true
 
-##### custom #####
-
-[custom.tailscale]
-description = 'show if tailscale is up'
-when = '~/.local/bin/tailscale-check'
-command = 'true'
-format = '[󱗼 ]($style) '
-style = 'bold dimmed white'
-os = 'macos'
+[java]
+disabled = true
