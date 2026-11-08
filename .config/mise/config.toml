@@ -13,8 +13,5 @@ auto_update = true
 "~/Library/Application Support/typst/packages" = { source = "../typst/packages" }
 
 [tools]
-clojure = "latest"
-babashka = "latest"
-"github:clojure-lsp/clojure-lsp" = { version = "latest", matching = "native" }
-java = "temurin-25"
-node = "24"
+"github:OleksandrChekhovskyi/hax" = "latest"
+neovim = "nightly"
